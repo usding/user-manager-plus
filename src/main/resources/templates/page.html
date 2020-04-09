@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="page">
+<body>
+<div th:fragment="pager(page, url, urlPara)">
+    <nav class="pagination" role="navigation" aria-label="pagination">
+        <ul class="pagination">
+            <!-- 如果是首页，disable上一页和首页-->
+            <li th:class="${page.isFirstPage}==true? 'disabled'">
+                <a th:href="${page.isFirstPage}==true?'#': @{${url}(${urlPara}=1)}">首页</a>
+                <a th:href="${page.isFirstPage}==true?'#': @{${url} + '?' + ${urlPara} + '=' + ${page.current - 1}}">上一页</a>
+            </li>
+
+            <!-- 如果前面页码没有显示完则显示省略号 -->
+            <li th:if="${page.navigateFirstPage > 1}"><span>&hellip;</span></li>
+            <!-- 显示导航页码 -->
+            <th:block th:each="i: ${page.navigatepageNums}">
+                <li th:class="${page.current == i} ? 'active'"><a
+                        th:href="@{${url} + '?' + ${urlPara} + '=' + ${i}}" th:text="${i}"></a></li>
+            </th:block>
+            <!-- 如果后面页码没有显示完则显示省略号 -->
+            <li th:if="${page.navigateLastPage < page.totalPages}"><span>&hellip;</span></li>
+            <!-- 如果是末页，disable下一页和末页-->
+            <li th:class="${page.isLastPage}==true? 'disabled'">
+                <a th:href="${page.isLastPage}==true? '#': @{${url} + '?' + ${urlPara} + '=' + ${page.current + 1}}">下一页 </a>
+                <a	th:href="${page.isLastPage}==true? '#': @{${url}(${urlPara}=${page.totalPages})}">尾页</a>
+            </li>
+
+        </ul>
+    </nav>
+</div>
+</body>
+<script type="text/javascript">
+    $(function () {
+        pageNum = $("#first").val();
+        lastPage = $("#last").val();
+        if (lastPage == pageNum) {
+
+            $('.la').removeAttr('href');//去掉a标签中的href属性
+            $('.la').removeAttr('onclick');//去掉a标签中的onclick事件
+        } else {
+            if (pageNum == 1) {
+                $('.f').removeAttr('href');//去掉a标签中的href属性
+                $('.f').removeAttr('onclick');//去掉a标签中的onclick事件
+
+            } else if (pageNum != 1) {
+                $('.f').attr('', 'href');//添加a标签中的href属性
+                $('.f').attr('', 'onclick');//添加a标签中的onclick事件)
+            }
+            $('.la').attr('', 'href');//添加a标签中的href属性
+            $('.la').attr('', 'onclick');//添加a标签中的onclick事件)
+
+        }
+
+        /*if(lastPage==pageNum){
+            $('.l').removeAttr('href');//去掉a标签中的href属性
+            $('.l').removeAttr('onclick');//去掉a标签中的onclick事件
+        }else{
+            $('.l').attr('','href');//添加a标签中的href属性
+            $('.l').attr('','onclick');//添加a标签中的onclick事件)
+        }*/
+    });
+</script>
+</html>
