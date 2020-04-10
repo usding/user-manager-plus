@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org"  th:replace="layout :: common_layout(~{::title},~{::content})">
+<head>
+    <meta charset="UTF-8"/>
+    <title>用户列表</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.css}">
+    <script th:src="@{/js/jquery.js}" type="text/javascript"></script>
+    <script th:src="@{/js/bootstrap.js}" type="text/javascript"></script>
+    <!--<script th:src="@{https://cdn.staticfile.org/vue/2.2.2/vue.min.js}"></script>
+    <script th:src="@{https://cdn.staticfile.org/axios/0.18.0/axios.min.js}"></script>-->
+    <script src="../../js/jquery.js"></script>
+    <script src="https://cdn.staticfile.org/vue/s2.2.2/vue.min.js"></script>
+    <script src="https://cdn.staticfile.org/axios/0.18.0/axios.min.js"></script>
+    <script src="../../js/bootstrap.js"></script>
+</head>
+<body>
+<content>
+    <th:block th:if="${users!=null}" th:replace="layout/header :: header"  ></th:block>
+    <div >
+        <br/>
+        <!--<h1>用户列表</h1>-->
+        <div class="form-group right" th:align="left" th:cellpadding="right">
+            <!--<ul>
+                <li><a th:href="@{/user/userList}"/>用户信息管理</li>
+                <li><a th:href="@{/student/studentList}"/>学员信息管理</li>
+                <li><a th:href="@{/batch/batchList}"/> 批次信息管理</li>
+            </ul>-->
+        </div>
+        <br/><br/>
+
+
+    </div>
+</content>
+
+
+</body>
+
+</html>
