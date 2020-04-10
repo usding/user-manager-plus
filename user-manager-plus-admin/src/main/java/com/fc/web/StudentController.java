@@ -3,9 +3,11 @@ package com.fc.web;
 import com.fc.config.FileUploadProp;
 import com.fc.config.WebConfiguration;
 import com.fc.mapper.BatchDAO;
+import com.fc.mapper.StudentMapper;
 import com.fc.mapper.StudentsDAO;
 import com.fc.model.Batch;
 import com.fc.model.BatchExample;
+import com.fc.model.SimpleStudent;
 import com.fc.model.Students;
 import com.fc.model.StudentsExample;
 import com.fc.model.Users;
@@ -54,6 +56,9 @@ public class StudentController {
     @Resource
     private BatchDAO batchDAO;
 
+    @Autowired
+    private StudentMapper studentMapper;
+
     /* @Value("${file.upload.path}")
      private String prePath;
  */
@@ -62,8 +67,8 @@ public class StudentController {
 
     @GetMapping("/studentList")
     @Cacheable(value = "student_list")
-    public Result<List<Students>> list(Model model, HttpServletRequest request, @RequestParam(value = "page", defaultValue = "0") Integer cpage,
-                       @RequestParam(value = "size", defaultValue = "6") Integer pageSize) {
+    public Result<?> list(Model model, HttpServletRequest request, @RequestParam(value = "page", defaultValue = "0") Integer cpage,
+                                       @RequestParam(value = "size", defaultValue = "6") Integer pageSize) {
         //page当前页号
         if (cpage == null || cpage == 0) {
             cpage = 1;
@@ -73,22 +78,26 @@ public class StudentController {
 
         //从startrow行开始，查询pageSize条记录
         int startrow = (cpage - 1) * pageSize;
-
+        List<SimpleStudent> studentsList;
         Users users = (Users) request.getSession().getAttribute(WebConfiguration.LOGIN_USER);
         StudentsExample studentsExample = new StudentsExample();
         StudentsExample.Criteria criteria = studentsExample.createCriteria();
         if (users.getRole() == 1) {
             criteria.andBelongEqualTo(users.getId());
+            studentsList = studentMapper.selectSimpleStudentByBelong(users.getId(), startrow, pageSize);
         }
-//        studentsExample.setOrderByClause("id limit " + startrow + "," + pageSize);
-        List<Students> studentsList = studentsDAO.selectByExample(studentsExample);
+        else {
+            studentsList = studentMapper.selectSimpleStudent(startrow, pageSize);
+        }
+        studentsExample.setOrderByClause("id limit " + startrow + "," + pageSize);
+//        List<Students> studentsList = studentsDAO.selectByExample(studentsExample);
         int total = (int) studentsDAO.countByExample(new StudentsExample());
         //根据页面属性生成页面对象
-        Page<Students> pageInfO = new Page<>(total, pageSize, navigatePages, cpage, studentsList);
+        Page<SimpleStudent> pageInfO = new Page<>(total, pageSize, navigatePages, cpage, studentsList);
         //传递到前台页面
 //        model.addAttribute("page", pageInfO);
 //        model.addAttribute("studentsList", studentsList);
-        return Result.ofSuccess(studentsList);
+        return Result.ofSuccess(pageInfO);
     }
 
     @RequestMapping("/toAddStudent")

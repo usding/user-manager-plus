@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.fc.mapper.StudentMapper" >
+    <resultMap id="SimpleMap" type="com.fc.model.SimpleStudent" >
+        <id column="id" property="id" jdbcType="BIGINT" />
+        <id column="user_name" property="userName" jdbcType="VARCHAR" />
+        <id column="phone_number" property="phoneNumber" jdbcType="VARCHAR" />
+        <id column="user_sex" property="gender" jdbcType="VARCHAR" />
+        <id column="local_estate" property="localEstate" />
+        <id column="marital_status" property="married" />
+    </resultMap>
+
+    <select id="selectSimpleStudent" resultMap="SimpleMap">
+        SELECT STUDENTS.id, STUDENTS.user_name,STUDENTS.phone_number, STUDENTS.user_sex, STUDENTS.local_estate, STUDENTS.marital_status
+        FROM STUDENTS
+        LIMIT #{start}, #{pageSize}
+    </select>
+    <select id="selectSimpleStudentByBelong" resultMap="SimpleMap">
+        SELECT STUDENTS.id, STUDENTS.user_name,STUDENTS.phone_number, STUDENTS.user_sex, STUDENTS.local_estate, STUDENTS.marital_status
+        FROM STUDENTS
+        WHERE STUDENTS.belong=#{belong}
+        LIMIT #{start}, #{pageSize}
+    </select>
+
+</mapper>
