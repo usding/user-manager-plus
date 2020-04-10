@@ -20,7 +20,7 @@ public class ImgUtils {
         }
         if (file instanceof MultipartFile) {
             if (((MultipartFile) file).getSize()==0) {
-                return prePath+File.separator+"certpic" + File.separator + certNumber + File.separator + "sbxxx.png";
+                return "null.png";
             }
             MultipartFile multipartFile = (MultipartFile) file;
             File saveFile = new File( prePath+File.separator+"certpic" + File.separator + certNumber + File.separator + multipartFile.getOriginalFilename());
