@@ -2,7 +2,8 @@ const AllModel = {
     namespace: 'ALL',
 
     state: {
-        selKeys: []
+        selKeys: [],
+        user: null
     },
 
     reducers: {

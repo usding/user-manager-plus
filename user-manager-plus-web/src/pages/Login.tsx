@@ -1,5 +1,6 @@
 import React, { ReactElement } from "react";
-import { Form, Input, Button } from 'antd'
+import { Form, Input, Button, message } from 'antd'
+import { history, connect } from 'umi'
 class Login extends React.Component<any, any> {
     layout = {
         labelCol: { span: 8 },
@@ -26,8 +27,20 @@ class Login extends React.Component<any, any> {
                         }}
                         onFinish={async (values: any)=>{
                             console.dir(values)
-                            const res = await fetch(`/hetong/login?loginName=${values.username}&password=${values.password}`)
+                            const res = await fetch(`/login?loginName=${values.username}&password=${values.password}`)
                             console.dir(res)
+                            const result = await res.json()
+                            if(result.success){
+                                this.props.dispatch({
+                                    type: 'ALL/save',
+                                    payload:{
+                                        user: result.data
+                                    }
+                                })
+                                history.push('/')
+                            }else{
+                                message.error(result.msg)
+                            }
                         }}
                     >
                         <Form.Item
@@ -57,4 +70,4 @@ class Login extends React.Component<any, any> {
     }
 }
 
-export default Login
+export default connect(({ ALL }: { ALL: any }) => ({ ALL }))(Login)

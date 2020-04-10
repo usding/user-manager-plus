@@ -15,6 +15,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
@@ -66,25 +68,30 @@ public class IndexController {
     }
 
     @RequestMapping("/checkLogin")
-    public Result<JSONObject> checkLogin(HttpServletRequest request) {
+    public Result<Users> checkLogin(HttpServletRequest request) {
         Integer id = (Integer) request.getSession().getAttribute(WebConfiguration.LOGIN_KEY);
+        if (id == null) {
+            return Result.ofSuccess(new Users());
+        }
         Integer role = (Integer) request.getSession().getAttribute(WebConfiguration.LOGIN_ROLE);
-        JSONObject obj = new JSONObject();
-        obj.put("id", id);
-        obj.put("role", role);
-        return  Result.ofSuccess(obj);
+        UsersExample usersExample = new UsersExample();
+        UsersExample.Criteria criteria = usersExample.createCriteria();
+        criteria.andIdEqualTo(id);
+        List<Users> userList = usersDAO.selectByExample(usersExample);
+        Users user = (userList == null || userList.size() == 0) ? null : userList.get(0);
+        return Result.ofSuccess(user);
     }
 
     @RequestMapping("/login")
-    public Result<JSONObject> login(@Valid LoginParam loginParam, BindingResult result, ModelMap model, HttpServletRequest request) {
+    public ResponseEntity<Result<Users>> login(@Valid LoginParam loginParam, BindingResult result, ModelMap model, HttpServletRequest request) {
         String errorMsg = "";
-        JSONObject obj = new JSONObject();
+//        JSONObject obj = new JSONObject();
         if (result.hasErrors()) {
             List<ObjectError> list = result.getAllErrors();
             for (ObjectError error : list) {
                 errorMsg = errorMsg + error.getCode() + "-" + error.getDefaultMessage() + ";";
             }
-            return Result.ofFail(1, errorMsg);
+            return new ResponseEntity<>(Result.ofFail(1, errorMsg), HttpStatus.UNAUTHORIZED);
         }
         UsersExample usersExample = new UsersExample();
         UsersExample.Criteria criteria = usersExample.createCriteria();
@@ -92,18 +99,15 @@ public class IndexController {
         List<Users> userList = usersDAO.selectByExample(usersExample);
         Users user = (userList == null || userList.size() == 0) ? null : userList.get(0);
         if (user == null) {
-            return Result.ofFail(2, "user not exist");
+            return new ResponseEntity<>(Result.ofFail(2, "user not exist"), HttpStatus.UNAUTHORIZED);
         }
         else if (!user.getPassword().equals(loginParam.getPassword())) {
-            return Result.ofFail(3, "password error");
+            return new ResponseEntity<>(Result.ofFail(3, "password error"), HttpStatus.UNAUTHORIZED);
         }
         request.getSession().setAttribute(WebConfiguration.LOGIN_ROLE, user.getRole());
         request.getSession().setAttribute(WebConfiguration.LOGIN_KEY, user.getId());
         request.getSession().setAttribute(WebConfiguration.LOGIN_USER, user);
-        obj.put("id", user.getId());
-        obj.put("role", user.getRole());
-        obj.put("user", user);
-        return Result.ofSuccess(obj);
+        return new ResponseEntity<>(Result.ofSuccess(user), HttpStatus.OK);
     }
 
     @RequestMapping("/loginOut")

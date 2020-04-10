@@ -32,7 +32,7 @@ class Head extends React.Component<any, any> {
                         boxShadow: '0 0 5px 2px rgba(158,158,158, 0.3)'
                     }}
                 >
-                    <Button
+                    {/* <Button
                         size='large'
                         style={{
                             height: '100%',
@@ -55,7 +55,7 @@ class Head extends React.Component<any, any> {
                             />
                         }
 
-                    </Button>
+                    </Button> */}
                 </div>
                 <Menu
                     mode='inline'

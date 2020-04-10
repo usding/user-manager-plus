@@ -1,19 +1,45 @@
 import React, { ReactElement } from 'react';
 import Head from '@/layouts/Head'
+import { history, connect } from 'umi';
 
 class Layout extends React.Component<any, any> {
   state: any
   constructor(props: any) {
     super(props);
     this.state = {
-      collapsed: false
+      collapsed: false,
+      user: null
     }
   }
 
-  render(): ReactElement {
+  async UNSAFE_componentWillMount() {
+    let res: Response = await fetch('/checkLogin');
+    let result = await res.json();
+    const user = result.data
+    if (!user.id) {
+      history.push('/toLogin')
+    } else {
+      this.props.dispatch({
+        type: 'ALL/save',
+        payload: {
+          user: user
+        }
+      })
+      this.setState({
+        user: user
+      })
+    }
+  }
+
+  render(): ReactElement | null {
+    if(!this.props.ALL.user){
+      return null
+    }
+    
+
     return (
       <React.Fragment>
-        
+
         <section
           style={{
             display: 'flex',
@@ -23,7 +49,7 @@ class Layout extends React.Component<any, any> {
           }}
         >
           <Head />
-          
+
           <div style={{
             width: '100%',
             height: '100%',
@@ -41,4 +67,4 @@ class Layout extends React.Component<any, any> {
   }
 }
 
-export default Layout;
+export default connect(({ ALL }: { ALL: any }) => ({ ALL }))(Layout);

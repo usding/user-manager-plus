@@ -2,7 +2,7 @@ import { defineConfig } from 'umi';
 
 export default defineConfig({
   history: {
-    type: 'hash'
+    type: 'memory'
   },
   routes: [
     {
@@ -49,6 +49,14 @@ export default defineConfig({
   ],
   proxy: {
     '/hetong/*': {
+      target: 'http://127.0.0.1:8091',
+      changeOrigin: true
+    },
+    '/checkLogin': {
+      target: 'http://127.0.0.1:8091',
+      changeOrigin: true
+    },
+    '/login': {
       target: 'http://127.0.0.1:8091',
       changeOrigin: true
     },

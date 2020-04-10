@@ -11,6 +11,7 @@ import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import javax.servlet.Filter;
+import java.io.IOException;
 
 @Configuration
 public class WebConfiguration implements WebMvcConfigurer {
@@ -51,7 +52,12 @@ public class WebConfiguration implements WebMvcConfigurer {
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(new SessionInterceptor());
+        try {
+            registry.addInterceptor(new SessionInterceptor());
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 }
