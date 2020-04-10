@@ -1835,7 +1835,7 @@ public class StudentsExample {
             return (Criteria) this;
         }
 
-        public Criteria andBelongEqualTo(String value) {
+        public Criteria andBelongEqualTo(Integer value) {
             addCriterion("students.belong =", value, "belong");
             return (Criteria) this;
         }

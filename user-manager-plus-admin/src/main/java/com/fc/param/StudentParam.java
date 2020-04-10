@@ -1,7 +1,7 @@
 package com.fc.param;
 
 import com.fc.utils.Validator;
-import org.springframework.web.multipart.MultipartFile;
+//import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
@@ -140,25 +140,25 @@ public class StudentParam {
      * 身份证正面扫描件-图片路径
      */
     @NotNull(message = "身份证正面扫描件不能为空")
-    private Object certFscan;
+    private String certFscan;
 
     /**
      * 身份证反面扫描件-图片路径
      */
     @NotNull(message = "身份证反面扫描件不能为空")
-    private Object certBscan;
+    private String certBscan;
 
     /**
      * 2寸蓝底彩照-图片路径
      */
     @NotNull(message = "2寸蓝底彩照不能为空")
-    private Object photoBlue;
+    private String photoBlue;
 
     /**
      * 毕业证书扫描件-图片路径
      */
     //@NotNull(message = "毕业证书扫描件不能为空")
-    private Object certGscan;
+    private String certGscan;
 
 
 
@@ -330,35 +330,35 @@ public class StudentParam {
         this.note = note;
     }
 
-    public Object getCertFscan() {
+    public String getCertFscan() {
         return certFscan;
     }
 
-    public void setCertFscan(MultipartFile certFscan) {
+    public void setCertFscan(String certFscan) {
         this.certFscan = certFscan;
     }
 
-    public Object getCertBscan() {
+    public String getCertBscan() {
         return certBscan;
     }
 
-    public void setCertBscan(MultipartFile certBscan) {
+    public void setCertBscan(String certBscan) {
         this.certBscan = certBscan;
     }
 
-    public Object getPhotoBlue() {
+    public String getPhotoBlue() {
         return photoBlue;
     }
 
-    public void setPhotoBlue(MultipartFile photoBlue) {
+    public void setPhotoBlue(String photoBlue) {
         this.photoBlue = photoBlue;
     }
 
-    public Object getCertGscan() {
+    public String getCertGscan() {
         return certGscan;
     }
 
-    public void setCertGscan(MultipartFile certGscan) {
+    public void setCertGscan(String certGscan) {
         this.certGscan = certGscan;
     }
 

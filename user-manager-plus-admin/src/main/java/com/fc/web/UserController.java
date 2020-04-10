@@ -97,24 +97,22 @@ public class UserController {
         return "user/userEdit";
     }
 
-    @RequestMapping("/editUser")
-    public String edit(@Valid UserParam userParam, BindingResult result, ModelMap model) {
+    @GetMapping("/editUser")
+    public Result<String> edit(@Valid UserParam userParam, BindingResult result, ModelMap model) {
         String errorMsg = "";
         if (result.hasErrors()) {
             List<ObjectError> list = result.getAllErrors();
             for (ObjectError error : list) {
                 errorMsg = errorMsg + error.getCode() + "-" + error.getDefaultMessage() + ";";
             }
-            model.addAttribute("errorMsg", errorMsg);
-            model.addAttribute("user", userParam);
-            return "user/userEdit";
+            return Result.ofFail(-1, errorMsg);
         }
 
         Users user = usersDAO.selectByPrimaryKey(userParam.getId());
         BeanUtils.copyProperties(userParam, user);
         user.setRegisterDate(new Date());
         usersDAO.updateByPrimaryKeySelective(user);
-        return "redirect:/user/userList";
+        return Result.ofSuccess("success");
     }
 
     @RequestMapping("/deleteUser")

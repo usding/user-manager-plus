@@ -136,7 +136,7 @@ public class Students implements Serializable {
     /**
      * 学员属于哪位工作人员
      */
-    private String belong;
+    private Integer belong;
 
     private static final long serialVersionUID = 1L;
 
@@ -340,11 +340,11 @@ public class Students implements Serializable {
         this.certGscan = certGscan;
     }
 
-    public String getBelong() {
+    public Integer getBelong() {
         return belong;
     }
 
-    public void setBelong(String belong) {
+    public void setBelong(Integer belong) {
         this.belong = belong;
     }
 

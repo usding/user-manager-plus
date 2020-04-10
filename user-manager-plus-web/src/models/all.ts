@@ -3,7 +3,8 @@ const AllModel = {
 
     state: {
         selKeys: [],
-        user: null
+        user: null,
+        editUser: null
     },
 
     reducers: {

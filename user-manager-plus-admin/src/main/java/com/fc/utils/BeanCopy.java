@@ -37,7 +37,10 @@ public class BeanCopy {
           target.setTotalCost(source.getTotalCost());
           target.setPostalCode(source.getPostalCode());
           target.setNote(source.getNote());
-
+          target.setCertFscan(source.getCertFscan());
+          target.setCertBscan(source.getCertBscan());
+          target.setPhotoBlue(source.getPhotoBlue());
+          target.setCertGscan(source.getCertGscan());
     }
 
     public static Date dateFormat(String birthDate){

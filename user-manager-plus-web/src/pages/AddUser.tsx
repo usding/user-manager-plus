@@ -1,5 +1,6 @@
 import React, { ReactElement } from "react";
 import { Form, Input, Button, Select, message } from 'antd'
+import { connect } from 'umi'
 
 class AddUser extends React.Component<any, any>{
     layout = {
@@ -9,11 +10,9 @@ class AddUser extends React.Component<any, any>{
     tailLayout = {
         wrapperCol: { offset: 8, span: 16 },
     }
-    async onFinish(values: any){
-        console.dir(values)
-        const ret = await fetch(`/user/addUser?userName=${values.username}&password=${values.password}&role=${parseInt(values.role)}&state=A`)
+    async onFinish(values: any) {
+        const ret = await fetch(`/user/addUser?userName=${values.userName}&password=${values.password}&role=${parseInt(values.role)}&state=${values.state}`)
         const res = await ret.json()
-        console.dir(res)
     }
     render(): ReactElement {
         return (
@@ -24,10 +23,16 @@ class AddUser extends React.Component<any, any>{
                         width: '50%'
                     }}
                     onFinish={this.onFinish.bind(this)}
+                    initialValues={
+                        this.props.ALL.editUser ? {
+                            userName: this.props.ALL.editUser.userName,
+                            role: this.props.ALL.editUser.role.toString()
+                        } : {}
+                    }
                 >
                     <Form.Item
                         label='用户名'
-                        name='username'
+                        name='userName'
                         rules={[{ required: true, message: '请输入用户名' }]}
                     >
                         <Input />
@@ -55,6 +60,16 @@ class AddUser extends React.Component<any, any>{
                             <Select.Option value='1'>普通用户</Select.Option>
                         </Select>
                     </Form.Item>
+                    <Form.Item
+                        label='用户状态'
+                        name='state'
+                        rules={[{ required: true, message: '请选择用户状态' }]}
+                    >
+                        <Select>
+                            <Select.Option value='A'>启用</Select.Option>
+                            <Select.Option value='X'>禁用</Select.Option>
+                        </Select>
+                    </Form.Item>
                     <Form.Item {...this.tailLayout}>
                         <Button type="primary" htmlType="submit">
                             确定
@@ -66,4 +81,4 @@ class AddUser extends React.Component<any, any>{
     }
 }
 
-export default AddUser
+export default connect(({ ALL }: { ALL: any }) => ({ ALL }))(AddUser)
