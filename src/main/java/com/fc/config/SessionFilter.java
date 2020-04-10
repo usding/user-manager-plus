@@ -24,14 +24,19 @@ public class SessionFilter implements Filter {
                          FilterChain filterChain) throws IOException, ServletException {
         HttpServletRequest request = (HttpServletRequest) srequest;
         String uri = request.getRequestURI();
-        sresponse.setCharacterEncoding("UTF-8");//设置响应编码格式
-        sresponse.setContentType("text/html;charset=UTF-8");//设置响应编码格式
+        //设置响应编码格式
+        sresponse.setCharacterEncoding("UTF-8");
+        //设置响应编码格式
+        sresponse.setContentType("text/html;charset=UTF-8");
         if (uri.endsWith(".js")
                 || uri.endsWith(".css")
                 || uri.endsWith(".jpg")
                 || uri.endsWith(".gif")
                 || uri.endsWith(".png")
-                || uri.endsWith(".ico")) {
+                || uri.endsWith(".ico")
+                || uri.endsWith(".ttf")
+                ||uri.endsWith("woff2")
+                ||uri.endsWith("woff")) {
             log.debug("security filter, pass, " + request.getRequestURI());
             filterChain.doFilter(srequest, sresponse);
             return;
