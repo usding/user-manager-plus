@@ -10,10 +10,10 @@ import org.springframework.boot.web.servlet.support.SpringBootServletInitializer
 @SpringBootApplication
 @MapperScan("com.fc.mapper")
 public class UserPlusManageApplication extends SpringBootServletInitializer {
-    @Override
-    protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
-        return application.sources(UserPlusManageApplication.class);
-    }
+//    @Override
+//    protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
+//        return application.sources(UserPlusManageApplication.class);
+//    }
 
     public static void main(String[] args) throws Exception {
         SpringApplication.run(UserPlusManageApplication.class, args);

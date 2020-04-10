@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
@@ -18,35 +19,39 @@ public class WebConfiguration implements WebMvcConfigurer {
     public static final String LOGIN_USER="LOGIN_SESSION_USER";
     public static final String LOGIN_ROLE="LOGIN_SESSION_ROLE";
 
-    @Autowired
-    private FileUploadProp fileUploadProp;
+//    @Autowired
+//    private FileUploadProp fileUploadProp;
 
 
-    @Bean(name = "sessionFilter")
-    public Filter sessionFilter() {
-        return new SessionFilter();
-    }
+//    @Bean(name = "sessionFilter")
+//    public Filter sessionFilter() {
+//        return new SessionFilter();
+//    }
 
-    @Bean
-    public FilterRegistrationBean testFilterRegistration() {
-
-        FilterRegistrationBean registration = new FilterRegistrationBean();
-        registration.setFilter(sessionFilter());
-        registration.addUrlPatterns("/*");
-        registration.addInitParameter("paramName", "paramValue");
-        registration.setName("sessionFilter");
-        registration.setOrder(1);
-        return registration;
-    }
+//    @Bean
+//    public FilterRegistrationBean testFilterRegistration() {
+//
+//        FilterRegistrationBean registration = new FilterRegistrationBean();
+//        registration.setFilter(sessionFilter());
+//        registration.addUrlPatterns("/*");
+//        registration.addInitParameter("paramName", "paramValue");
+//        registration.setName("sessionFilter");
+//        registration.setOrder(1);
+//        return registration;
+//    }
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
-    @Override
-    public void addResourceHandlers(ResourceHandlerRegistry  registry) {
-        registry.addResourceHandler(fileUploadProp.getPath()).addResourceLocations("file:" + fileUploadProp.getDocBase());
-    }
+//    @Override
+//    public void addResourceHandlers(ResourceHandlerRegistry  registry) {
+//        registry.addResourceHandler(fileUploadProp.getPath()).addResourceLocations("file:" + fileUploadProp.getDocBase());
+//    }
 
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(new SessionInterceptor());
+    }
 
 }

@@ -45,19 +45,19 @@ public class IndexController {
     private UsersDAO usersDAO;
 
 
-    @RequestMapping("/")
-    public Result<JSONObject> index(HttpServletRequest request) {
-        Integer id = (Integer) request.getSession().getAttribute(WebConfiguration.LOGIN_KEY);
-        if (null == id) {
-            return Result.ofFail(1,"Not logged in");
-        }
-        else {
-            JSONObject jo = new JSONObject();
-            jo.put("userName",request.getSession().getAttribute(WebConfiguration.LOGIN_USER));
-            jo.put("role",request.getSession().getAttribute(WebConfiguration.LOGIN_ROLE));
-            return Result.ofSuccess(jo);
-        }
-    }
+//    @RequestMapping("/")
+//    public Result<JSONObject> index(HttpServletRequest request) {
+//        Integer id = (Integer) request.getSession().getAttribute(WebConfiguration.LOGIN_KEY);
+//        if (null == id) {
+//            return Result.ofFail(1,"Not logged in");
+//        }
+//        else {
+//            JSONObject jo = new JSONObject();
+//            jo.put("userName",request.getSession().getAttribute(WebConfiguration.LOGIN_USER));
+//            jo.put("role",request.getSession().getAttribute(WebConfiguration.LOGIN_ROLE));
+//            return Result.ofSuccess(jo);
+//        }
+//    }
 
     @RequestMapping(value = "/toLogin", produces = {"text/html"})
     public String toLogin() throws IOException {
@@ -65,16 +65,26 @@ public class IndexController {
         return IOUtils.toString(resource.getInputStream(), StandardCharsets.UTF_8);
     }
 
+    @RequestMapping("/checkLogin")
+    public Result<JSONObject> checkLogin(HttpServletRequest request) {
+        Integer id = (Integer) request.getSession().getAttribute(WebConfiguration.LOGIN_KEY);
+        Integer role = (Integer) request.getSession().getAttribute(WebConfiguration.LOGIN_ROLE);
+        JSONObject obj = new JSONObject();
+        obj.put("id", id);
+        obj.put("role", role);
+        return  Result.ofSuccess(obj);
+    }
+
     @RequestMapping("/login")
-    public String login(@Valid LoginParam loginParam, BindingResult result, ModelMap model, HttpServletRequest request) {
+    public Result<JSONObject> login(@Valid LoginParam loginParam, BindingResult result, ModelMap model, HttpServletRequest request) {
         String errorMsg = "";
+        JSONObject obj = new JSONObject();
         if (result.hasErrors()) {
             List<ObjectError> list = result.getAllErrors();
             for (ObjectError error : list) {
                 errorMsg = errorMsg + error.getCode() + "-" + error.getDefaultMessage() + ";";
             }
-            model.addAttribute("errorMsg", errorMsg);
-            return "login";
+            return Result.ofFail(1, errorMsg);
         }
         UsersExample usersExample = new UsersExample();
         UsersExample.Criteria criteria = usersExample.createCriteria();
@@ -82,26 +92,18 @@ public class IndexController {
         List<Users> userList = usersDAO.selectByExample(usersExample);
         Users user = (userList == null || userList.size() == 0) ? null : userList.get(0);
         if (user == null) {
-            model.addAttribute("errorMsg", "用户名不存在!");
-            return "login";
+            return Result.ofFail(2, "user not exist");
         }
         else if (!user.getPassword().equals(loginParam.getPassword())) {
-            model.addAttribute("errorMsg", "密码错误！");
-            return "login";
+            return Result.ofFail(3, "password error");
         }
         request.getSession().setAttribute(WebConfiguration.LOGIN_ROLE, user.getRole());
-        if (user.getRole() == 0) {
-            request.getSession().setAttribute(WebConfiguration.LOGIN_KEY, user.getId());
-            request.getSession().setAttribute(WebConfiguration.LOGIN_USER, user);
-            return "index";
-        }
-        else {
-            request.getSession().setAttribute(WebConfiguration.LOGIN_KEY, user.getId());
-            request.getSession().setAttribute(WebConfiguration.LOGIN_USER, user);
-            return "redirect:/student/studentList";
-        }
-
-
+        request.getSession().setAttribute(WebConfiguration.LOGIN_KEY, user.getId());
+        request.getSession().setAttribute(WebConfiguration.LOGIN_USER, user);
+        obj.put("id", user.getId());
+        obj.put("role", user.getRole());
+        obj.put("user", user);
+        return Result.ofSuccess(obj);
     }
 
     @RequestMapping("/loginOut")

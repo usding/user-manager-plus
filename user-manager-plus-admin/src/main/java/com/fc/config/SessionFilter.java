@@ -77,7 +77,6 @@ public class SessionFilter implements Filter {
         GreenUrlSet.add("/loginOut");
         GreenUrlSet.add("/register");
         GreenUrlSet.add("/verified");
-        GreenUrlSet.add("/test");
-
+        GreenUrlSet.add("/checkLogin");
     }
 }

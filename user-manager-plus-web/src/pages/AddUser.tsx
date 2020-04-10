@@ -1,5 +1,5 @@
 import React, { ReactElement } from "react";
-import { Form, Input, Button } from 'antd'
+import { Form, Input, Button, Select } from 'antd'
 
 class AddUser extends React.Component<any, any>{
     layout = {
@@ -36,12 +36,21 @@ class AddUser extends React.Component<any, any>{
                     >
                         <Input.Password />
                     </Form.Item>
-                    <Form.Item
+                    {/* <Form.Item
                         label='手机号'
                         name='tel'
-                        rules={[{ required: true, message: '请输入手机号' }]}
                     >
                         <Input />
+                    </Form.Item> */}
+                    <Form.Item
+                        label='用户角色'
+                        name='role'
+                        rules={[{ required: true, message: '请选择用户角色' }]}
+                    >
+                        <Select>
+                            <Select.Option value='0'>管理员</Select.Option>
+                            <Select.Option value='1'>普通用户</Select.Option>
+                        </Select>
                     </Form.Item>
                     <Form.Item {...this.tailLayout}>
                         <Button type="primary" htmlType="submit">
