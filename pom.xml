@@ -4,10 +4,6 @@
     <artifactId>user-manager-plus</artifactId>
     <packaging>pom</packaging>
     <version>1.0</version>
-    <modules>
-        <module>user-manager-plus-admin</module>
-        <module>user-manager-plus-web</module>
-    </modules>
     <name>user-manager-plus</name>
     <description>user management system</description>
     <parent>
@@ -16,4 +12,8 @@
         <version>2.1.0.RELEASE</version>
     </parent>
 
+    <modules>
+        <module>user-manager-plus-web</module>
+        <module>user-manager-plus-admin</module>
+    </modules>
 </project>
