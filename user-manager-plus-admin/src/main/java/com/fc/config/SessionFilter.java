@@ -22,7 +22,7 @@ public class SessionFilter implements Filter {
     private static Set<String> GreenUrlSet = new HashSet<>();
 
     //普通用户没有权限访问的资源
-    private static String NoAuthUri ="/user/";
+    private static String NoAuthUri = "/user/";
 
     @Override
     public void doFilter(ServletRequest srequest, ServletResponse sresponse,
@@ -42,22 +42,24 @@ public class SessionFilter implements Filter {
             return;
         }
 
-        System.out.println("request uri is : "+uri);
+        System.out.println("request uri is : " + uri);
         //不处理指定的action, jsp
         if (GreenUrlSet.contains(uri) || uri.contains("/verified/")) {
             log.debug("security filter, pass, " + request.getRequestURI());
             filterChain.doFilter(srequest, sresponse);
             return;
         }
-        Integer id= (Integer) request.getSession().getAttribute(WebConfiguration.LOGIN_KEY);
+        Integer id = (Integer) request.getSession().getAttribute(WebConfiguration.LOGIN_KEY);
         Integer role = (Integer) request.getSession().getAttribute(WebConfiguration.LOGIN_ROLE);
-        if(StringUtils.isEmpty(id)){
-        	String html = "<script type=\"text/javascript\">window.location.href=\"/toLogin\"</script>";
+        if (StringUtils.isEmpty(id)) {
+            String html = "<script type=\"text/javascript\">window.location.href=\"/toLogin\"</script>";
             sresponse.getWriter().write(html);
-        }else if (role==1&& uri.contains(NoAuthUri)){
+        }
+        else if (role == 1 && uri.contains(NoAuthUri)) {
             String html = "<script type=\"text/javascript\">window.location.href=\"/student/studentList\"</script>";
             sresponse.getWriter().write(html);
-        }else {
+        }
+        else {
             filterChain.doFilter(srequest, sresponse);
         }
     }
@@ -75,7 +77,7 @@ public class SessionFilter implements Filter {
         GreenUrlSet.add("/loginOut");
         GreenUrlSet.add("/register");
         GreenUrlSet.add("/verified");
-
+        GreenUrlSet.add("/test");
 
     }
 }
