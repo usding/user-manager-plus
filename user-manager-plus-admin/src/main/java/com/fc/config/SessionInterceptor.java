@@ -18,6 +18,8 @@ public class SessionInterceptor implements HandlerInterceptor {
 
     List<String> whitelist;
 
+    private static String NoAuthUri = "/user/";
+
     SessionInterceptor() throws IOException {
         ClassPathResource resource = new ClassPathResource("whitelist.json");
         JSONArray obj = JSONObject.parseArray(IOUtils.toString(resource.getInputStream(), StandardCharsets.UTF_8));
@@ -27,6 +29,7 @@ public class SessionInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws IOException {
         String uri = request.getRequestURI();
+        String errMsg;
         for (String path : whitelist) {
             if (uri.startsWith(path)) {
                 return true;
@@ -38,10 +41,21 @@ public class SessionInterceptor implements HandlerInterceptor {
 
         Integer id = (Integer) request.getSession().getAttribute(WebConfiguration.LOGIN_KEY);
         Integer role = (Integer) request.getSession().getAttribute(WebConfiguration.LOGIN_ROLE);
+
+
         if (id != null) {
-            return true;
+            if (role == 1 && uri.contains(NoAuthUri)) {
+                errMsg = "role not match";
+            }
+            else {
+                return true;
+            }
         }
-        Result res = Result.ofFail(-1, "not singed in");
+        else {
+            errMsg = "not signed in";
+        }
+
+        Result res = Result.ofFail(-1, errMsg);
         response.setContentType("application/json");
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         response.getWriter().write(JSONObject.toJSONString(res));

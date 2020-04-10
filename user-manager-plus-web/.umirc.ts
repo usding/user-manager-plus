@@ -60,6 +60,10 @@ export default defineConfig({
       target: 'http://127.0.0.1:8091',
       changeOrigin: true
     },
+    '/logout':{
+      target: 'http://127.0.0.1:8091',
+      changeOrigin: true
+    },
     // '/log/*': {
     //   target: 'http://127.0.0.1:8091',
     //   changeOrigin: true

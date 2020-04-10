@@ -1,5 +1,5 @@
 import React, { ReactElement } from "react";
-import { Form, Input, Button, Select } from 'antd'
+import { Form, Input, Button, Select, message } from 'antd'
 
 class AddUser extends React.Component<any, any>{
     layout = {
@@ -9,8 +9,11 @@ class AddUser extends React.Component<any, any>{
     tailLayout = {
         wrapperCol: { offset: 8, span: 16 },
     }
-    onFinish(values: any):void{
+    async onFinish(values: any){
         console.dir(values)
+        const ret = await fetch(`/user/addUser?userName=${values.username}&password=${values.password}&role=${parseInt(values.role)}&state=A`)
+        const res = await ret.json()
+        console.dir(res)
     }
     render(): ReactElement {
         return (
