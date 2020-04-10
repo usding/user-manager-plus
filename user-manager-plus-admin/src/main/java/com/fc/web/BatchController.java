@@ -16,6 +16,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 import javax.validation.Valid;
@@ -27,7 +28,7 @@ import java.util.List;
  * @author: feng.chuang
  * @date: 2020-04-06 18:19
  **/
-@Controller
+@RestController
 @RequestMapping("/batch")
 public class BatchController {
     private final Logger logger = LoggerFactory.getLogger(this.getClass());

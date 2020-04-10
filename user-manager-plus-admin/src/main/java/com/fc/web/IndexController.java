@@ -1,5 +1,6 @@
 package com.fc.web;
 
+import com.alibaba.fastjson.JSONObject;
 import com.fc.config.WebConfiguration;
 import com.fc.mapper.UsersDAO;
 import com.fc.model.User;
@@ -7,6 +8,7 @@ import com.fc.model.Users;
 import com.fc.model.UsersExample;
 import com.fc.param.LoginParam;
 import com.fc.param.RegisterParam;
+import com.fc.result.Result;
 import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,6 +29,7 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 登录/注销/注册
@@ -42,17 +45,17 @@ public class IndexController {
     private UsersDAO usersDAO;
 
 
-    @Value("${spring.mail.username}")
-    private String from;
-
     @RequestMapping("/")
-    public String index(HttpServletRequest request) {
+    public Result<JSONObject> index(HttpServletRequest request) {
         Integer id = (Integer) request.getSession().getAttribute(WebConfiguration.LOGIN_KEY);
         if (null == id) {
-            return "login";
+            return Result.ofFail(1,"Not logged in");
         }
         else {
-            return "redirect:/user/userList";
+            JSONObject jo = new JSONObject();
+            jo.put("userName",request.getSession().getAttribute(WebConfiguration.LOGIN_USER));
+            jo.put("role",request.getSession().getAttribute(WebConfiguration.LOGIN_ROLE));
+            return Result.ofSuccess(jo);
         }
     }
 

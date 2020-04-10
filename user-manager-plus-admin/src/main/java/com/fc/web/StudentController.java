@@ -24,6 +24,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -39,7 +40,7 @@ import java.util.regex.Pattern;
  * @author: feng.chuang
  * @date: 2020-04-04 11:30
  **/
-@Controller
+@RestController
 @RequestMapping("/student")
 public class StudentController {
 
