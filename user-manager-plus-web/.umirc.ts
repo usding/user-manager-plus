@@ -8,6 +8,11 @@ export default defineConfig({
       exact: true
     },
     {
+      path: '/toLogin',
+      component: '@/pages/Login',
+      exact: true
+    },
+    {
       path: '/',
       component: '@/layouts/index',
       routes: [
@@ -41,6 +46,22 @@ export default defineConfig({
   ],
   proxy: {
     '/hetong/*': {
+      target: 'http://127.0.0.1:8091',
+      changeOrigin: true
+    },
+    // '/log/*': {
+    //   target: 'http://127.0.0.1:8091',
+    //   changeOrigin: true
+    // },
+    '/user/*': {
+      target: 'http://127.0.0.1:8091',
+      changeOrigin: true
+    },
+    '/student/*': {
+      target: 'http://127.0.0.1:8091',
+      changeOrigin: true
+    },
+    '/batch/*': {
       target: 'http://127.0.0.1:8091',
       changeOrigin: true
     }
