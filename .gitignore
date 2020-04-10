@@ -10,3 +10,5 @@ target/
 ZSMART_HOME.zip
 overlays/
 *.zip
+/user-manager-plus-admin/src/main/resources/public
+/user-manager-plus-web/*.iml
