@@ -62,11 +62,6 @@ public class IndexController {
         return IOUtils.toString(resource.getInputStream(), StandardCharsets.UTF_8);
     }
 
-    @RequestMapping(value = "/test")
-    public String test() {
-        return "test";
-    }
-
     @RequestMapping("/login")
     public String login(@Valid LoginParam loginParam, BindingResult result, ModelMap model, HttpServletRequest request) {
         String errorMsg = "";
