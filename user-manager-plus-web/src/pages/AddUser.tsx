@@ -4,11 +4,11 @@ import { connect } from 'umi'
 
 class AddUser extends React.Component<any, any>{
     layout = {
-        labelCol: { span: 8 },
+        labelCol: { span: 4 },
         wrapperCol: { span: 16 },
     }
     tailLayout = {
-        wrapperCol: { offset: 8, span: 16 },
+        wrapperCol: { offset: 10, span: 12 },
     }
     async onFinish(values: any) {
         const user = {
@@ -35,7 +35,8 @@ class AddUser extends React.Component<any, any>{
                 <Form
                     {...this.layout}
                     style={{
-                        width: '50%'
+                        width: '50%',
+                        marginLeft: '25%'
                     }}
                     onFinish={this.onFinish.bind(this)}
                     initialValues={

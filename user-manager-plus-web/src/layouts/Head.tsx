@@ -1,5 +1,5 @@
 import React, { ReactElement } from "react";
-import { Menu, Button, Dropdown } from 'antd'
+import { Menu, Button, Dropdown, Modal, Form, Input, message } from 'antd'
 import { history, connect } from 'umi';
 import {
     DownOutlined
@@ -7,25 +7,98 @@ import {
 
 class Head extends React.Component<any, any> {
     state: any
+    layout = {
+        labelCol: { span: 4 },
+        wrapperCol: { span: 20 },
+    }
+    buttonLyout = {
+        wrapperCol: { offset: 10, span: 2 },
+    }
     constructor(props: any) {
         super(props);
         this.state = {
-            collapsed: false
+            collapsed: false,
+            changePasswordModal: false
         }
     }
 
-    async logout(){
+    async logout() {
         const ret = await fetch('/logout')
         const res = await ret.json()
-        if(res.success){
+        if (res.success) {
             this.props.dispatch({
-                type:'ALL/save',
-                payload:{
+                type: 'ALL/save',
+                payload: {
                     user: null
                 }
             })
+            this.props.dispatch({
+                type: 'ALL/refresh'
+            })
             history.push('/login')
         }
+    }
+    renderChangePasswordModal(): ReactElement {
+        return (
+            <Modal
+                title='更改密码'
+                visible={this.state.changePasswordModal}
+                footer={null}
+                onCancel={() => {
+                    this.setState({
+                        changePasswordModal: false
+                    })
+                }}
+            >
+                <Form
+                    {...this.layout}
+                    onFinish={async (values: any) => {
+                        const params = new URLSearchParams()
+                        params.append('oldPassword', values.currentPassword)
+                        params.append('newPassword', values.newPassword)
+                        const ret = await fetch('/user/changePassword', {
+                            method: 'POST',
+                            body: params
+                        })
+                        const res = await ret.json()
+                        if (res.success) {
+                            message.success('更改代码成功，需要重新登录')
+                            this.setState({
+                                changePasswordModal: false
+                            })
+                            this.props.dispatch({
+                                type: 'ALL/refresh'
+                            })
+                            history.push('/login')
+                        } else {
+                            if (res.code === -2) {
+                                message.error('当前密码错误')
+                            }
+                        }
+                    }}
+                >
+                    <Form.Item
+                        label='当前密码'
+                        name='currentPassword'
+                        rules={[{ required: true, message: '请输入当前密码' }]}
+                    >
+                        <Input.Password />
+                    </Form.Item>
+                    <Form.Item
+                        label='新密码'
+                        name='newPassword'
+                        rules={[{ required: true, message: '请输入新密码' }]}
+                    >
+                        <Input.Password />
+                    </Form.Item>
+                    <Form.Item {...this.buttonLyout}>
+                        <Button type="primary" htmlType="submit">
+                            确定
+                        </Button>
+                    </Form.Item>
+                </Form>
+            </Modal>
+        )
     }
     render(): ReactElement {
         let userManage
@@ -59,7 +132,6 @@ class Head extends React.Component<any, any> {
                         {/* <PieChartOutlined /> */}
                         <span>添加用户</span>
                     </Menu.Item>
-
                 </Menu.SubMenu>
             )
         }
@@ -71,7 +143,7 @@ class Head extends React.Component<any, any> {
                     </a>
                 </Menu.Item>
                 <Menu.Item>
-                    <a>
+                    <a onClick={() => { this.setState({ changePasswordModal: true }) }}>
                         更改密码
                     </a>
                 </Menu.Item>
@@ -79,6 +151,7 @@ class Head extends React.Component<any, any> {
         );
         return (
             <React.Fragment>
+                {this.renderChangePasswordModal()}
                 <div
                     style={{
                         position: 'absolute',
@@ -133,7 +206,7 @@ class Head extends React.Component<any, any> {
                 </div>
                 <Menu
                     mode='inline'
-                    defaultSelectedKeys={this.props.ALL.selKeys}
+                    // defaultSelectedKeys={this.props.ALL.selKeys}
                     selectedKeys={this.props.ALL.selKeys}
                     inlineCollapsed={this.state.collapsed}
                     onClick={(params: any) => {

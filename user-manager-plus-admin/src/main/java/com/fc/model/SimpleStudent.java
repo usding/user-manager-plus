@@ -9,6 +9,52 @@ public class SimpleStudent implements Serializable {
     private String phoneNumber;
     private String localEstate;
     private String married;
+    private String wechat;
+    private String batch;
+    private Long deposit;
+    private Long finalPayment;
+    private Long totalCost;
+
+    public String getWechat() {
+        return wechat;
+    }
+
+    public void setWechat(String wechat) {
+        this.wechat = wechat;
+    }
+
+    public String getBatch() {
+        return batch;
+    }
+
+    public void setBatch(String batch) {
+        this.batch = batch;
+    }
+
+    public Long getDeposit() {
+        return deposit;
+    }
+
+    public void setDeposit(Long deposit) {
+        this.deposit = deposit;
+    }
+
+    public Long getFinalPayment() {
+        return finalPayment;
+    }
+
+    public void setFinalPayment(Long finalPayment) {
+        this.finalPayment = finalPayment;
+    }
+
+    public Long getTotalCost() {
+        return totalCost;
+    }
+
+    public void setTotalCost(Long totalCost) {
+        this.totalCost = totalCost;
+    }
+
 
     public String getMarried() {
         return married;
@@ -17,7 +63,6 @@ public class SimpleStudent implements Serializable {
     public void setMarried(String married) {
         this.married = married;
     }
-
 
 
     public String getLocalEstate() {
@@ -29,7 +74,6 @@ public class SimpleStudent implements Serializable {
     }
 
 
-
     public Integer getId() {
         return id;
     }
@@ -37,7 +81,6 @@ public class SimpleStudent implements Serializable {
     public void setId(Integer id) {
         this.id = id;
     }
-
 
 
     public String getUserName() {
@@ -49,7 +92,6 @@ public class SimpleStudent implements Serializable {
     }
 
 
-
     public String getGender() {
         return gender;
     }
@@ -57,7 +99,6 @@ public class SimpleStudent implements Serializable {
     public void setGender(String gender) {
         this.gender = gender;
     }
-
 
 
     public String getPhoneNumber() {

@@ -13,16 +13,20 @@ import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
@@ -46,6 +50,9 @@ public class IndexController {
 
     @Resource
     private UsersDAO usersDAO;
+
+    @Autowired
+    PasswordEncoder passwordEncoder;
 
 
 //    @RequestMapping("/")
@@ -92,7 +99,7 @@ public class IndexController {
             for (ObjectError error : list) {
                 errorMsg = errorMsg + error.getCode() + "-" + error.getDefaultMessage() + ";";
             }
-            return new ResponseEntity<>(Result.ofFail(1, errorMsg), HttpStatus.UNAUTHORIZED);
+            return new ResponseEntity<>(Result.ofFail(-1, errorMsg), HttpStatus.UNAUTHORIZED);
         }
         UsersExample usersExample = new UsersExample();
         UsersExample.Criteria criteria = usersExample.createCriteria();
@@ -100,10 +107,10 @@ public class IndexController {
         List<Users> userList = usersDAO.selectByExample(usersExample);
         Users user = (userList == null || userList.size() == 0) ? null : userList.get(0);
         if (user == null) {
-            return new ResponseEntity<>(Result.ofFail(2, "user not exist"), HttpStatus.UNAUTHORIZED);
+            return new ResponseEntity<>(Result.ofFail(-2, "user not exist"), HttpStatus.UNAUTHORIZED);
         }
-        else if (!user.getPassword().equals(loginParam.getPassword())) {
-            return new ResponseEntity<>(Result.ofFail(3, "password error"), HttpStatus.UNAUTHORIZED);
+        else if (!passwordEncoder.matches(loginParam.getPassword(), user.getPassword())) {
+            return new ResponseEntity<>(Result.ofFail(-3, "password error"), HttpStatus.UNAUTHORIZED);
         }
         request.getSession().setAttribute(WebConfiguration.LOGIN_ROLE, user.getRole());
         request.getSession().setAttribute(WebConfiguration.LOGIN_KEY, user.getId());

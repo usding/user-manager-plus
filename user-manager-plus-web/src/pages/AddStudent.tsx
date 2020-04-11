@@ -103,7 +103,7 @@ class AddStudent extends React.Component<any, any>{
             photoBlue: this.state.portraitImg,
             certGscan: this.state.diplomaImg
         }
-        if(student.certFscan === null || student.certBscan === null || student.photoBlue === null){
+        if (student.certFscan === null || student.certBscan === null || student.photoBlue === null) {
             message.warning('不要忘记上传必需的照片')
             return
         }
@@ -456,59 +456,11 @@ class AddStudent extends React.Component<any, any>{
                     <Row>
                         <Col span={12}>
                             <Form.Item
+                                labelCol={{ span: 4 }}
+                                wrapperCol={{ span: 19 }}
                                 label='身份证正面'
                                 required
                             >
-                                {/* <Upload
-                                    name="idcardFront"
-                                    listType="picture-card"
-                                    className="avatar-uploader"
-                                    showUploadList={false}
-                                    beforeUpload={(file: any): boolean => {
-                                        const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
-                                        if (!isJpgOrPng) {
-                                            message.error('You can only upload JPG/PNG file!')
-                                            return isJpgOrPng
-                                        }
-                                        const reader = new FileReader()
-                                        reader.readAsDataURL(file)
-                                        reader.onload = async (e) => {
-                                            let img64 = reader.result
-                                            if (typeof img64 === 'string') {
-                                                console.log(img64.length)
-                                                if (img64.length > 500 * 1024) {
-                                                    img64 = await ImageUtil.compress(img64, { w: 1000, h: 1000, level: 0.9 })
-                                                }
-                                                this.setState({
-                                                    idcardFrontImg: img64
-                                                })
-                                            }
-
-                                        }
-                                        return isJpgOrPng
-                                    }}
-                                >
-                                    {this.state.idcardFrontImg ?
-                                        <div>
-                                            <img src={this.state.idcardFrontImg} alt="avatar" style={{ width: '400px' }} />
-                                            <Button type='danger' icon={<DeleteOutlined />} shape='circle'
-                                                style={{
-                                                    marginTop: '0.5rem'
-                                                }}
-                                                onClick={(e) => {
-                                                    e.preventDefault()
-                                                    e.stopPropagation()
-                                                    this.setState({
-                                                        idcardFrontImg: null
-                                                    })
-                                                }}
-                                            ></Button>
-                                        </div>
-                                        :
-                                        (<div>
-                                            <div>点击上传</div>
-                                        </div>)}
-                                </Upload> */}
                                 {this.renderImg('idcardFrontImg')}
                             </Form.Item>
                         </Col>
@@ -518,32 +470,6 @@ class AddStudent extends React.Component<any, any>{
                                 required
                                 rules={[{ required: true, message: '请选择身份证反面图片' }]}
                             >
-                                {/* <Upload
-                                    name='idcardBack'
-                                    listType="picture-card"
-                                    className="avatar-uploader"
-                                    showUploadList={false}
-                                    beforeUpload={(file): boolean => {
-                                        const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
-                                        if (!isJpgOrPng) {
-                                            message.error('You can only upload JPG/PNG file!')
-                                            return isJpgOrPng
-                                        }
-                                        const reader = new FileReader()
-                                        reader.readAsDataURL(file)
-                                        reader.onload = (e) => {
-                                            this.setState({
-                                                idcardBackImg: reader.result
-                                            })
-                                        }
-                                        return isJpgOrPng
-                                    }}
-                                >
-                                    {this.state.idcardBackImg ? <img src={this.state.idcardBackImg} alt="avatar" style={{ width: '100%' }} /> :
-                                        (<div>
-                                            <div>点击上传</div>
-                                        </div>)}
-                                </Upload> */}
                                 {this.renderImg('idcardBackImg')}
                             </Form.Item>
                         </Col>
@@ -552,71 +478,22 @@ class AddStudent extends React.Component<any, any>{
                     <Row>
                         <Col span={12}>
                             <Form.Item
-                                label='毕业证书'
+                                labelCol={{ span: 4 }}
+                                wrapperCol={{ span: 19 }}
+                                label='2寸蓝底照片'
+                                required
                             >
-                                {/* <Upload
-                                    name='diploma'
-                                    listType="picture-card"
-                                    className="avatar-uploader"
-                                    showUploadList={false}
-                                    beforeUpload={(file): boolean => {
-                                        const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
-                                        if (!isJpgOrPng) {
-                                            message.error('You can only upload JPG/PNG file!')
-                                            return isJpgOrPng
-                                        }
-                                        const reader = new FileReader()
-                                        reader.readAsDataURL(file)
-                                        reader.onload = (e) => {
-                                            this.setState({
-                                                diplomaImg: reader.result
-                                            })
-                                        }
-                                        return isJpgOrPng
-                                    }}
-                                >
-                                    {this.state.diplomaImg ? <img src={this.state.diplomaImg} alt="avatar" style={{ width: '100%' }} /> :
-                                        (<div>
-                                            <div>点击上传</div>
-                                        </div>)}
-                                </Upload> */}
-                                {this.renderImg('diplomaImg')}
+                                {this.renderImg('portraitImg')}
                             </Form.Item>
                         </Col>
                         <Col span={12}>
                             <Form.Item
-                                label='2寸蓝底照片'
-                                required
+                                label='毕业证书'
                             >
-                                {/* <Upload
-                                    name='diploma'
-                                    listType="picture-card"
-                                    className="avatar-uploader"
-                                    showUploadList={false}
-                                    beforeUpload={(file): boolean => {
-                                        const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
-                                        if (!isJpgOrPng) {
-                                            message.error('You can only upload JPG/PNG file!')
-                                            return isJpgOrPng
-                                        }
-                                        const reader = new FileReader()
-                                        reader.readAsDataURL(file)
-                                        reader.onload = (e) => {
-                                            this.setState({
-                                                portraitImg: reader.result
-                                            })
-                                        }
-                                        return isJpgOrPng
-                                    }}
-                                >
-                                    {this.state.portraitImg ? <img src={this.state.portraitImg} alt="avatar" style={{ width: '100%' }} /> :
-                                        (<div>
-                                            <div>点击上传</div>
-                                        </div>)}
-                                </Upload> */}
-                                {this.renderImg('portraitImg')}
+                                {this.renderImg('diplomaImg')}
                             </Form.Item>
                         </Col>
+
                     </Row>
 
 

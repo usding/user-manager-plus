@@ -2,6 +2,7 @@ package com.fc.web;
 
 
 import com.alibaba.fastjson.JSONObject;
+import com.fc.config.WebConfiguration;
 import com.fc.mapper.UsersDAO;
 import com.fc.model.Users;
 import com.fc.model.UsersExample;
@@ -11,7 +12,9 @@ import com.fc.result.Result;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -24,6 +27,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.Date;
 import java.util.List;
@@ -35,6 +39,9 @@ public class UserController {
 
     @Resource
     private UsersDAO usersDAO;
+
+    @Autowired
+    PasswordEncoder passwordEncoder;
 
     @RequestMapping("/userList")
     @Cacheable(value = "user_list")
@@ -87,6 +94,7 @@ public class UserController {
         }
         Users user = new Users();
         BeanUtils.copyProperties(userParam, user);
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setRegisterDate(new Date());
         usersDAO.insert(user);
         return Result.ofSuccess("添加用户成功");
@@ -120,6 +128,27 @@ public class UserController {
     @GetMapping("/deleteUser")
     public Result<String> delete(Integer id) {
         usersDAO.deleteByPrimaryKey(id);
+        return Result.ofSuccess("success");
+    }
+
+    @PostMapping("/changePassword")
+    public Result<?> changePassword(@RequestParam String oldPassword, @RequestParam String newPassword, HttpServletRequest request) {
+        Integer id = (Integer) request.getSession().getAttribute(WebConfiguration.LOGIN_KEY);
+        if (id == null) {
+            return Result.ofFail(-1, "unauthorized");
+        }
+        UsersExample usersExample = new UsersExample();
+        UsersExample.Criteria criteria = usersExample.createCriteria();
+        criteria.andIdEqualTo(id);
+        List<Users> userList = usersDAO.selectByExample(usersExample);
+        Users user = (userList == null || userList.size() == 0) ? null : userList.get(0);
+        if (!passwordEncoder.matches(oldPassword, user.getPassword())) {
+            return Result.ofFail(-2, "wrong current password");
+        }
+        user.setPassword(passwordEncoder.encode(newPassword));
+        usersDAO.updateByPrimaryKey(user);
+        request.getSession().removeAttribute(WebConfiguration.LOGIN_KEY);
+        request.getSession().removeAttribute(WebConfiguration.LOGIN_USER);
         return Result.ofSuccess("success");
     }
 }

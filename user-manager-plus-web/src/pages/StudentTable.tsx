@@ -38,6 +38,28 @@ class StudentTable extends React.Component<any, any> {
         title: '电话',
         dataIndex: 'phoneNumber',
         key: 'phoneNumber',
+    },{
+        title: '微信',
+        dataIndex: 'wechat',
+        key: 'wechat'
+    }, {
+        title: '批次',
+        dataIndex: 'batch',
+        key: 'batch',
+        width: 100
+    },
+    {
+        title: '定金',
+        dataIndex: 'deposit',
+        key: 'deposit'
+    }, {
+        title: '余额',
+        dataIndex: 'finalPayment',
+        key: 'finalPayment'
+    }, {
+        title: '总费用',
+        dataIndex: 'totalCost',
+        key: 'totalCost'
     }, {
         title: '操作',
         dataIndex: 'operation',
@@ -158,7 +180,7 @@ class StudentTable extends React.Component<any, any> {
                         if (res.success) {
                             this.getUserList()
                             message.success('删除成功')
-                            this.setState({ deleteModal: false }) 
+                            this.setState({ deleteModal: false })
                         }
                     }}
                 >

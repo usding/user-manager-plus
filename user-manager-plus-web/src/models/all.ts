@@ -5,7 +5,7 @@ const AllModel = {
         selKeys: [],
         user: null,
         editUser: null,
-        editStudent: null
+        editStudent: null,
     },
 
     reducers: {
@@ -13,6 +13,14 @@ const AllModel = {
             return {
                 ...state,
                 ...action.payload
+            }
+        },
+        refresh(state:any, action: any){
+            return {
+                selKeys: [],
+                user: null,
+                editUser: null,
+                editStudent: null
             }
         }
     }

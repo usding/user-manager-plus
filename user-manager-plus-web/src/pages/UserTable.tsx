@@ -249,7 +249,7 @@ class UserTable extends React.Component<any, any> {
                         width: '100%'
                     }}
                 >
-                    <Button type='primary'
+                    {/* <Button type='primary'
                         onClick={(): void => {
                             history.push('/addUser')
                             this.props.dispatch({
@@ -262,7 +262,7 @@ class UserTable extends React.Component<any, any> {
                         }}
                     >
                         添加用户
-                    </Button>
+                    </Button> */}
                 </div>
                 <Table bordered size='middle' columns={this.columns} dataSource={this.state.users} pagination={this.pagination}></Table>
             </React.Fragment>

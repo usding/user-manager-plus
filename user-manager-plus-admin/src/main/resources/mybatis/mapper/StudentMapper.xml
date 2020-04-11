@@ -8,15 +8,22 @@
         <id column="user_sex" property="gender" jdbcType="VARCHAR" />
         <id column="local_estate" property="localEstate" />
         <id column="marital_status" property="married" />
+        <id column="wechat" property="wechat" />
+        <id column="batch" property="batch" />
+        <id column="deposit" property="deposit" />
+        <id column="final_payment" property="finalPayment" />
+        <id column="total_cost" property="totalCost" />
     </resultMap>
 
     <select id="selectSimpleStudent" resultMap="SimpleMap">
-        SELECT STUDENTS.id, STUDENTS.user_name,STUDENTS.phone_number, STUDENTS.user_sex, STUDENTS.local_estate, STUDENTS.marital_status
+        SELECT STUDENTS.id, STUDENTS.user_name,STUDENTS.phone_number, STUDENTS.user_sex, STUDENTS.local_estate, STUDENTS.marital_status,
+        STUDENTS.wechat, STUDENTS.batch, STUDENTS.deposit, STUDENTS.final_payment, STUDENTS.total_cost
         FROM STUDENTS
         LIMIT #{start}, #{pageSize}
     </select>
     <select id="selectSimpleStudentByBelong" resultMap="SimpleMap">
-        SELECT STUDENTS.id, STUDENTS.user_name,STUDENTS.phone_number, STUDENTS.user_sex, STUDENTS.local_estate, STUDENTS.marital_status
+        SELECT STUDENTS.id, STUDENTS.user_name,STUDENTS.phone_number, STUDENTS.user_sex, STUDENTS.local_estate, STUDENTS.marital_status,
+        STUDENTS.wechat, STUDENTS.batch, STUDENTS.deposit, STUDENTS.final_payment, STUDENTS.total_cost
         FROM STUDENTS
         WHERE STUDENTS.belong=#{belong}
         LIMIT #{start}, #{pageSize}
