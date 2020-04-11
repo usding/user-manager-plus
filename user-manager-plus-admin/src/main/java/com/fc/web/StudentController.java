@@ -177,10 +177,10 @@ public class StudentController {
         return Result.ofSuccess("success");
     }
 
-    @RequestMapping("/deleteStudent")
-    public String delete(Integer id) {
+    @GetMapping("/deleteStudent")
+    public Result<String> delete(Integer id) {
         studentsDAO.deleteByPrimaryKey(id);
-        return "redirect:/student/studentList";
+        return Result.ofSuccess("success");
     }
 
     @RequestMapping("/queryBatch")

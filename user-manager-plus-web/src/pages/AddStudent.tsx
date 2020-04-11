@@ -103,6 +103,10 @@ class AddStudent extends React.Component<any, any>{
             photoBlue: this.state.portraitImg,
             certGscan: this.state.diplomaImg
         }
+        if(student.certFscan === null || student.certBscan === null || student.photoBlue === null){
+            message.warning('不要忘记上传必需的照片')
+            return
+        }
         if (this.props.route.path === '/addStudent') {
             let ret = fetch('/student/addStudent', {
                 method: 'POST',
@@ -293,18 +297,20 @@ class AddStudent extends React.Component<any, any>{
                             </Form.Item>
                         </Col>
                         <Col span={6}>
-                            <Form.Item
-                                label='出生日期'
-                                name='birthDate'
-                                rules={[{ required: true, message: '请选择证出生日期' }]}
-                            >
-                                <ConfigProvider locale={zhCN}>
-                                    <DatePicker defaultValue={this.state.testData.birthDate} />
-                                </ConfigProvider>
-                            </Form.Item>
+                            <ConfigProvider locale={zhCN}>
+                                <Form.Item
+                                    label='出生日期'
+                                    name='birthDate'
+                                    rules={[{ required: true, message: '请选择出生日期' }]}
+                                >
+                                    <DatePicker />
+
+                                </Form.Item>
+                            </ConfigProvider>
                         </Col>
 
                     </Row>
+
                     <Row>
                         <Col span={6}>
                             <Form.Item

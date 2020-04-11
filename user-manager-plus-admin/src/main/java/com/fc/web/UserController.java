@@ -1,20 +1,22 @@
 package com.fc.web;
 
 
+import com.alibaba.fastjson.JSONObject;
 import com.fc.mapper.UsersDAO;
 import com.fc.model.Users;
 import com.fc.model.UsersExample;
 import com.fc.param.UserParam;
 import com.fc.result.Page;
+import com.fc.result.Result;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -33,28 +35,29 @@ public class UserController {
     private UsersDAO usersDAO;
 
     @RequestMapping("/userList")
-    @Cacheable(value="user_list")
-    public String list(Model model,@RequestParam(value = "cpage", defaultValue = "0") Integer cpage,
-                       @RequestParam(value = "size", defaultValue = "6") Integer pageSize) {
+    @Cacheable(value = "user_list")
+    public Result<List<Users>> list(@RequestParam(value = "cpage", defaultValue = "0") Integer cpage,
+                                    @RequestParam(value = "size", defaultValue = "6") Integer pageSize) {
         //page当前页号
-        if (cpage==null ||cpage==0) {
-            cpage=1;
+        if (cpage == null || cpage == 0) {
+            cpage = 1;
         }
         //滑动窗口中格子个数，自行设置
-        int navigatePages=6;
+        int navigatePages = 6;
 
-        int startrow=(cpage-1)*pageSize;
+        int startrow = (cpage - 1) * pageSize;
         //从startrow行开始，查询pageSize条记录
         UsersExample usersExample = new UsersExample();
-        usersExample.setOrderByClause("id limit "+startrow+","+pageSize);
-        List<Users> usersList=usersDAO.selectByExample(usersExample);
-        int total= (int) usersDAO.countByExample(new UsersExample());
-        //根据页面属性生成页面对象
-        Page<Users> pageInfo =new Page<>(total, pageSize, navigatePages, cpage, usersList);
-        //传递到前台页面
-        model.addAttribute("page", pageInfo);
-        model.addAttribute("usersList", usersList);
-        return "user/userList";
+        usersExample.setOrderByClause("id limit " + startrow + "," + pageSize);
+        List<Users> usersList = usersDAO.selectByExample(usersExample);
+        return Result.ofSuccess(usersList);
+//        int total = (int) usersDAO.countByExample(new UsersExample());
+//        //根据页面属性生成页面对象
+//        Page<Users> pageInfo = new Page<>(total, pageSize, navigatePages, cpage, usersList);
+//        //传递到前台页面
+//        model.addAttribute("page", pageInfo);
+//        model.addAttribute("usersList", usersList);
+//        return "user/userList";
     }
 
     @RequestMapping("/toAddUser")
@@ -62,58 +65,54 @@ public class UserController {
         return "user/userAdd";
     }
 
-    @RequestMapping("/addUser")
-    public String add(@Valid UserParam userParam,BindingResult result, ModelMap model) {
-        String errorMsg="";
-        if(result.hasErrors()) {
+    @GetMapping("/addUser")
+    public Result<?> add(@Valid UserParam userParam, BindingResult result, ModelMap model) {
+        String errorMsg = "";
+        if (result.hasErrors()) {
             List<ObjectError> list = result.getAllErrors();
             for (ObjectError error : list) {
-                errorMsg=errorMsg + error.getCode() + "-" + error.getDefaultMessage() +";";
+                errorMsg = errorMsg + error.getCode() + "-" + error.getDefaultMessage() + ";";
             }
-            model.addAttribute("errorMsg",errorMsg);
-            return "user/userAdd";
+            return Result.ofFail(-1, errorMsg);
         }
         UsersExample usersExample = new UsersExample();
         UsersExample.Criteria criteria = usersExample.createCriteria();
         criteria.andUserNameEqualTo(userParam.getUserName());
         List<Users> userList = usersDAO.selectByExample(usersExample);
-        Users u = (userList == null||userList.size()==0)?null:userList.get(0);
-        if(u!=null){
-            model.addAttribute("errorMsg","用户已存在!");
-            return "user/userAdd";
+        Users u = (userList == null || userList.size() == 0) ? null : userList.get(0);
+        if (u != null) {
+            return Result.ofFail(-2, "用户已存在");
         }
-        Users user=new Users();
-        BeanUtils.copyProperties(userParam,user);
+        Users user = new Users();
+        BeanUtils.copyProperties(userParam, user);
         user.setRegisterDate(new Date());
         usersDAO.insert(user);
-        return "redirect:/user/userList";
+        return Result.ofSuccess("添加用户成功");
     }
 
     @RequestMapping("/toEditUser")
-    public String toEdit(Model model,Integer id) {
-        Users users=usersDAO.selectByPrimaryKey(id);
+    public String toEdit(Model model, Integer id) {
+        Users users = usersDAO.selectByPrimaryKey(id);
         model.addAttribute("users", users);
         return "user/userEdit";
     }
 
-    @RequestMapping("/editUser")
-    public String edit(@Valid UserParam userParam, BindingResult result,ModelMap model) {
-        String errorMsg="";
-        if(result.hasErrors()) {
+    @GetMapping("/editUser")
+    public Result<String> edit(@Valid UserParam userParam, BindingResult result, ModelMap model) {
+        String errorMsg = "";
+        if (result.hasErrors()) {
             List<ObjectError> list = result.getAllErrors();
             for (ObjectError error : list) {
-                errorMsg=errorMsg + error.getCode() + "-" + error.getDefaultMessage() +";";
+                errorMsg = errorMsg + error.getCode() + "-" + error.getDefaultMessage() + ";";
             }
-            model.addAttribute("errorMsg",errorMsg);
-            model.addAttribute("user", userParam);
-            return "user/userEdit";
+            return Result.ofFail(-1, errorMsg);
         }
 
-        Users user=usersDAO.selectByPrimaryKey(userParam.getId());
-        BeanUtils.copyProperties(userParam,user);
+        Users user = usersDAO.selectByPrimaryKey(userParam.getId());
+        BeanUtils.copyProperties(userParam, user);
         user.setRegisterDate(new Date());
         usersDAO.updateByPrimaryKeySelective(user);
-        return "redirect:/user/userList";
+        return Result.ofSuccess("success");
     }
 
     @RequestMapping("/deleteUser")

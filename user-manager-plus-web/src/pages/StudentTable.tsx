@@ -1,5 +1,6 @@
 import React, { ReactElement } from "react"
-import { Button, Table, Modal, Form, Input, Select, message, Tooltip } from 'antd'
+import zhCN from 'antd/es/locale/zh_CN'
+import { ConfigProvider, Button, Table, Modal, Form, Input, Select, message, Tooltip } from 'antd'
 import { EditOutlined, DeleteOutlined, InfoCircleOutlined } from '@ant-design/icons'
 import AddStudent from '@/pages/AddStudent'
 import { history, connect } from 'umi'
@@ -86,6 +87,12 @@ class StudentTable extends React.Component<any, any> {
                             style={{
                                 marginLeft: '0.5rem'
                             }}
+                            onClick={() => {
+                                this.setState({
+                                    deleteModal: true,
+                                    studentToDel: record
+                                })
+                            }}
                         ></Button>
                     </Tooltip>
                 </React.Fragment>
@@ -96,7 +103,8 @@ class StudentTable extends React.Component<any, any> {
         super(props)
         this.state = {
             studentList: [],
-            editModal: false,
+            deleteModal: false,
+            studentToDel: null,
             total: 0,
             pageNum: 1,
             pageSize: 10,
@@ -136,23 +144,36 @@ class StudentTable extends React.Component<any, any> {
     componentDidMount() {
         this.getUserList()
     }
-    renderEditModal(): ReactElement {
+    renderDeleteModal(): ReactElement {
         return (
-            <Modal
-                title='编辑学员'
-                visible={this.state.editModal}
-                onCancel={() => { this.setState({ editModal: false }) }}
-                width='80%'
-                footer={null}
-            >
-                <AddStudent />
-            </Modal>
+            <ConfigProvider locale={zhCN}>
+                <Modal
+                    title='删除学员'
+                    visible={this.state.deleteModal}
+                    onCancel={() => { this.setState({ deleteModal: false }) }}
+                    width='40%'
+                    onOk={async () => {
+                        const ret = await fetch(`/student/deleteStudent?id=${this.state.studentToDel.id}`)
+                        const res = await ret.json()
+                        if (res.success) {
+                            this.getUserList()
+                            message.success('删除成功')
+                            this.setState({ deleteModal: false }) 
+                        }
+                    }}
+                >
+                    <p>确定删除学员: {this.state.studentToDel ? this.state.studentToDel.userName : null}?</p>
+                </Modal>
+            </ConfigProvider>
+
         )
     }
+
+
     render(): ReactElement {
         return (
             <React.Fragment>
-                {this.renderEditModal()}
+                {this.renderDeleteModal()}
                 <Table bordered size='middle' columns={this.columns} dataSource={this.state.studentList} pagination={this.state.pagination}></Table>
             </React.Fragment>
         )
