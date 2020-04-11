@@ -3,6 +3,7 @@ import zhCN from 'antd/es/locale/zh_CN';
 import { Form, Input, Select, Button, DatePicker, ConfigProvider, Divider, InputNumber, Upload, message, Row, Col } from 'antd'
 import { EditOutlined, DeleteOutlined, InfoCircleOutlined } from '@ant-design/icons'
 import moment from 'moment'
+import { history, connect } from 'umi'
 import ImageUtil from '@/util/ImageUtil'
 
 class AddStudent extends React.Component<any, any>{
@@ -15,6 +16,7 @@ class AddStudent extends React.Component<any, any>{
             idcardBackImg: null,
             diplomaImg: null,
             portraitImg: null,
+            initValues: null,
             testData: {
                 studentName: '张三',
                 birthDate: moment(new Date()),
@@ -48,36 +50,78 @@ class AddStudent extends React.Component<any, any>{
     }
     onFinish(values: any): void {
         console.dir(values)
-        const params = new URLSearchParams()
-        params.append('userName', values.studentName)
-        console.dir(values.birthDate.format('YYYY-MM-DD'))
-        params.append('birthDate', values.birthDate.format('YYYY-MM-DD'))
-        params.append('userSex', values.gender)
-        params.append('celebrities', values.race)
-        params.append('certType', values.idenType)
-        params.append('certNumber', values.idenId)
-        params.append('maritalStatus', values.married)
-        params.append('localEstate', values.localHouse)
-        params.append('phoneNumber', values.phoneNumber)
-        params.append('domicile', values.hometown)
-        params.append('certAddress', values.idenAddress)
-        params.append('accompanyPerson', values.followed)
-        params.append('postalCode', values.mailcode)
-        params.append('email', values.email)
-        params.append('wechat', values.wechat)
-        params.append('note', values.note)
-        params.append('batch', values.batch)
-        params.append('deposit', values.deposit)
-        params.append('finalPayment', values.retainage)
-        params.append('totalCost', values.totalCost)
-        params.append('certFscan', this.state.idcardFrontImg)
-        params.append('certBscan', this.state.idcardBackImg)
-        params.append('photoBlue', this.state.portraitImg)
-        params.append('certGscan', this.state.diplomaImg)
-        let ret = fetch('/student/addStudent', {
-            method: 'POST',
-            body: params
-        })
+        // const params = new URLSearchParams()
+        // params.append('userName', values.studentName)
+        // console.dir(values.birthDate.format('YYYY-MM-DD'))
+        // params.append('birthDate', values.birthDate.format('YYYY-MM-DD'))
+        // params.append('userSex', values.gender)
+        // params.append('celebrities', values.race)
+        // params.append('certType', values.idenType)
+        // params.append('certNumber', values.idenId)
+        // params.append('maritalStatus', values.married)
+        // params.append('localEstate', values.localHouse)
+        // params.append('phoneNumber', values.phoneNumber)
+        // params.append('domicile', values.hometown)
+        // params.append('certAddress', values.idenAddress)
+        // params.append('accompanyPerson', values.followed)
+        // params.append('postalCode', values.mailcode)
+        // params.append('email', values.email)
+        // params.append('wechat', values.wechat)
+        // params.append('note', values.note)
+        // params.append('batch', values.batch)
+        // params.append('deposit', values.deposit)
+        // params.append('finalPayment', values.retainage)
+        // params.append('totalCost', values.totalCost)
+        // params.append('certFscan', this.state.idcardFrontImg)
+        // params.append('certBscan', this.state.idcardBackImg)
+        // params.append('photoBlue', this.state.portraitImg)
+        // params.append('certGscan', this.state.diplomaImg)
+        const student = {
+            id: null,
+            userName: values.studentName,
+            birthDate: values.birthDate.format('YYYY-MM-DD'),
+            userSex: values.gender,
+            celebrities: values.race,
+            certType: values.idenType,
+            certNumber: values.idenId,
+            maritalStatus: values.married,
+            localEstate: values.localHouse,
+            phoneNumber: values.phoneNumber,
+            domicile: values.hometown,
+            certAddress: values.idenAddress,
+            accompanyPerson: values.followed,
+            postalCode: values.mailcode,
+            email: values.email,
+            wechat: values.wechat,
+            note: values.note,
+            batch: values.batch,
+            deposit: values.deposit,
+            finalPayment: values.retainage,
+            totalCost: values.totalCost,
+            certFscan: this.state.idcardFrontImg,
+            certBscan: this.state.idcardBackImg,
+            photoBlue: this.state.portraitImg,
+            certGscan: this.state.diplomaImg
+        }
+        if (this.props.route.path === '/addStudent') {
+            let ret = fetch('/student/addStudent', {
+                method: 'POST',
+                headers: {
+                    'content-type': 'application/json'
+                },
+                body: JSON.stringify(student)
+            })
+        } else if (this.props.route.path === '/editStudent') {
+            student.id = this.props.ALL.editStudent.id
+            const ret = fetch('/student/editStudent', {
+                method: 'POST',
+                headers: {
+                    'content-type': 'application/json'
+                },
+                body: JSON.stringify(student)
+            })
+        }
+
     }
     imgToBase64(file: File): Promise<any> {
         return new Promise((resolve, reject) => {
@@ -88,17 +132,83 @@ class AddStudent extends React.Component<any, any>{
             }
         })
     }
-    render(): ReactElement {
+    async getStudentById(id: number) {
+        let ret = await fetch(`/student/getStudent?id=${id}`)
+        let res = await ret.json()
+        console.dir(res)
+        if (res.data) {
+            const student = res.data
+            this.setState({
+                initValues: {
+                    studentName: student.userName,
+                    birthDate: moment(student.birthDate),
+                    gender: student.userSex,
+                    race: student.celebrities,
+                    idenType: student.certType,
+                    idenId: student.certNumber,
+                    localHouse: student.localEstate,
+                    married: student.maritalStatus,
+                    phoneNumber: student.phoneNumber,
+                    hometown: student.domicile,
+                    idenAddress: student.certAddress,
+                    followed: student.accompanyPerson,
+                    mailcode: student.postalCode,
+                    email: student.email,
+                    wechat: student.wechat,
+                    note: student.note,
+                    batch: student.batch,
+                    deposit: student.deposit,
+                    retainage: student.finalPayment,
+                    totalCost: student.totalCost
+                },
+                idcardFrontImg: (student.certFscan && student.certFscan.length > 100) ? student.certFscan : null,
+                idcardBackImg: (student.certBscan && student.certBscan.length > 100) ? student.certBscan : null,
+                diplomaImg: (student.certGscan && student.certGscan.length > 100) ? student.certGscan : null,
+                portraitImg: (student.photoBlue && student.photoBlue.length > 100) ? student.photoBlue : null,
+            })
+        }
+    }
+    componentDidMount() {
+        if (this.props.route.path === '/editStudent') {
+            if (this.props.ALL.editStudent) {
+                this.getStudentById(this.props.ALL.editStudent.id)
+            }
+        } else if (this.props.route.path === '/addStudent') {
+            this.setState({
+                idcardFrontImg: null,
+                idcardBackImg: null,
+                diplomaImg: null,
+                portraitImg: null
+            })
+        }
+
+    }
+    componentWillUnmount(): void {
+        // this.props.dispatch({
+        //     type: 'ALL/save',
+        //     payload: {
+        //         editStudent: null
+        //     }
+        // })
+    }
+    render(): ReactElement | null {
+        if (this.props.route.path === '/editStudent' && !this.props.ALL.editStudent) {
+            return (
+                <h3>请在学员列表中选择一个学员编辑</h3>
+            )
+        }
+        if (this.props.route.path === '/editStudent' && this.state.initValues === null) {
+            return null
+        }
         return (
             <React.Fragment>
-
                 <Form
                     // {...this.layout}
                     style={{
                         width: '100%'
                     }}
                     onFinish={this.onFinish.bind(this)}
-                    initialValues={this.state.testData}
+                    initialValues={this.props.route.path === '/editStudent' ? this.state.initValues : null}
                 >
                     <h3>基础信息</h3>
                     <Divider />
@@ -505,7 +615,7 @@ class AddStudent extends React.Component<any, any>{
 
 
                     <Form.Item {...this.buttonLyout} >
-                        <Button htmlType='submit'>确定</Button>
+                        <Button type='primary' htmlType='submit'>确定</Button>
                     </Form.Item>
                 </Form>
             </React.Fragment>
@@ -566,4 +676,5 @@ class AddStudent extends React.Component<any, any>{
     }
 }
 
-export default AddStudent
+// export default AddStudent
+export default connect(({ ALL }: { ALL: any }) => ({ ALL }))(AddStudent)

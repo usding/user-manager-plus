@@ -177,6 +177,15 @@ class Head extends React.Component<any, any> {
                             {/* <PieChartOutlined /> */}
                             <span>添加学员</span>
                         </Menu.Item>
+                        <Menu.Item
+                            key="2.3"
+                            onClick={(): void => {
+                                history.push('/editStudent')
+                            }}
+                        >
+                            {/* <PieChartOutlined /> */}
+                            <span>编辑学员</span>
+                        </Menu.Item>
                     </Menu.SubMenu>
                 </Menu>
             </React.Fragment>

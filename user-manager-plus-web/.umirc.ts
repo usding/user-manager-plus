@@ -42,6 +42,10 @@ export default defineConfig({
         {
           path: '/addStudent',
           component: '@/pages/AddStudent'
+        },
+        {
+          path: '/editStudent',
+          component: '@/pages/AddStudent'
         }
       ]
     },

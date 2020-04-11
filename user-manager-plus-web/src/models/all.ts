@@ -4,7 +4,8 @@ const AllModel = {
     state: {
         selKeys: [],
         user: null,
-        editUser: null
+        editUser: null,
+        editStudent: null
     },
 
     reducers: {
