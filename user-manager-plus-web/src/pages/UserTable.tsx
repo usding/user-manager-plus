@@ -1,5 +1,6 @@
 import React, { ReactElement } from "react"
-import { Button, Table, Modal, Form, Input, Select, message } from 'antd'
+import zhCN from 'antd/es/locale/zh_CN'
+import { ConfigProvider, Button, Table, Modal, Form, Input, Select, message } from 'antd'
 import { history, connect } from 'umi'
 import { EditOutlined, DeleteOutlined } from '@ant-design/icons'
 
@@ -45,7 +46,7 @@ class UserTable extends React.Component<any, any> {
         title: '操作',
         dataIdnex: 'operation',
         key: 'operation',
-        render: (record: any) => {
+        render: (text: any, record: any) => {
             return (
                 <React.Fragment>
                     <Button
@@ -58,6 +59,14 @@ class UserTable extends React.Component<any, any> {
                                 editModal: true,
                                 editUser: record
                             })
+                            if (this.formRef.current) {
+                                this.formRef.current.setFieldsValue({
+                                    userName: record.userName,
+                                    role: record.role.toString(),
+                                    state: record.state
+                                })
+                            }
+
                         }}
                     >
 
@@ -70,6 +79,12 @@ class UserTable extends React.Component<any, any> {
                         style={{
                             marginLeft: '0.5rem'
                         }}
+                        onClick={() => {
+                            this.setState({
+                                userToDel: Object.assign({}, record),
+                                delModal: true
+                            })
+                        }}
                     ></Button>
                 </React.Fragment>
             )
@@ -78,12 +93,15 @@ class UserTable extends React.Component<any, any> {
     pagination = {
         pageSize: 10
     }
+    formRef: any = React.createRef()
     constructor(props: any) {
         super(props)
         this.state = {
             users: [],
             editModal: false,
-            editUser: null
+            editUser: null,
+            userToDel: null,
+            delModal: false
         }
     }
 
@@ -93,6 +111,7 @@ class UserTable extends React.Component<any, any> {
         if (res.data && res.data.length > 0) {
             res.data.forEach((val: any) => {
                 val.key = val.id
+                val.operation = null
             })
             this.setState({
                 users: res.data
@@ -110,25 +129,35 @@ class UserTable extends React.Component<any, any> {
                     title='编辑用户'
                     visible={this.state.editModal}
                     onCancel={() => { this.setState({ editModal: false }) }}
+                    footer={null}
                 >
                     <Form
+                        ref={this.formRef}
                         {...this.layout}
                         initialValues={this.state.editUser ? {
                             userName: this.state.editUser.userName,
                             role: this.state.editUser.role.toString(),
                             state: this.state.editUser.state
                         } : {}}
+
                         onFinish={async (values: any) => {
-                            console.dir(values)
-                            const params = new URLSearchParams()
-                            params.append('id', this.state.editUser.id)
-                            params.append('userName', values.userName)
-                            params.append('role', values.role)
-                            params.append('state', values.state)
-                            params.append('password', this.state.editUser.password)
-                            const ret = await fetch(`/user/editUser?${params.toString()}`)
+                            const user = {
+                                id: this.state.editUser.id,
+                                userName: values.userName,
+                                role: parseInt(values.role),
+                                state: values.state,
+                                password: this.state.editUser.password
+                            }
+                            const ret = await fetch(`/user/editUser`, {
+                                method: 'POST',
+                                headers: {
+                                    'content-type': 'application/json'
+                                },
+                                body: JSON.stringify(user)
+                            })
                             const res = await ret.json()
                             if (res.success) {
+                                this.setState({ editModal: false })
                                 message.success('编辑成功')
                                 this.getUserList()
                             } else {
@@ -187,10 +216,34 @@ class UserTable extends React.Component<any, any> {
             </React.Fragment>
         )
     }
+
+    renderDelModal(): ReactElement {
+        return (
+            <Modal title='删除用户'
+                visible={this.state.delModal}
+                onCancel={async () => { this.setState({ delModal: false }) }}
+                onOk={async () => {
+                    const ret = await fetch(`/user/deleteUser?id=${this.state.userToDel.id}`)
+                    const res = await ret.json()
+                    if (res.success) {
+                        this.setState({ delModal: false })
+                        message.success('删除成功')
+                        this.getUserList()
+                    }
+                }}
+            >
+                <p>确定删除用户: {this.state.userToDel ? this.state.userToDel.userName : null}</p>
+            </Modal>
+        )
+    }
     render(): ReactElement {
         return (
             <React.Fragment>
-                {this.renderEditUserModal()}
+                <ConfigProvider locale={zhCN}>
+                    {this.renderEditUserModal()}
+                    {this.renderDelModal()}
+                </ConfigProvider>
+
                 <div
                     style={{
                         width: '100%'

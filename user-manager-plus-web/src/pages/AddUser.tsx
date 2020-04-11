@@ -11,8 +11,23 @@ class AddUser extends React.Component<any, any>{
         wrapperCol: { offset: 8, span: 16 },
     }
     async onFinish(values: any) {
-        const ret = await fetch(`/user/addUser?userName=${values.userName}&password=${values.password}&role=${parseInt(values.role)}&state=${values.state}`)
+        const user = {
+            userName: values.userName,
+            password: values.password,
+            role: parseInt(values.role),
+            state: values.state
+        }
+        const ret = await fetch(`/user/addUser`, {
+            method: 'POST',
+            headers: {
+                'content-type': 'application/json'
+            },
+            body: JSON.stringify(user)
+        })
         const res = await ret.json()
+        if (res.success) {
+            message.success('添加用户成功')
+        }
     }
     render(): ReactElement {
         return (

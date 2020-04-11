@@ -17,6 +17,8 @@ import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -65,8 +67,8 @@ public class UserController {
         return "user/userAdd";
     }
 
-    @GetMapping("/addUser")
-    public Result<?> add(@Valid UserParam userParam, BindingResult result, ModelMap model) {
+    @PostMapping("/addUser")
+    public Result<?> add(@RequestBody @Valid UserParam userParam, BindingResult result, ModelMap model) {
         String errorMsg = "";
         if (result.hasErrors()) {
             List<ObjectError> list = result.getAllErrors();
@@ -97,8 +99,8 @@ public class UserController {
         return "user/userEdit";
     }
 
-    @GetMapping("/editUser")
-    public Result<String> edit(@Valid UserParam userParam, BindingResult result, ModelMap model) {
+    @PostMapping("/editUser")
+    public Result<String> edit(@RequestBody @Valid UserParam userParam, BindingResult result, ModelMap model) {
         String errorMsg = "";
         if (result.hasErrors()) {
             List<ObjectError> list = result.getAllErrors();
@@ -115,9 +117,9 @@ public class UserController {
         return Result.ofSuccess("success");
     }
 
-    @RequestMapping("/deleteUser")
-    public String delete(Integer id) {
+    @GetMapping("/deleteUser")
+    public Result<String> delete(Integer id) {
         usersDAO.deleteByPrimaryKey(id);
-        return "redirect:/user/userList";
+        return Result.ofSuccess("success");
     }
 }
