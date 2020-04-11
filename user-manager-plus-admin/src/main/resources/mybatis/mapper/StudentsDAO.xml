@@ -100,6 +100,14 @@
     students.cert_bscan as students_cert_bscan, students.photo_blue as students_photo_blue, 
     students.cert_gscan as students_cert_gscan, students.belong as students_belong
   </sql>
+
+  <sql id="Part_Column_List">
+    students.id as students_id, students.user_name as students_user_name, students.birth_date as students_birth_date,
+    students.user_sex as students_user_sex, students.cert_number as students_cert_number,students.phone_number as students_phone_number,
+    students.batch as students_batch,
+
+  </sql>
+
   <select id="selectByExample" parameterType="com.fc.model.StudentsExample" resultMap="BaseResultMap">
     select
     <if test="distinct">
@@ -122,6 +130,30 @@
       </if>
     </if>
   </select>
+
+  <select id="selectPartColumnByExample" parameterType="com.fc.model.StudentsExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from students students
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+    <if test="limit != null">
+      <if test="offset != null">
+        limit ${offset}, ${limit}
+      </if>
+      <if test="offset == null">
+        limit ${limit}
+      </if>
+    </if>
+  </select>
+
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />

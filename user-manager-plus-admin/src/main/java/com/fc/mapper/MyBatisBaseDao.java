@@ -24,6 +24,8 @@ public interface MyBatisBaseDao<Model, PK extends Serializable, E> {
 
     List<Model> selectByExample(E example);
 
+    List<Model> selectPartColumnByExample(E example);
+
     Model selectByPrimaryKey(PK id);
 
     int updateByExampleSelective(@Param("record") Model record, @Param("example") E example);
