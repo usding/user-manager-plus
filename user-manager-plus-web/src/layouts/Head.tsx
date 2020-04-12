@@ -46,7 +46,7 @@ class Head extends React.Component<any, any> {
           title='更改密码'
           visible={this.state.changePasswordModal}
           footer={null}
-          onCancel={() => {
+          onCancel={(): void => {
             this.setState({
               changePasswordModal: false
             })
@@ -85,7 +85,7 @@ class Head extends React.Component<any, any> {
             </Form.Item>
             <Form.Item {...this.buttonLyout}>
               <Button type="primary" htmlType="submit">
-                            确定
+                确定
               </Button>
             </Form.Item>
           </Form>
@@ -132,12 +132,12 @@ class Head extends React.Component<any, any> {
         <Menu>
           <Menu.Item>
             <a onClick={this.logout.bind(this)}>
-                        退出
+              退出
             </a>
           </Menu.Item>
           <Menu.Item>
-            <a onClick={() => { this.setState({ changePasswordModal: true }) }}>
-                        更改密码
+            <a onClick={(): void => { this.setState({ changePasswordModal: true }) }}>
+              更改密码
             </a>
           </Menu.Item>
         </Menu>
@@ -199,12 +199,10 @@ class Head extends React.Component<any, any> {
           </div>
           <Menu
             mode='inline'
-            // defaultSelectedKeys={this.props.ALL.selKeys}
             selectedKeys={this.props.ALL.selKeys}
             inlineCollapsed={this.state.collapsed}
             defaultOpenKeys={['sub2']}
-            // openKeys={['sub1', 'sub2']}
-            onClick={(params: any) => {
+            onClick={(params: any): void => {
               this.props.dispatch({
                 type: 'ALL/save',
                 payload: {

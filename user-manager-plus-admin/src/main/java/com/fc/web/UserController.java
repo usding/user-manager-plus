@@ -1,13 +1,10 @@
 package com.fc.web;
 
-
-import com.alibaba.fastjson.JSONObject;
 import com.fc.config.WebConfiguration;
 import com.fc.mapper.UsersDAO;
 import com.fc.model.Users;
 import com.fc.model.UsersExample;
 import com.fc.param.UserParam;
-import com.fc.result.Page;
 import com.fc.result.Result;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,7 +12,6 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
