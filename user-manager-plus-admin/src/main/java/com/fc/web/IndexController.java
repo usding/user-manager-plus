@@ -81,7 +81,6 @@ public class IndexController {
         if (id == null) {
             return Result.ofSuccess(new Users());
         }
-        Integer role = (Integer) request.getSession().getAttribute(WebConfiguration.LOGIN_ROLE);
         UsersExample usersExample = new UsersExample();
         UsersExample.Criteria criteria = usersExample.createCriteria();
         criteria.andIdEqualTo(id);
@@ -93,7 +92,6 @@ public class IndexController {
     @RequestMapping("/login")
     public ResponseEntity<Result<Users>> login(@Valid LoginParam loginParam, BindingResult result, HttpServletRequest request) {
         String errorMsg = "";
-//        JSONObject obj = new JSONObject();
         if (result.hasErrors()) {
             List<ObjectError> list = result.getAllErrors();
             for (ObjectError error : list) {
@@ -108,6 +106,9 @@ public class IndexController {
         Users user = (userList == null || userList.size() == 0) ? null : userList.get(0);
         if (user == null) {
             return new ResponseEntity<>(Result.ofFail(-2, "用户不存在"), HttpStatus.OK);
+        }
+        else if (!"A".equals(user.getState())) {
+            return new ResponseEntity<>(Result.ofFail(-4, "该用户已被禁用"), HttpStatus.OK);
         }
         else if (!passwordEncoder.matches(loginParam.getPassword(), user.getPassword())) {
             return new ResponseEntity<>(Result.ofFail(-3, "密码错误"), HttpStatus.OK);

@@ -39,21 +39,18 @@ public class SessionInterceptor implements HandlerInterceptor {
         if (uri.contains(".")) {
             return true;
         }
-
         Integer id = (Integer) request.getSession().getAttribute(WebConfiguration.LOGIN_KEY);
         Integer role = (Integer) request.getSession().getAttribute(WebConfiguration.LOGIN_ROLE);
-
-
         if (id != null) {
             if (role == 1 && uri.contains(NoAuthUri)) {
-                errMsg = "role not match";
+                errMsg = "无权限";
             }
             else {
                 return true;
             }
         }
         else {
-            errMsg = "not signed in";
+            errMsg = "未登录";
         }
 
         Result res = Result.ofFail(-1, errMsg);

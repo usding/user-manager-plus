@@ -26,21 +26,18 @@ class Head extends React.Component<any, any> {
       }
     }
 
-    async logout () {
-      const ret = await fetch('/logout')
-      const res = await ret.json()
-      if (res.success) {
-        this.props.dispatch({
-          type: 'ALL/save',
-          payload: {
-            user: null
-          }
-        })
-        this.props.dispatch({
-          type: 'ALL/refresh'
-        })
-        history.push('/login')
-      }
+    logout (): void {
+      axios.get('/logout').then(({ data }) => {
+        if (data.success) {
+          this.props.dispatch({
+            type: 'ALL/save',
+            payload: {
+              user: null
+            }
+          })
+          history.push('/login')
+        }
+      })
     }
 
     renderChangePasswordModal (): ReactElement {
@@ -57,29 +54,19 @@ class Head extends React.Component<any, any> {
         >
           <Form
             {...this.layout}
-            onFinish={async (values: any) => {
-            //   const params = new URLSearchParams()
-            //   params.append('oldPassword', values.currentPassword)
-            //   params.append('newPassword', values.newPassword)
-            //   const ret = await fetch('/user/changePassword', {
-            //     method: 'POST',
-            //     body: params
-            //   })
-              const { data } = await axios.post('/user/changePassword', qs.stringify({
+            onFinish={(values: any): void => {
+              axios.post('/user/changePassword', qs.stringify({
                 oldPassword: values.currentPassword,
                 newPassword: values.newPassword
-              }))
-              const res = data
-              if (res.success) {
-                message.success('更改代码成功，需要重新登录')
-                this.setState({
-                  changePasswordModal: false
-                })
-                this.props.dispatch({
-                  type: 'ALL/refresh'
-                })
-                history.push('/login')
-              }
+              })).then(({ data }) => {
+                if (data.success) {
+                  message.success('更改密码成功，需要重新登录')
+                  this.setState({
+                    changePasswordModal: false
+                  })
+                  history.push('/login')
+                }
+              })
             }}
           >
             <Form.Item
@@ -215,6 +202,8 @@ class Head extends React.Component<any, any> {
             // defaultSelectedKeys={this.props.ALL.selKeys}
             selectedKeys={this.props.ALL.selKeys}
             inlineCollapsed={this.state.collapsed}
+            defaultOpenKeys={['sub2']}
+            // openKeys={['sub1', 'sub2']}
             onClick={(params: any) => {
               this.props.dispatch({
                 type: 'ALL/save',

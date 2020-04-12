@@ -1,6 +1,7 @@
 import React, { ReactElement } from 'react'
 import { Form, Input, Button, Select, message } from 'antd'
 import { connect } from 'umi'
+import axios from '@/util/Axios'
 
 class AddUser extends React.Component<any, any> {
     layout = {
@@ -12,24 +13,18 @@ class AddUser extends React.Component<any, any> {
       wrapperCol: { offset: 10, span: 12 }
     }
 
-    async onFinish (values: any) {
+    onFinish (values: any): void {
       const user = {
         userName: values.userName,
         password: values.password,
         role: parseInt(values.role),
         state: values.state
       }
-      const ret = await fetch('/user/addUser', {
-        method: 'POST',
-        headers: {
-          'content-type': 'application/json'
-        },
-        body: JSON.stringify(user)
+      axios.post('/user/addUser', user).then(({ data }) => {
+        if (data.success) {
+          message.success('添加用户成功')
+        }
       })
-      const res = await ret.json()
-      if (res.success) {
-        message.success('添加用户成功')
-      }
     }
 
     render (): ReactElement {

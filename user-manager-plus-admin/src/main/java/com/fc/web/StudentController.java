@@ -12,6 +12,7 @@ import com.fc.model.Students;
 import com.fc.model.StudentsExample;
 import com.fc.model.Users;
 import com.fc.param.StudentParam;
+import com.fc.param.UserParam;
 import com.fc.result.Page;
 import com.fc.result.Result;
 import com.fc.utils.BeanCopy;
@@ -31,6 +32,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -69,8 +71,8 @@ public class StudentController {
 
     @GetMapping("/studentList")
     @Cacheable(value = "student_list")
-    public Result<?> list(Model model, HttpServletRequest request, @RequestParam(value = "page", defaultValue = "0") Integer cpage,
-                          @RequestParam(value = "size", defaultValue = "6") Integer pageSize) {
+    public Result<?> list(@RequestParam(value = "page", defaultValue = "0") Integer cpage,
+                          @RequestParam(value = "size", defaultValue = "6") Integer pageSize, HttpServletRequest request) {
         //page当前页号
         if (cpage == null || cpage == 0) {
             cpage = 1;
@@ -87,19 +89,16 @@ public class StudentController {
         if (users.getRole() == 1) {
             criteria.andBelongEqualTo(users.getId());
             studentsList = studentMapper.selectSimpleStudentByBelong(users.getId(), startrow, pageSize);
+            criteria.andBelongEqualTo(users.getId());
         }
         else {
             studentsList = studentMapper.selectSimpleStudent(startrow, pageSize);
         }
         studentsExample.setOrderByClause("id limit " + startrow + "," + pageSize);
-//        List<Students> studentsList = studentsDAO.selectByExample(studentsExample);
-        int total = (int) studentsDAO.countByExample(new StudentsExample());
+        int total = (int) studentsDAO.countByExample(studentsExample);
         //根据页面属性生成页面对象
-        Page<SimpleStudent> pageInfO = new Page<>(total, pageSize, navigatePages, cpage, studentsList);
-        //传递到前台页面
-//        model.addAttribute("page", pageInfO);
-//        model.addAttribute("studentsList", studentsList);
-        return Result.ofSuccess(pageInfO);
+        Page<SimpleStudent> pageInfo = new Page<>(total, pageSize, navigatePages, cpage, studentsList);
+        return Result.ofSuccess(pageInfo);
     }
 
     @RequestMapping("/toAddStudent")
@@ -110,8 +109,14 @@ public class StudentController {
     }
 
     @GetMapping("/getStudent")
-    public Result<Students> getStudent(@RequestParam Integer id) {
+    public Result<Students> getStudent(@RequestParam Integer id, HttpServletRequest request) {
+        Users user = (Users) request.getSession().getAttribute(WebConfiguration.LOGIN_USER);
         Students student = studentsDAO.selectByPrimaryKey(id);
+        if (user.getRole() == 1) {
+            if (!student.getBelong().equals(user.getId())) {
+                return Result.ofFail(-1, "该学员不属于当前用户");
+            }
+        }
         return Result.ofSuccess(student);
     }
 
@@ -156,7 +161,7 @@ public class StudentController {
     }
 
     @PostMapping(value = "/editStudent", consumes = {"application/json"})
-    public Result<?> edit(@RequestBody @Valid StudentParam studentParam, BindingResult result) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
+    public Result<?> edit(@RequestBody @Valid StudentParam studentParam, BindingResult result, HttpServletRequest request) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
         String errorMsg = "";
         if (result.hasErrors()) {
             List<ObjectError> list = result.getAllErrors();
@@ -169,6 +174,16 @@ public class StudentController {
             }
             return Result.ofFail(-1, errorMsg);
         }
+        Users user = (Users) request.getSession().getAttribute(WebConfiguration.LOGIN_USER);
+        if (user.getRole() == 1) {
+            Students s = studentsDAO.selectByPrimaryKey(studentParam.getId());
+            if (s == null) {
+                return Result.ofFail(-2, "该学员不存在");
+            }
+            if (!s.getBelong().equals(user.getId())) {
+                return Result.ofFail(-3, "该学员不属于当前用户");
+            }
+        }
         Students students = new Students();
         BeanCopy.copy(studentParam, students);
         students.setId(studentParam.getId());
@@ -178,9 +193,39 @@ public class StudentController {
     }
 
     @GetMapping("/deleteStudent")
-    public Result<String> delete(Integer id) {
-        studentsDAO.deleteByPrimaryKey(id);
+    public Result<String> delete(Integer id, HttpServletRequest request) {
+        Users user = (Users) request.getSession().getAttribute(WebConfiguration.LOGIN_USER);
+        if (user.getRole() == 0) {
+            studentsDAO.deleteByPrimaryKey(id);
+        }
+        else {
+            Students student = studentsDAO.selectByPrimaryKey(id);
+            if (student == null) {
+                return Result.ofFail(-1, "该学员不存在");
+            }
+            if (student.getBelong().equals(user.getId())) {
+                studentsDAO.deleteByPrimaryKey(id);
+            }
+            else {
+                return Result.ofFail(-1, "要删除的学员不属于该用户");
+            }
+        }
         return Result.ofSuccess("success");
+    }
+
+    @PostMapping("/searchStudent")
+    public Result<?> searchStudent(@RequestBody StudentParam studentParam, BindingResult result, HttpServletRequest request) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
+        StudentsExample studentsExample = new StudentsExample();
+        StudentsExample.Criteria criteria = studentsExample.createCriteria();
+        if (studentParam.getUserName() != null) {
+            criteria.andUserNameLike(studentParam.getUserName());
+        }
+        Users users = (Users) request.getSession().getAttribute(WebConfiguration.LOGIN_USER);
+        if (users.getRole() == 1) {
+            criteria.andBelongEqualTo(users.getId());
+        }
+        List<Students> res = studentsDAO.selectPartColumnByExample(studentsExample);
+        return Result.ofSuccess(res);
     }
 
     @RequestMapping("/queryBatch")
@@ -189,19 +234,6 @@ public class StudentController {
         model.addAttribute("batchList", batchList);
         return "batch/batchList";
 
-    }
-
-    @RequestMapping("/studentDetail")
-    public String studentDetail(Model model, Integer id) {
-        Students students = studentsDAO.selectByPrimaryKey(id);
-        students.setCertFscan(ImgUtils.virtualPath(students.getCertFscan()));
-        students.setCertBscan(ImgUtils.virtualPath(students.getCertBscan()));
-        students.setCertGscan(ImgUtils.virtualPath(students.getCertGscan()));
-        students.setPhotoBlue(ImgUtils.virtualPath(students.getPhotoBlue()));
-        model.addAttribute("studentsInfo", students);
-        List<Batch> batchList = batchDAO.selectByExample(new BatchExample());
-        model.addAttribute("batchList", batchList);
-        return "student/studentDetail";
     }
 
     public static void main(String[] args) {

@@ -5,7 +5,7 @@ import java.io.Serializable;
 public class SimpleStudent implements Serializable {
     private Integer id;
     private String userName;
-    private String gender;
+    private String userSex;
     private String phoneNumber;
     private String localEstate;
     private String married;
@@ -91,15 +91,13 @@ public class SimpleStudent implements Serializable {
         this.userName = userName;
     }
 
-
-    public String getGender() {
-        return gender;
+    public String getUserSex() {
+        return userSex;
     }
 
-    public void setGender(String gender) {
-        this.gender = gender;
+    public void setUserSex(String userSex) {
+        this.userSex = userSex;
     }
-
 
     public String getPhoneNumber() {
         return phoneNumber;
@@ -108,6 +106,5 @@ public class SimpleStudent implements Serializable {
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
-
 
 }

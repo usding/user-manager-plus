@@ -54,10 +54,10 @@ public class UserController {
         //滑动窗口中格子个数，自行设置
         int navigatePages = 6;
 
-        int startrow = (cpage - 1) * pageSize;
+//        int startrow = (cpage - 1) * pageSize;
         //从startrow行开始，查询pageSize条记录
         UsersExample usersExample = new UsersExample();
-        usersExample.setOrderByClause("id limit " + startrow + "," + pageSize);
+//        usersExample.setOrderByClause("id limit " + startrow + "," + pageSize);
         List<Users> usersList = usersDAO.selectByExample(usersExample);
         return Result.ofSuccess(usersList);
 //        int total = (int) usersDAO.countByExample(new UsersExample());
@@ -69,13 +69,8 @@ public class UserController {
 //        return "user/userList";
     }
 
-    @RequestMapping("/toAddUser")
-    public String toAdd() {
-        return "user/userAdd";
-    }
-
     @PostMapping("/addUser")
-    public Result<?> add(@RequestBody @Valid UserParam userParam, BindingResult result, ModelMap model) {
+    public Result<?> add(@RequestBody @Valid UserParam userParam, BindingResult result) {
         String errorMsg = "";
         if (result.hasErrors()) {
             List<ObjectError> list = result.getAllErrors();
@@ -100,13 +95,6 @@ public class UserController {
         return Result.ofSuccess("添加用户成功");
     }
 
-    @RequestMapping("/toEditUser")
-    public String toEdit(Model model, Integer id) {
-        Users users = usersDAO.selectByPrimaryKey(id);
-        model.addAttribute("users", users);
-        return "user/userEdit";
-    }
-
     @PostMapping("/editUser")
     public Result<String> edit(@RequestBody @Valid UserParam userParam, BindingResult result, ModelMap model) {
         String errorMsg = "";
@@ -119,7 +107,9 @@ public class UserController {
         }
 
         Users user = usersDAO.selectByPrimaryKey(userParam.getId());
+        String passwordTmp = user.getPassword();
         BeanUtils.copyProperties(userParam, user);
+        user.setPassword(passwordTmp);
         user.setRegisterDate(new Date());
         usersDAO.updateByPrimaryKeySelective(user);
         return Result.ofSuccess("success");

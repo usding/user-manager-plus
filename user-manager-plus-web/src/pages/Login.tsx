@@ -64,18 +64,6 @@ class Login extends React.Component<any, any> {
                       history.push('/')
                     }
                   })
-                  // const res = await fetch(`/login?loginName=${values.username}&password=${values.password}`)
-                  // const result = data
-                  // if (result && result.success) {
-
-                  // }
-                  // else {
-                  //   if (result.code === -2) {
-                  //     message.error('用户不存在')
-                  //   } else if (result.code === -3) {
-                  //     message.error('密码错误')
-                  //   }
-                  // }
                 }}
               >
                 <Form.Item

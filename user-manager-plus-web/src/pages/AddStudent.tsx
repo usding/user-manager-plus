@@ -3,7 +3,7 @@ import zhCN from 'antd/es/locale/zh_CN'
 import { Form, Input, Select, Button, DatePicker, ConfigProvider, Divider, InputNumber, Upload, message, Row, Col } from 'antd'
 import { DeleteOutlined } from '@ant-design/icons'
 import moment from 'moment'
-import { history, connect } from 'umi'
+import { connect } from 'umi'
 import ImageUtil from '@/util/ImageUtil'
 import axios from '@/util/Axios'
 
@@ -273,7 +273,7 @@ class AddStudent extends React.Component<any, any> {
                 <Form.Item
                   label='手机号'
                   name='phoneNumber'
-                  rules={[{ required: true, message: '请输入手机号' }]}
+                  rules={[{ required: true, message: '请输入手机号' }, { min: 11, message: '长度小于11位' }, {max: 11, message: '长度大于11位'}]}
                 >
                   <Input />
                 </Form.Item>
@@ -331,6 +331,7 @@ class AddStudent extends React.Component<any, any> {
                   wrapperCol={{ span: 16 }}
                   label='邮箱'
                   name='email'
+                  rules={[{ type: 'email', message: '非法的邮箱格式' }]}
                 >
                   <Input />
                 </Form.Item>
@@ -351,6 +352,7 @@ class AddStudent extends React.Component<any, any> {
                 <Form.Item
                   label='身份证地址'
                   name='idenAddress'
+                  rules={[{ required: true, message: '身份证地址不能为空' }]}
                 >
                   <Input />
                 </Form.Item>

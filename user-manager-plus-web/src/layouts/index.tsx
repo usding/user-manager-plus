@@ -1,41 +1,55 @@
-import React, { ReactElement } from 'react';
+import React, { ReactElement } from 'react'
 import Head from '@/layouts/Head'
-import { history, connect } from 'umi';
+import { history, connect } from 'umi'
+import axios from '@/util/Axios'
 
 class Layout extends React.Component<any, any> {
   state: any
-  constructor(props: any) {
-    super(props);
+  constructor (props: any) {
+    super(props)
     this.state = {
       collapsed: false,
       user: null
     }
   }
 
-  async UNSAFE_componentWillMount() {
-    let res: Response = await fetch('/checkLogin');
-    let result = await res.json();
-    const user = result.data
-    if (!user.id) {
-      history.push('/toLogin')
-    } else {
-      this.props.dispatch({
-        type: 'ALL/save',
-        payload: {
-          user: user
+  UNSAFE_componentWillMount (): void {
+    axios.get('/checkLogin').then(({ data }) => {
+      if (data.success) {
+        const user = data.data
+        if (!user.id) {
+          history.push('/toLogin')
+          return
         }
-      })
-      this.setState({
-        user: user
-      })
-    }
+        this.props.dispatch({
+          type: 'ALL/save',
+          payload: {
+            user: user
+          }
+        })
+        this.setState({
+          user: user
+        })
+      } else {
+        history.push('/toLogin')
+      }
+    })
   }
 
-  render(): ReactElement | null {
-    if(!this.props.ALL.user){
+  componentDidMount (): void{
+    this.props.dispatch({
+      type: 'ALL/save',
+      payload: {
+        selKeys: ['2.1']
+      }
+    })
+    history.push('/students')
+  }
+
+  render (): ReactElement | null {
+    if (!this.props.ALL.user) {
       return null
     }
-    
 
     return (
       <React.Fragment>
@@ -63,8 +77,8 @@ class Layout extends React.Component<any, any> {
 
       </React.Fragment>
 
-    );
+    )
   }
 }
 
-export default connect(({ ALL }: { ALL: any }) => ({ ALL }))(Layout);
+export default connect(({ ALL }: { ALL: any }) => ({ ALL }))(Layout)

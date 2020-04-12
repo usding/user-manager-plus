@@ -1,6 +1,6 @@
 import React, { ReactElement } from 'react'
 import zhCN from 'antd/es/locale/zh_CN'
-import { ConfigProvider, Button, Table, Modal, Form, Input, Select, message, Tooltip } from 'antd'
+import { ConfigProvider, Button, Table, Modal, Row, Input, Col, message, Tooltip, Form } from 'antd'
 import { EditOutlined, DeleteOutlined } from '@ant-design/icons'
 import { history, connect } from 'umi'
 import axios from '@/util/Axios'
@@ -8,34 +8,33 @@ import qs from 'qs'
 
 class StudentTable extends React.Component<any, any> {
     state: any
-    pagination = {
-      pageSize: 10,
-      total: 1000
-    }
+    searchFormRef: any = React.createRef()
 
     columns = [{
-      title: '用户名',
+      title: '学员名',
       dataIndex: 'userName',
       key: 'userName',
       width: 100
     }, {
       title: '性别',
-      dataIndex: 'gender',
-      key: 'gender',
+      dataIndex: 'userSex',
+      key: 'userSex',
       width: 60,
-      render: (text: string) => text === 'm' ? '男' : '女'
+      render: (text: string, record: any): string => {
+        return text === 'm' ? '男' : '女'
+      }
     }, {
       title: '本地房产',
       dataIndex: 'localEstate',
       key: 'localEstate',
       width: 80,
-      render: (text: string) => text === 'y' ? '有' : '无'
+      render: (text: string): string => text === 'y' ? '有' : '无'
     }, {
       title: '婚姻',
       dataIndex: 'married',
       key: 'married',
       width: 50,
-      render: (text: string) => text === 'y' ? '已婚' : '未婚'
+      render: (text: string): string => text === 'y' ? '已婚' : '未婚'
     }, {
       title: '电话',
       dataIndex: 'phoneNumber',
@@ -124,13 +123,15 @@ class StudentTable extends React.Component<any, any> {
       super(props)
       this.state = {
         studentList: [],
+        searchList: [],
         deleteModal: false,
         studentToDel: null,
         total: 0,
         pageNum: 1,
-        pageSize: 5,
+        pageSize: 10,
+        search: false,
         pagination: {
-          pageSize: 5,
+          pageSize: 10,
           total: 10,
           showTotal: (): string => `共${this.state.total}条`,
           onChange: (current: number): void => {
@@ -157,10 +158,12 @@ class StudentTable extends React.Component<any, any> {
             val.key = val.id
             val.operation = null
           })
+          // eslint-disable-next-line react/no-direct-mutation-state
           this.state.pagination.total = data.data.totalRows
           this.setState({
+            search: false,
             studentList: data.data.rows,
-            pagination: Object.assign({}, this.state.pagination),
+            // pagination: Object.assign({}, this.state.pagination),
             total: data.data.totalRows
           })
         }
@@ -204,7 +207,66 @@ class StudentTable extends React.Component<any, any> {
       return (
         <React.Fragment>
           {this.renderDeleteModal()}
-          <Table bordered size='middle' columns={this.columns} dataSource={this.state.studentList} pagination={this.state.pagination}></Table>
+          <Form
+            ref={this.searchFormRef}
+            onFinish={(values: any): void => {
+              const student = {
+                userName: values.userName
+              }
+              axios.post('/student/searchStudent', student).then(({ data }) => {
+                if (data.success) {}
+                const list = data.data ? data.data : []
+                list.forEach((val: any) => {
+                  val.key = val.id
+                  val.operation = null
+                })
+                this.setState({
+                  search: true,
+                  searchList: list
+                })
+              })
+            }}
+          >
+            <Row
+              gutter={{ xs: 8, sm: 16, md: 24 }}
+            >
+              <Col span={5}>
+                <Form.Item
+                  name='userName'
+                  rules={[{ required: true, message: '搜索条件不能为空' }]}
+                >
+                  <Input placeholder='学员名' />
+                </Form.Item>
+              </Col>
+              <Col span={2}>
+                <Form.Item >
+                  <Button type='primary' htmlType='submit'>搜索</Button>
+                </Form.Item>
+              </Col>
+              <Col span={2}>
+                <Button type='primary'
+                  onClick={(): void => {
+                    // this.getUserList()
+                    this.setState({
+                      search: false
+                    })
+                    this.searchFormRef.current.resetFields()
+                  }}
+                >清空</Button>
+              </Col>
+            </Row>
+
+          </Form>
+          <Table bordered size='middle' columns={this.columns} dataSource={this.state.searchList}
+            style={{
+              display: this.state.search ? 'block' : 'none'
+            }}></Table>
+          <Table bordered size='middle' columns={this.columns} dataSource={this.state.studentList} pagination={this.state.pagination}
+            style={{
+              display: this.state.search ? 'none' : 'block'
+            }}
+          ></Table>
+
         </React.Fragment>
       )
     }
