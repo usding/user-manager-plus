@@ -99,7 +99,7 @@ public class IndexController {
             for (ObjectError error : list) {
                 errorMsg = errorMsg + error.getCode() + "-" + error.getDefaultMessage() + ";";
             }
-            return new ResponseEntity<>(Result.ofFail(-1, errorMsg), HttpStatus.UNAUTHORIZED);
+            return new ResponseEntity<>(Result.ofFail(-1, errorMsg), HttpStatus.OK);
         }
         UsersExample usersExample = new UsersExample();
         UsersExample.Criteria criteria = usersExample.createCriteria();
@@ -107,10 +107,10 @@ public class IndexController {
         List<Users> userList = usersDAO.selectByExample(usersExample);
         Users user = (userList == null || userList.size() == 0) ? null : userList.get(0);
         if (user == null) {
-            return new ResponseEntity<>(Result.ofFail(-2, "user not exist"), HttpStatus.UNAUTHORIZED);
+            return new ResponseEntity<>(Result.ofFail(-2, "用户不存在"), HttpStatus.OK);
         }
         else if (!passwordEncoder.matches(loginParam.getPassword(), user.getPassword())) {
-            return new ResponseEntity<>(Result.ofFail(-3, "password error"), HttpStatus.UNAUTHORIZED);
+            return new ResponseEntity<>(Result.ofFail(-3, "密码错误"), HttpStatus.OK);
         }
         request.getSession().setAttribute(WebConfiguration.LOGIN_ROLE, user.getRole());
         request.getSession().setAttribute(WebConfiguration.LOGIN_KEY, user.getId());

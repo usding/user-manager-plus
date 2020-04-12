@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.fc.result.Result;
 import org.apache.commons.io.IOUtils;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -57,7 +58,7 @@ public class SessionInterceptor implements HandlerInterceptor {
 
         Result res = Result.ofFail(-1, errMsg);
         response.setContentType("application/json");
-        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+        response.setStatus(HttpStatus.UNAUTHORIZED.value());
         response.getWriter().write(JSONObject.toJSONString(res));
         return false;
     }

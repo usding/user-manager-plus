@@ -143,7 +143,7 @@ public class UserController {
         List<Users> userList = usersDAO.selectByExample(usersExample);
         Users user = (userList == null || userList.size() == 0) ? null : userList.get(0);
         if (!passwordEncoder.matches(oldPassword, user.getPassword())) {
-            return Result.ofFail(-2, "wrong current password");
+            return Result.ofFail(-2, "当前密码错误");
         }
         user.setPassword(passwordEncoder.encode(newPassword));
         usersDAO.updateByPrimaryKey(user);
