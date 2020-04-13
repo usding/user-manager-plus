@@ -150,6 +150,7 @@ public class StudentController {
         Users users = (Users) request.getSession().getAttribute(WebConfiguration.LOGIN_USER);
         students.setBelong(users.getId());
         students.setUpdateDate(new Date());
+        ImgUtils.saveStudentImages(students);
         studentsDAO.insert(students);
         return Result.ofSuccess("success");
     }
