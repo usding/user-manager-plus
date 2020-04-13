@@ -35,8 +35,8 @@ class StudentTable extends React.Component<any, any> {
       render: (text: string): string => text === 'y' ? '有' : '无'
     }, {
       title: '婚姻',
-      dataIndex: 'married',
-      key: 'married',
+      dataIndex: 'maritalStatus',
+      key: 'maritalStatus',
       width: 50,
       render: (text: string): string => text === 'y' ? '已婚' : '未婚'
     }, {
@@ -51,7 +51,16 @@ class StudentTable extends React.Component<any, any> {
       title: '批次',
       dataIndex: 'batch',
       key: 'batch',
-      width: 100
+      width: 100,
+      render: (id: number, record: any) => {
+        if (this.props.ALL.batchList) {
+          for (const batch of this.props.ALL.batchList) {
+            if (batch.id === id) {
+              return batch.name
+            }
+          }
+        }
+      }
     },
     {
       title: '定金',

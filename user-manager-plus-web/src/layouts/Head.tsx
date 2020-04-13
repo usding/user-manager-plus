@@ -143,13 +143,13 @@ class Head extends React.Component<any, any> {
       const menu = (
         <Menu>
           <Menu.Item>
-            <a onClick={this.logout.bind(this)}>
-              退出
+            <a onClick={(): void => { this.setState({ changePasswordModal: true }) }}>
+              更改密码
             </a>
           </Menu.Item>
           <Menu.Item>
-            <a onClick={(): void => { this.setState({ changePasswordModal: true }) }}>
-              更改密码
+            <a onClick={this.logout.bind(this)}>
+              退出
             </a>
           </Menu.Item>
         </Menu>

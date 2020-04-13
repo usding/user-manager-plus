@@ -114,43 +114,6 @@ public class Students implements Serializable {
     private String note;
 
     /**
-     * 学员属于哪位工作人员
-     */
-    private Integer belong;
-
-    public String getCertFscan() {
-        return certFscan;
-    }
-
-    public void setCertFscan(String certFscan) {
-        this.certFscan = certFscan;
-    }
-
-    public String getCertBscan() {
-        return certBscan;
-    }
-
-    public void setCertBscan(String certBscan) {
-        this.certBscan = certBscan;
-    }
-
-    public String getPhotoBlue() {
-        return photoBlue;
-    }
-
-    public void setPhotoBlue(String photoBlue) {
-        this.photoBlue = photoBlue;
-    }
-
-    public String getCertGscan() {
-        return certGscan;
-    }
-
-    public void setCertGscan(String certGscan) {
-        this.certGscan = certGscan;
-    }
-
-    /**
      * 身份证正面扫描件-图片路径
      */
     private String certFscan;
@@ -170,8 +133,22 @@ public class Students implements Serializable {
      */
     private String certGscan;
 
+    /**
+     * 学员属于哪位工作人员
+     */
+    private Integer belong;
+
     private Date updateDate;
 
+    public String getBelongName() {
+        return belongName;
+    }
+
+    public void setBelongName(String belongName) {
+        this.belongName = belongName;
+    }
+
+    private String belongName;
 
     private static final long serialVersionUID = 1L;
 
@@ -343,7 +320,37 @@ public class Students implements Serializable {
         this.note = note;
     }
 
+    public String getCertFscan() {
+        return certFscan;
+    }
 
+    public void setCertFscan(String certFscan) {
+        this.certFscan = certFscan;
+    }
+
+    public String getCertBscan() {
+        return certBscan;
+    }
+
+    public void setCertBscan(String certBscan) {
+        this.certBscan = certBscan;
+    }
+
+    public String getPhotoBlue() {
+        return photoBlue;
+    }
+
+    public void setPhotoBlue(String photoBlue) {
+        this.photoBlue = photoBlue;
+    }
+
+    public String getCertGscan() {
+        return certGscan;
+    }
+
+    public void setCertGscan(String certGscan) {
+        this.certGscan = certGscan;
+    }
 
     public Integer getBelong() {
         return belong;
@@ -394,6 +401,10 @@ public class Students implements Serializable {
             && (this.getFinalPayment() == null ? other.getFinalPayment() == null : this.getFinalPayment().equals(other.getFinalPayment()))
             && (this.getTotalCost() == null ? other.getTotalCost() == null : this.getTotalCost().equals(other.getTotalCost()))
             && (this.getNote() == null ? other.getNote() == null : this.getNote().equals(other.getNote()))
+            && (this.getCertFscan() == null ? other.getCertFscan() == null : this.getCertFscan().equals(other.getCertFscan()))
+            && (this.getCertBscan() == null ? other.getCertBscan() == null : this.getCertBscan().equals(other.getCertBscan()))
+            && (this.getPhotoBlue() == null ? other.getPhotoBlue() == null : this.getPhotoBlue().equals(other.getPhotoBlue()))
+            && (this.getCertGscan() == null ? other.getCertGscan() == null : this.getCertGscan().equals(other.getCertGscan()))
             && (this.getBelong() == null ? other.getBelong() == null : this.getBelong().equals(other.getBelong()))
             && (this.getUpdateDate() == null ? other.getUpdateDate() == null : this.getUpdateDate().equals(other.getUpdateDate()));
     }
@@ -423,6 +434,10 @@ public class Students implements Serializable {
         result = prime * result + ((getFinalPayment() == null) ? 0 : getFinalPayment().hashCode());
         result = prime * result + ((getTotalCost() == null) ? 0 : getTotalCost().hashCode());
         result = prime * result + ((getNote() == null) ? 0 : getNote().hashCode());
+        result = prime * result + ((getCertFscan() == null) ? 0 : getCertFscan().hashCode());
+        result = prime * result + ((getCertBscan() == null) ? 0 : getCertBscan().hashCode());
+        result = prime * result + ((getPhotoBlue() == null) ? 0 : getPhotoBlue().hashCode());
+        result = prime * result + ((getCertGscan() == null) ? 0 : getCertGscan().hashCode());
         result = prime * result + ((getBelong() == null) ? 0 : getBelong().hashCode());
         result = prime * result + ((getUpdateDate() == null) ? 0 : getUpdateDate().hashCode());
         return result;
@@ -455,6 +470,10 @@ public class Students implements Serializable {
         sb.append(", finalPayment=").append(finalPayment);
         sb.append(", totalCost=").append(totalCost);
         sb.append(", note=").append(note);
+        sb.append(", certFscan=").append(certFscan);
+        sb.append(", certBscan=").append(certBscan);
+        sb.append(", photoBlue=").append(photoBlue);
+        sb.append(", certGscan=").append(certGscan);
         sb.append(", belong=").append(belong);
         sb.append(", updateDate=").append(updateDate);
         sb.append(", serialVersionUID=").append(serialVersionUID);

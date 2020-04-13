@@ -95,7 +95,7 @@ public class BatchController {
         List<Batch> batchList = batchDAO.selectByExample(batchExample);
         Batch b = (batchList == null || batchList.size() == 0) ? null : batchList.get(0);
         if (b != null) {
-            return Result.ofFail(-2, "批次已存在");
+            return Result.ofFail(-2, "同名批次已存在");
         }
         Batch batch = new Batch();
         BeanUtils.copyProperties(batchParam, batch);
@@ -110,24 +110,33 @@ public class BatchController {
         return "batch/batchEdit";
     }
 
-    @RequestMapping("/editBatch")
-    public String edit(@Valid BatchParam batchParam, BindingResult result, ModelMap model) {
+    @PostMapping("/editBatch")
+    public Result<?> edit(@RequestBody @Valid BatchParam batchParam, BindingResult result) {
         String errorMsg = "";
         if (result.hasErrors()) {
             List<ObjectError> list = result.getAllErrors();
             for (ObjectError error : list) {
                 errorMsg = errorMsg + error.getCode() + "-" + error.getDefaultMessage() + ";";
             }
-            model.addAttribute("errorMsg", errorMsg);
-            model.addAttribute("batch", batchParam);
-            return "batch/batchEdit";
+            return Result.ofFail(-1, errorMsg);
         }
 
         Batch batch = batchDAO.selectByPrimaryKey(batchParam.getId());
+        if (batch == null) {
+            return Result.ofFail(-2, "批次不存在");
+        }
+        if (!batch.getName().equals(batchParam.getName())) {
+            BatchExample batchExample = new BatchExample();
+            batchExample.createCriteria().andNameEqualTo(batchParam.getName());
+            List<Batch> batchList = batchDAO.selectByExample(batchExample);
+            if (batchList != null && batchList.size() > 0) {
+                return Result.ofFail(-3, "同名批次已存在");
+            }
+        }
         BeanUtils.copyProperties(batchParam, batch);
 
         batchDAO.updateByPrimaryKeySelective(batch);
-        return "redirect:/batch/batchList";
+        return Result.ofSuccess("success");
     }
 
     @GetMapping("/deleteBatch")

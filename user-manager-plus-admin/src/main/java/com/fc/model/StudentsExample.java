@@ -1535,6 +1535,286 @@ public class StudentsExample {
             return (Criteria) this;
         }
 
+        public Criteria andCertFscanIsNull() {
+            addCriterion("students.cert_fscan is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCertFscanIsNotNull() {
+            addCriterion("students.cert_fscan is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCertFscanEqualTo(String value) {
+            addCriterion("students.cert_fscan =", value, "certFscan");
+            return (Criteria) this;
+        }
+
+        public Criteria andCertFscanNotEqualTo(String value) {
+            addCriterion("students.cert_fscan <>", value, "certFscan");
+            return (Criteria) this;
+        }
+
+        public Criteria andCertFscanGreaterThan(String value) {
+            addCriterion("students.cert_fscan >", value, "certFscan");
+            return (Criteria) this;
+        }
+
+        public Criteria andCertFscanGreaterThanOrEqualTo(String value) {
+            addCriterion("students.cert_fscan >=", value, "certFscan");
+            return (Criteria) this;
+        }
+
+        public Criteria andCertFscanLessThan(String value) {
+            addCriterion("students.cert_fscan <", value, "certFscan");
+            return (Criteria) this;
+        }
+
+        public Criteria andCertFscanLessThanOrEqualTo(String value) {
+            addCriterion("students.cert_fscan <=", value, "certFscan");
+            return (Criteria) this;
+        }
+
+        public Criteria andCertFscanLike(String value) {
+            addCriterion("students.cert_fscan like", value, "certFscan");
+            return (Criteria) this;
+        }
+
+        public Criteria andCertFscanNotLike(String value) {
+            addCriterion("students.cert_fscan not like", value, "certFscan");
+            return (Criteria) this;
+        }
+
+        public Criteria andCertFscanIn(List<String> values) {
+            addCriterion("students.cert_fscan in", values, "certFscan");
+            return (Criteria) this;
+        }
+
+        public Criteria andCertFscanNotIn(List<String> values) {
+            addCriterion("students.cert_fscan not in", values, "certFscan");
+            return (Criteria) this;
+        }
+
+        public Criteria andCertFscanBetween(String value1, String value2) {
+            addCriterion("students.cert_fscan between", value1, value2, "certFscan");
+            return (Criteria) this;
+        }
+
+        public Criteria andCertFscanNotBetween(String value1, String value2) {
+            addCriterion("students.cert_fscan not between", value1, value2, "certFscan");
+            return (Criteria) this;
+        }
+
+        public Criteria andCertBscanIsNull() {
+            addCriterion("students.cert_bscan is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCertBscanIsNotNull() {
+            addCriterion("students.cert_bscan is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCertBscanEqualTo(String value) {
+            addCriterion("students.cert_bscan =", value, "certBscan");
+            return (Criteria) this;
+        }
+
+        public Criteria andCertBscanNotEqualTo(String value) {
+            addCriterion("students.cert_bscan <>", value, "certBscan");
+            return (Criteria) this;
+        }
+
+        public Criteria andCertBscanGreaterThan(String value) {
+            addCriterion("students.cert_bscan >", value, "certBscan");
+            return (Criteria) this;
+        }
+
+        public Criteria andCertBscanGreaterThanOrEqualTo(String value) {
+            addCriterion("students.cert_bscan >=", value, "certBscan");
+            return (Criteria) this;
+        }
+
+        public Criteria andCertBscanLessThan(String value) {
+            addCriterion("students.cert_bscan <", value, "certBscan");
+            return (Criteria) this;
+        }
+
+        public Criteria andCertBscanLessThanOrEqualTo(String value) {
+            addCriterion("students.cert_bscan <=", value, "certBscan");
+            return (Criteria) this;
+        }
+
+        public Criteria andCertBscanLike(String value) {
+            addCriterion("students.cert_bscan like", value, "certBscan");
+            return (Criteria) this;
+        }
+
+        public Criteria andCertBscanNotLike(String value) {
+            addCriterion("students.cert_bscan not like", value, "certBscan");
+            return (Criteria) this;
+        }
+
+        public Criteria andCertBscanIn(List<String> values) {
+            addCriterion("students.cert_bscan in", values, "certBscan");
+            return (Criteria) this;
+        }
+
+        public Criteria andCertBscanNotIn(List<String> values) {
+            addCriterion("students.cert_bscan not in", values, "certBscan");
+            return (Criteria) this;
+        }
+
+        public Criteria andCertBscanBetween(String value1, String value2) {
+            addCriterion("students.cert_bscan between", value1, value2, "certBscan");
+            return (Criteria) this;
+        }
+
+        public Criteria andCertBscanNotBetween(String value1, String value2) {
+            addCriterion("students.cert_bscan not between", value1, value2, "certBscan");
+            return (Criteria) this;
+        }
+
+        public Criteria andPhotoBlueIsNull() {
+            addCriterion("students.photo_blue is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPhotoBlueIsNotNull() {
+            addCriterion("students.photo_blue is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPhotoBlueEqualTo(String value) {
+            addCriterion("students.photo_blue =", value, "photoBlue");
+            return (Criteria) this;
+        }
+
+        public Criteria andPhotoBlueNotEqualTo(String value) {
+            addCriterion("students.photo_blue <>", value, "photoBlue");
+            return (Criteria) this;
+        }
+
+        public Criteria andPhotoBlueGreaterThan(String value) {
+            addCriterion("students.photo_blue >", value, "photoBlue");
+            return (Criteria) this;
+        }
+
+        public Criteria andPhotoBlueGreaterThanOrEqualTo(String value) {
+            addCriterion("students.photo_blue >=", value, "photoBlue");
+            return (Criteria) this;
+        }
+
+        public Criteria andPhotoBlueLessThan(String value) {
+            addCriterion("students.photo_blue <", value, "photoBlue");
+            return (Criteria) this;
+        }
+
+        public Criteria andPhotoBlueLessThanOrEqualTo(String value) {
+            addCriterion("students.photo_blue <=", value, "photoBlue");
+            return (Criteria) this;
+        }
+
+        public Criteria andPhotoBlueLike(String value) {
+            addCriterion("students.photo_blue like", value, "photoBlue");
+            return (Criteria) this;
+        }
+
+        public Criteria andPhotoBlueNotLike(String value) {
+            addCriterion("students.photo_blue not like", value, "photoBlue");
+            return (Criteria) this;
+        }
+
+        public Criteria andPhotoBlueIn(List<String> values) {
+            addCriterion("students.photo_blue in", values, "photoBlue");
+            return (Criteria) this;
+        }
+
+        public Criteria andPhotoBlueNotIn(List<String> values) {
+            addCriterion("students.photo_blue not in", values, "photoBlue");
+            return (Criteria) this;
+        }
+
+        public Criteria andPhotoBlueBetween(String value1, String value2) {
+            addCriterion("students.photo_blue between", value1, value2, "photoBlue");
+            return (Criteria) this;
+        }
+
+        public Criteria andPhotoBlueNotBetween(String value1, String value2) {
+            addCriterion("students.photo_blue not between", value1, value2, "photoBlue");
+            return (Criteria) this;
+        }
+
+        public Criteria andCertGscanIsNull() {
+            addCriterion("students.cert_gscan is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCertGscanIsNotNull() {
+            addCriterion("students.cert_gscan is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCertGscanEqualTo(String value) {
+            addCriterion("students.cert_gscan =", value, "certGscan");
+            return (Criteria) this;
+        }
+
+        public Criteria andCertGscanNotEqualTo(String value) {
+            addCriterion("students.cert_gscan <>", value, "certGscan");
+            return (Criteria) this;
+        }
+
+        public Criteria andCertGscanGreaterThan(String value) {
+            addCriterion("students.cert_gscan >", value, "certGscan");
+            return (Criteria) this;
+        }
+
+        public Criteria andCertGscanGreaterThanOrEqualTo(String value) {
+            addCriterion("students.cert_gscan >=", value, "certGscan");
+            return (Criteria) this;
+        }
+
+        public Criteria andCertGscanLessThan(String value) {
+            addCriterion("students.cert_gscan <", value, "certGscan");
+            return (Criteria) this;
+        }
+
+        public Criteria andCertGscanLessThanOrEqualTo(String value) {
+            addCriterion("students.cert_gscan <=", value, "certGscan");
+            return (Criteria) this;
+        }
+
+        public Criteria andCertGscanLike(String value) {
+            addCriterion("students.cert_gscan like", value, "certGscan");
+            return (Criteria) this;
+        }
+
+        public Criteria andCertGscanNotLike(String value) {
+            addCriterion("students.cert_gscan not like", value, "certGscan");
+            return (Criteria) this;
+        }
+
+        public Criteria andCertGscanIn(List<String> values) {
+            addCriterion("students.cert_gscan in", values, "certGscan");
+            return (Criteria) this;
+        }
+
+        public Criteria andCertGscanNotIn(List<String> values) {
+            addCriterion("students.cert_gscan not in", values, "certGscan");
+            return (Criteria) this;
+        }
+
+        public Criteria andCertGscanBetween(String value1, String value2) {
+            addCriterion("students.cert_gscan between", value1, value2, "certGscan");
+            return (Criteria) this;
+        }
+
+        public Criteria andCertGscanNotBetween(String value1, String value2) {
+            addCriterion("students.cert_gscan not between", value1, value2, "certGscan");
+            return (Criteria) this;
+        }
+
         public Criteria andBelongIsNull() {
             addCriterion("students.belong is null");
             return (Criteria) this;
