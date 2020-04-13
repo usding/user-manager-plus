@@ -4,7 +4,6 @@ import { ConfigProvider, Button, Table, Modal, Row, Input, Col, message, Tooltip
 import { EditOutlined, DeleteOutlined } from '@ant-design/icons'
 import { history, connect } from 'umi'
 import axios from '@/util/Axios'
-import qs from 'qs'
 
 class StudentTable extends React.Component<any, any> {
     state: any

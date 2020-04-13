@@ -103,6 +103,19 @@ public class UserController {
         }
 
         Users user = usersDAO.selectByPrimaryKey(userParam.getId());
+        if (user == null) {
+            return Result.ofFail(-2, "用户不存在");
+        }
+        if (!userParam.getUserName().equals(user.getUserName())) {
+            UsersExample usersExample = new UsersExample();
+            UsersExample.Criteria criteria = usersExample.createCriteria();
+            criteria.andUserNameEqualTo(userParam.getUserName());
+            List<Users> userList = usersDAO.selectByExample(usersExample);
+            Users u = (userList == null || userList.size() == 0) ? null : userList.get(0);
+            if (u != null) {
+                return Result.ofFail(-3, "用户名已存在");
+            }
+        }
         String passwordTmp = user.getPassword();
         BeanUtils.copyProperties(userParam, user);
         //如果前端传过来的加密和密码和数据库中的不同，说明管理员要更改该用户密码

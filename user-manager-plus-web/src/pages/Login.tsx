@@ -1,5 +1,5 @@
 import React, { ReactElement } from 'react'
-import { Form, Input, Button, message, Card } from 'antd'
+import { Form, Input, Button } from 'antd'
 import { history, connect } from 'umi'
 import HouseImg from '@/images/house_on_grass.jpg'
 import axios from '@/util/Axios'
@@ -47,7 +47,7 @@ class Login extends React.Component<any, any> {
                   borderRadius: '5px',
                   boxShadow: '0 0 4px 2px rgb(176,190,197, 0.6)'
                 }}
-                onFinish={async (values: any) => {
+                onFinish={(values: any): void => {
                   axios.get('/login', {
                     params: {
                       loginName: values.username,
