@@ -60,13 +60,6 @@ public class StudentController {
     @Resource
     private BatchDAO batchDAO;
 
-    @Autowired
-    private StudentMapper studentMapper;
-
-    /* @Value("${file.upload.path}")
-     private String prePath;
- */
-
     @GetMapping("/studentList")
     @Cacheable(value = "student_list")
     public Result<?> list(@RequestParam(value = "page", defaultValue = "0") Integer cpage,
@@ -80,30 +73,30 @@ public class StudentController {
 
         //从startrow行开始，查询pageSize条记录
         int startrow = (cpage - 1) * pageSize;
-        List<SimpleStudent> studentsList;
+        List<Students> studentsList;
         Users users = (Users) request.getSession().getAttribute(WebConfiguration.LOGIN_USER);
         StudentsExample studentsExample = new StudentsExample();
+        studentsExample.setOrderByClause("id limit " + startrow + "," + pageSize);
         StudentsExample.Criteria criteria = studentsExample.createCriteria();
         if (users.getRole() == 1) {
             criteria.andBelongEqualTo(users.getId());
-            studentsList = studentMapper.selectSimpleStudentByBelong(users.getId(), startrow, pageSize);
+            studentsList = studentsDAO.selectByExample(studentsExample);
             criteria.andBelongEqualTo(users.getId());
         }
         else {
-            studentsList = studentMapper.selectSimpleStudent(startrow, pageSize);
+            studentsList = studentsDAO.selectByExample(studentsExample);
         }
 
-        for (SimpleStudent student : studentsList) {
+        for (Students student : studentsList) {
             Integer belong = student.getBelong();
             Users belongUser = usersDAO.selectByPrimaryKey(belong);
             if (belongUser != null) {
                 student.setBelongName(belongUser.getUserName());
             }
         }
-        studentsExample.setOrderByClause("id limit " + startrow + "," + pageSize);
         int total = (int) studentsDAO.countByExample(studentsExample);
         //根据页面属性生成页面对象
-        Page<SimpleStudent> pageInfo = new Page<>(total, pageSize, navigatePages, cpage, studentsList);
+        Page<Students> pageInfo = new Page<>(total, pageSize, navigatePages, cpage, studentsList);
         return Result.ofSuccess(pageInfo);
     }
 
@@ -118,6 +111,7 @@ public class StudentController {
     public Result<Students> getStudent(@RequestParam Integer id, HttpServletRequest request) {
         Users user = (Users) request.getSession().getAttribute(WebConfiguration.LOGIN_USER);
         Students student = studentsDAO.selectByPrimaryKey(id);
+        ImgUtils.getBase64Img(student);
         if (user.getRole() == 1) {
             if (!student.getBelong().equals(user.getId())) {
                 return Result.ofFail(-1, "该学员不属于当前用户");
@@ -150,7 +144,13 @@ public class StudentController {
         Users users = (Users) request.getSession().getAttribute(WebConfiguration.LOGIN_USER);
         students.setBelong(users.getId());
         students.setUpdateDate(new Date());
+        //将学员照片存储下来
         ImgUtils.saveStudentImages(students);
+        //数据库不再存储照片，并且也不需要存储照片路径
+        students.setCertFscan(null);
+        students.setCertBscan(null);
+        students.setCertGscan(null);
+        students.setPhotoBlue(null);
         studentsDAO.insert(students);
         return Result.ofSuccess("success");
     }
@@ -169,12 +169,14 @@ public class StudentController {
             }
             return Result.ofFail(-1, errorMsg);
         }
+        Students s = studentsDAO.selectByPrimaryKey(studentParam.getId());
+        if (s == null) {
+            return Result.ofFail(-2, "学员不存在");
+        }
+        //将原来的照片删除掉
+        ImgUtils.deleteStudentImg(s);
         Users user = (Users) request.getSession().getAttribute(WebConfiguration.LOGIN_USER);
         if (user.getRole() == 1) {
-            Students s = studentsDAO.selectByPrimaryKey(studentParam.getId());
-            if (s == null) {
-                return Result.ofFail(-2, "该学员不存在");
-            }
             if (!s.getBelong().equals(user.getId())) {
                 return Result.ofFail(-3, "该学员不属于当前用户");
             }
@@ -183,24 +185,33 @@ public class StudentController {
         BeanCopy.copy(studentParam, students);
         students.setId(studentParam.getId());
         students.setUpdateDate(new Date());
-        studentsDAO.updateByPrimaryKeySelective(students);
         ImgUtils.saveStudentImages(students);
+        //数据库不再存储照片，并且也不需要存储照片路径
+        students.setCertFscan(null);
+        students.setCertBscan(null);
+        students.setCertGscan(null);
+        students.setPhotoBlue(null);
+        studentsDAO.updateByPrimaryKeySelective(students);
         return Result.ofSuccess("success");
     }
 
     @GetMapping("/deleteStudent")
     public Result<String> delete(Integer id, HttpServletRequest request) {
+        Students student = studentsDAO.selectByPrimaryKey(id);
+        if (student == null) {
+            return Result.ofFail(-1, "该学员不存在");
+        }
         Users user = (Users) request.getSession().getAttribute(WebConfiguration.LOGIN_USER);
         if (user.getRole() == 0) {
             studentsDAO.deleteByPrimaryKey(id);
+            //删除该用户图片
+            ImgUtils.deleteStudentImg(student);
         }
         else {
-            Students student = studentsDAO.selectByPrimaryKey(id);
-            if (student == null) {
-                return Result.ofFail(-1, "该学员不存在");
-            }
             if (student.getBelong().equals(user.getId())) {
                 studentsDAO.deleteByPrimaryKey(id);
+                //删除该用户图片
+                ImgUtils.deleteStudentImg(student);
             }
             else {
                 return Result.ofFail(-1, "要删除的学员不属于该用户");
@@ -224,7 +235,13 @@ public class StudentController {
             criteria.andBelongEqualTo(users.getId());
         }
         List<Students> res = studentsDAO.selectByExample(studentsExample);
-
+        for (Students student : res) {
+            Integer belong = student.getBelong();
+            Users belongUser = usersDAO.selectByPrimaryKey(belong);
+            if (belongUser != null) {
+                student.setBelongName(belongUser.getUserName());
+            }
+        }
         return Result.ofSuccess(res);
     }
 

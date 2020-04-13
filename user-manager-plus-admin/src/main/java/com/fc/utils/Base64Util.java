@@ -1,5 +1,6 @@
 package com.fc.utils;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -16,8 +17,23 @@ public class Base64Util {
      * @param imgPath
      * @return
      */
-    public static String getImageStr(String imgPath) {// 将图片文件转化为字节数组字符串，并对其进行Base64编码处理
-        String imgFile = imgPath;// 待处理的图片
+    public static String getImageStr(File imgFile) {// 将图片文件转化为字节数组字符串，并对其进行Base64编码处理
+        String extension = imgFile.getName().substring(imgFile.getName().lastIndexOf(".") + 1);
+        String prefix;
+        switch (extension) {//check image's extension
+            case "jpeg":
+                prefix = "data:image/jpeg;base64,";
+                break;
+            case "png":
+                prefix = "data:image/png;base64,";
+                break;
+            case "jpg":
+                prefix = "data:image/jpg;base64,";
+                break;
+            default://should write cases for more images types
+                prefix = "data:image/jpg;base64,";
+                break;
+        }
         InputStream in = null;
         byte[] data = null;
         String encode = null; // 返回Base64编码过的字节数组字符串
@@ -29,6 +45,7 @@ public class Base64Util {
             data = new byte[in.available()];
             in.read(data);
             encode = Base64.encodeBase64String(data);
+            encode = prefix + encode;
         }
         catch (IOException e) {
             e.printStackTrace();

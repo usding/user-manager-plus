@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Map;
 
 /**
  * 保存图片
@@ -66,6 +67,56 @@ public class ImgUtils {
         for (File img : images) {
             if (img.getName().startsWith(prefix)) {
                 img.delete();
+            }
+        }
+    }
+
+    public static void deleteStudentImg(Students student) {
+        File dir = new File(WebConfiguration.IMAGE_PATH);
+        File[] images = new File[0];
+        if (dir.isDirectory()) {
+            images = dir.listFiles();
+        }
+        String userPrefix = student.getUserName() + "_" + student.getCertNumber();
+        for (File file : images) {
+            if (file.getName().startsWith(userPrefix + "_idcard_front")) {
+                file.delete();
+            }
+            if (file.getName().startsWith(userPrefix + "_idcard_back")) {
+                file.delete();
+            }
+            if (file.getName().startsWith(userPrefix + "_portrait")) {
+                file.delete();
+            }
+            if (file.getName().startsWith(userPrefix + "_diploma")) {
+                file.delete();
+            }
+        }
+    }
+
+    public static void getBase64Img(Students student) {
+        File dir = new File(WebConfiguration.IMAGE_PATH);
+        File[] images = new File[0];
+        if (dir.isDirectory()) {
+            images = dir.listFiles();
+        }
+        String userPrefix = student.getUserName() + "_" + student.getCertNumber();
+//        String certFscanPath = WebConfiguration.IMAGE_PATH + File.separator + userPrefix + "_idcard_front";
+//        String certBscanPath = WebConfiguration.IMAGE_PATH + File.separator + userPrefix + "_idcard_back";
+//        String photoBluePath = WebConfiguration.IMAGE_PATH + File.separator + userPrefix + "_portrait";
+//        String certGscanPath = WebConfiguration.IMAGE_PATH + File.separator + userPrefix + "_diploma";
+        for (File file : images) {
+            if (file.getName().startsWith(userPrefix + "_idcard_front")) {
+                student.setCertFscan(Base64Util.getImageStr(file));
+            }
+            if (file.getName().startsWith(userPrefix + "_idcard_back")) {
+                student.setCertBscan(Base64Util.getImageStr(file));
+            }
+            if (file.getName().startsWith(userPrefix + "_portrait")) {
+                student.setPhotoBlue(Base64Util.getImageStr(file));
+            }
+            if (file.getName().startsWith(userPrefix + "_diploma")) {
+                student.setCertGscan(Base64Util.getImageStr(file));
             }
         }
     }
