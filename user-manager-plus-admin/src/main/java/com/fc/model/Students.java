@@ -133,6 +133,8 @@ public class Students implements Serializable {
      */
     private String certGscan;
 
+    private Date updateDate;
+
     /**
      * 学员属于哪位工作人员
      */
@@ -346,6 +348,14 @@ public class Students implements Serializable {
 
     public void setBelong(Integer belong) {
         this.belong = belong;
+    }
+
+    public Date getUpdateDate() {
+        return updateDate;
+    }
+
+    public void setUpdateDate(Date updateDate) {
+        this.updateDate = updateDate;
     }
 
     @Override

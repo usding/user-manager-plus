@@ -1,6 +1,7 @@
 package com.fc.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -11,14 +12,17 @@ import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import javax.servlet.Filter;
+import java.io.File;
 import java.io.IOException;
 
 @Configuration
 public class WebConfiguration implements WebMvcConfigurer {
 
-    public static final String LOGIN_KEY="LOGIN_SESSION_KEY";
-    public static final String LOGIN_USER="LOGIN_SESSION_USER";
-    public static final String LOGIN_ROLE="LOGIN_SESSION_ROLE";
+    public static final String LOGIN_KEY = "LOGIN_SESSION_KEY";
+    public static final String LOGIN_USER = "LOGIN_SESSION_USER";
+    public static final String LOGIN_ROLE = "LOGIN_SESSION_ROLE";
+
+    public static String IMAGE_PATH;
 
 //    @Autowired
 //    private FileUploadProp fileUploadProp;
@@ -29,7 +33,7 @@ public class WebConfiguration implements WebMvcConfigurer {
 //        return new SessionFilter();
 //    }
 
-//    @Bean
+    //    @Bean
 //    public FilterRegistrationBean testFilterRegistration() {
 //
 //        FilterRegistrationBean registration = new FilterRegistrationBean();
@@ -58,6 +62,12 @@ public class WebConfiguration implements WebMvcConfigurer {
         catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    @Value("${image.path}")
+    public void setImagePath(String path) {
+        File f = new File(path);
+        IMAGE_PATH = f.getAbsolutePath();
     }
 
 }

@@ -15,6 +15,17 @@ public class SimpleStudent implements Serializable {
     private Long finalPayment;
     private Long totalCost;
 
+    public Integer getBelong() {
+        return belong;
+    }
+
+    public void setBelong(Integer belong) {
+        this.belong = belong;
+    }
+
+    private Integer belong;
+    private String belongName;
+
     public String getWechat() {
         return wechat;
     }
@@ -105,6 +116,16 @@ public class SimpleStudent implements Serializable {
 
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
+    }
+
+
+
+    public String getBelongName() {
+        return belongName;
+    }
+
+    public void setBelongName(String belongName) {
+        this.belongName = belongName;
     }
 
 }

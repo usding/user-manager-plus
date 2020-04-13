@@ -1,10 +1,10 @@
 package com.fc.web;
 
-import com.fc.config.FileUploadProp;
 import com.fc.config.WebConfiguration;
 import com.fc.mapper.BatchDAO;
 import com.fc.mapper.StudentMapper;
 import com.fc.mapper.StudentsDAO;
+import com.fc.mapper.UsersDAO;
 import com.fc.model.Batch;
 import com.fc.model.BatchExample;
 import com.fc.model.SimpleStudent;
@@ -12,7 +12,6 @@ import com.fc.model.Students;
 import com.fc.model.StudentsExample;
 import com.fc.model.Users;
 import com.fc.param.StudentParam;
-import com.fc.param.UserParam;
 import com.fc.result.Page;
 import com.fc.result.Result;
 import com.fc.utils.BeanCopy;
@@ -22,7 +21,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.ui.Model;
-import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,15 +28,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.util.Date;
 import java.util.List;
 import java.util.regex.Pattern;
 
@@ -58,6 +55,9 @@ public class StudentController {
     private StudentsDAO studentsDAO;
 
     @Resource
+    private UsersDAO usersDAO;
+
+    @Resource
     private BatchDAO batchDAO;
 
     @Autowired
@@ -66,8 +66,6 @@ public class StudentController {
     /* @Value("${file.upload.path}")
      private String prePath;
  */
-    @Autowired
-    private FileUploadProp fileUploadProp;
 
     @GetMapping("/studentList")
     @Cacheable(value = "student_list")
@@ -93,6 +91,14 @@ public class StudentController {
         }
         else {
             studentsList = studentMapper.selectSimpleStudent(startrow, pageSize);
+        }
+
+        for (SimpleStudent student : studentsList) {
+            Integer belong = student.getBelong();
+            Users belongUser = usersDAO.selectByPrimaryKey(belong);
+            if (belongUser != null) {
+                student.setBelongName(belongUser.getUserName());
+            }
         }
         studentsExample.setOrderByClause("id limit " + startrow + "," + pageSize);
         int total = (int) studentsDAO.countByExample(studentsExample);
@@ -143,6 +149,7 @@ public class StudentController {
         BeanCopy.copy(studentParam, students);
         Users users = (Users) request.getSession().getAttribute(WebConfiguration.LOGIN_USER);
         students.setBelong(users.getId());
+        students.setUpdateDate(new Date());
         studentsDAO.insert(students);
         return Result.ofSuccess("success");
     }
@@ -161,7 +168,7 @@ public class StudentController {
     }
 
     @PostMapping(value = "/editStudent", consumes = {"application/json"})
-    public Result<?> edit(@RequestBody @Valid StudentParam studentParam, BindingResult result, HttpServletRequest request) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
+    public Result<?> edit(@RequestBody @Valid StudentParam studentParam, BindingResult result, HttpServletRequest request) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, IOException {
         String errorMsg = "";
         if (result.hasErrors()) {
             List<ObjectError> list = result.getAllErrors();
@@ -187,8 +194,9 @@ public class StudentController {
         Students students = new Students();
         BeanCopy.copy(studentParam, students);
         students.setId(studentParam.getId());
+        students.setUpdateDate(new Date());
         studentsDAO.updateByPrimaryKeySelective(students);
-
+        ImgUtils.saveStudentImages(students);
         return Result.ofSuccess("success");
     }
 

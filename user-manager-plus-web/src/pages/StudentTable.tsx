@@ -16,6 +16,11 @@ class StudentTable extends React.Component<any, any> {
       key: 'userName',
       width: 100
     }, {
+      title: '所属用户',
+      dataIndex: 'belongName',
+      key: 'belongName',
+      width: 100
+    },{
       title: '性别',
       dataIndex: 'userSex',
       key: 'userSex',

@@ -13,17 +13,18 @@
         <id column="deposit" property="deposit" />
         <id column="final_payment" property="finalPayment" />
         <id column="total_cost" property="totalCost" />
+        <id column="belong" property="belong" />
     </resultMap>
 
     <select id="selectSimpleStudent" resultMap="SimpleMap">
         SELECT STUDENTS.id, STUDENTS.user_name,STUDENTS.phone_number, STUDENTS.user_sex, STUDENTS.local_estate, STUDENTS.marital_status,
-        STUDENTS.wechat, STUDENTS.batch, STUDENTS.deposit, STUDENTS.final_payment, STUDENTS.total_cost
+        STUDENTS.wechat, STUDENTS.batch, STUDENTS.deposit, STUDENTS.final_payment, STUDENTS.total_cost, STUDENTS.belong
         FROM STUDENTS
         LIMIT #{start}, #{pageSize}
     </select>
     <select id="selectSimpleStudentByBelong" resultMap="SimpleMap">
         SELECT STUDENTS.id, STUDENTS.user_name,STUDENTS.phone_number, STUDENTS.user_sex, STUDENTS.local_estate, STUDENTS.marital_status,
-        STUDENTS.wechat, STUDENTS.batch, STUDENTS.deposit, STUDENTS.final_payment, STUDENTS.total_cost
+        STUDENTS.wechat, STUDENTS.batch, STUDENTS.deposit, STUDENTS.final_payment, STUDENTS.total_cost, STUDENTS.belong
         FROM STUDENTS
         WHERE STUDENTS.belong=#{belong}
         LIMIT #{start}, #{pageSize}

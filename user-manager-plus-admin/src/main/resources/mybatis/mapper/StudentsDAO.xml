@@ -28,6 +28,7 @@
     <result column="students_photo_blue" jdbcType="VARCHAR" property="photoBlue" />
     <result column="students_cert_gscan" jdbcType="VARCHAR" property="certGscan" />
     <result column="students_belong" jdbcType="VARCHAR" property="belong" />
+    <result column="update_date" jdbcType="TIMESTAMP" property="updateDate" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -179,7 +180,7 @@
       wechat, batch, deposit, 
       final_payment, total_cost, note, 
       cert_fscan, cert_bscan, photo_blue, 
-      cert_gscan, belong)
+      cert_gscan, belong, update_date)
     values (#{id,jdbcType=INTEGER}, #{userName,jdbcType=VARCHAR}, #{birthDate,jdbcType=TIMESTAMP}, 
       #{userSex,jdbcType=VARCHAR}, #{certType,jdbcType=VARCHAR}, #{certNumber,jdbcType=VARCHAR}, 
       #{celebrities,jdbcType=VARCHAR}, #{maritalStatus,jdbcType=VARCHAR}, #{phoneNumber,jdbcType=VARCHAR}, 
@@ -188,7 +189,7 @@
       #{wechat,jdbcType=VARCHAR}, #{batch,jdbcType=VARCHAR}, #{deposit,jdbcType=DECIMAL}, 
       #{finalPayment,jdbcType=DECIMAL}, #{totalCost,jdbcType=DECIMAL}, #{note,jdbcType=VARCHAR}, 
       #{certFscan,jdbcType=VARCHAR}, #{certBscan,jdbcType=VARCHAR}, #{photoBlue,jdbcType=VARCHAR}, 
-      #{certGscan,jdbcType=VARCHAR}, #{belong,jdbcType=VARCHAR})
+      #{certGscan,jdbcType=VARCHAR}, #{belong,jdbcType=INTEGER}, #{updateDate,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.fc.model.Students">
     insert into students
@@ -271,6 +272,9 @@
       <if test="belong != null">
         belong,
       </if>
+      <if test="updateDate != null">
+        update_date,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -349,7 +353,10 @@
         #{certGscan,jdbcType=VARCHAR},
       </if>
       <if test="belong != null">
-        #{belong,jdbcType=VARCHAR},
+        #{belong,jdbcType=INTEGER},
+      </if>
+      <if test="updateDate != null">
+        #{updateDate,jdbcType=TIMESTAMP}
       </if>
     </trim>
   </insert>
@@ -438,7 +445,10 @@
         students.cert_gscan = #{record.certGscan,jdbcType=VARCHAR},
       </if>
       <if test="record.belong != null">
-        students.belong = #{record.belong,jdbcType=VARCHAR},
+        students.belong = #{record.belong,jdbcType=INTEGER},
+      </if>
+      <if test="updateDate != null">
+        update_date = #{updateDate,jdbcType=TIMESTAMP}
       </if>
     </set>
     <if test="_parameter != null">
@@ -472,7 +482,8 @@
       students.cert_bscan = #{record.certBscan,jdbcType=VARCHAR},
       students.photo_blue = #{record.photoBlue,jdbcType=VARCHAR},
       students.cert_gscan = #{record.certGscan,jdbcType=VARCHAR},
-      students.belong = #{record.belong,jdbcType=VARCHAR}
+      students.belong = #{record.belong,jdbcType=INTEGER}
+      students.update_date = #{record.updateDate,jdbcType=TIMESTAMP}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -553,7 +564,10 @@
         cert_gscan = #{certGscan,jdbcType=VARCHAR},
       </if>
       <if test="belong != null">
-        belong = #{belong,jdbcType=VARCHAR},
+        belong = #{belong,jdbcType=INTEGER},
+      </if>
+      <if test="updateDate != null">
+        update_date = #{updateDate,jdbcType=TIMESTAMP}
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
@@ -584,7 +598,8 @@
       cert_bscan = #{certBscan,jdbcType=VARCHAR},
       photo_blue = #{photoBlue,jdbcType=VARCHAR},
       cert_gscan = #{certGscan,jdbcType=VARCHAR},
-      belong = #{belong,jdbcType=VARCHAR}
+      belong = #{belong,jdbcType=INTEGER},
+      update_date = #{updateDate,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>
