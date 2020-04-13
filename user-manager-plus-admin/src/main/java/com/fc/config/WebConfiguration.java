@@ -64,9 +64,21 @@ public class WebConfiguration implements WebMvcConfigurer {
         }
     }
 
-    @Value("${image.path}")
+    @Value("${image.path:null}")
     public void setImagePath(String path) {
+        if (path == null) {
+            IMAGE_PATH = System.getProperties().getProperty("user.home") + File.separator + "student_images";
+            return;
+        }
         File f = new File(path);
+        if (!f.exists()) {
+            IMAGE_PATH = System.getProperties().getProperty("user.home") + File.separator + "student_images";
+            File imgDir = new File(IMAGE_PATH);
+            if (!imgDir.exists()) {
+                imgDir.mkdir();
+            }
+            return;
+        }
         IMAGE_PATH = f.getAbsolutePath();
     }
 
