@@ -20,6 +20,7 @@ public class SessionInterceptor implements HandlerInterceptor {
     List<String> whitelist;
 
     private static String NoAuthUri = "/user/";
+    private static String changePswdUri = "/user/changePassword";
 
     SessionInterceptor() throws IOException {
         ClassPathResource resource = new ClassPathResource("whitelist.json");
@@ -42,7 +43,7 @@ public class SessionInterceptor implements HandlerInterceptor {
         Integer id = (Integer) request.getSession().getAttribute(WebConfiguration.LOGIN_KEY);
         Integer role = (Integer) request.getSession().getAttribute(WebConfiguration.LOGIN_ROLE);
         if (id != null) {
-            if (role == 1 && uri.contains(NoAuthUri)) {
+            if (role == 1 && uri.contains(NoAuthUri) && !uri.contains(changePswdUri)) {
                 errMsg = "无权限";
             }
             else {
@@ -56,6 +57,7 @@ public class SessionInterceptor implements HandlerInterceptor {
         Result res = Result.ofFail(-1, errMsg);
         response.setContentType("application/json");
         response.setStatus(HttpStatus.UNAUTHORIZED.value());
+        response.setCharacterEncoding(StandardCharsets.UTF_8.toString());
         response.getWriter().write(JSONObject.toJSONString(res));
         return false;
     }

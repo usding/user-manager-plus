@@ -105,8 +105,10 @@ public class UserController {
         Users user = usersDAO.selectByPrimaryKey(userParam.getId());
         String passwordTmp = user.getPassword();
         BeanUtils.copyProperties(userParam, user);
-        user.setPassword(passwordTmp);
-        user.setRegisterDate(new Date());
+        //如果前端传过来的加密和密码和数据库中的不同，说明管理员要更改该用户密码
+        if (!userParam.getPassword().equals(passwordTmp)) {
+            user.setPassword(passwordEncoder.encode(userParam.getPassword()));
+        }
         usersDAO.updateByPrimaryKeySelective(user);
         return Result.ofSuccess("success");
     }
@@ -121,7 +123,7 @@ public class UserController {
     public Result<?> changePassword(@RequestParam String oldPassword, @RequestParam String newPassword, HttpServletRequest request) {
         Integer id = (Integer) request.getSession().getAttribute(WebConfiguration.LOGIN_KEY);
         if (id == null) {
-            return Result.ofFail(-1, "unauthorized");
+            return Result.ofFail(-1, "用户未登录");
         }
         UsersExample usersExample = new UsersExample();
         UsersExample.Criteria criteria = usersExample.createCriteria();

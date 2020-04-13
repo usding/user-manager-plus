@@ -72,14 +72,14 @@ class Head extends React.Component<any, any> {
             <Form.Item
               label='当前密码'
               name='currentPassword'
-              rules={[{ required: true, message: '请输入当前密码' }]}
+              rules={[{ required: true, message: '请输入当前密码' }, { min: 6, message: '长度小于6' }]}
             >
               <Input.Password />
             </Form.Item>
             <Form.Item
               label='新密码'
               name='newPassword'
-              rules={[{ required: true, message: '请输入新密码' }]}
+              rules={[{ required: true, message: '请输入新密码' }, { min: 6, message: '长度小于6' }]}
             >
               <Input.Password />
             </Form.Item>

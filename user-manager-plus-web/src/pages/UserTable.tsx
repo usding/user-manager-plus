@@ -160,7 +160,7 @@ class UserTable extends React.Component<any, any> {
                 userName: values.userName,
                 role: parseInt(values.role),
                 state: values.state,
-                password: this.state.editUser.password
+                password: values.password ? values.password : this.state.editUser.password
               }
               axios.post('/user/editUser', user).then(({ data }) => {
                 if (data.success) {
@@ -178,13 +178,13 @@ class UserTable extends React.Component<any, any> {
             >
               <Input />
             </Form.Item>
-            {/* <Form.Item
-                            label='密码'
-                            name='password'
-                            rules={[{ required: true, message: '请输入密码' }]}
-                        >
-                            <Input.Password />
-                        </Form.Item> */}
+            <Form.Item
+              label='密码'
+              name='password'
+              rules={[{ min: 6, message: '密码长度小于6' }]}
+            >
+              <Input.Password placeholder='无需更改密码请置空' />
+            </Form.Item>
             {/* <Form.Item
                         label='手机号'
                         name='tel'

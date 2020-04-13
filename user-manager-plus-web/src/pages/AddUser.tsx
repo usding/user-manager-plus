@@ -54,7 +54,7 @@ class AddUser extends React.Component<any, any> {
             <Form.Item
               label='密码'
               name='password'
-              rules={[{ required: true, message: '请输入密码' }]}
+              rules={[{ required: true, message: '请输入密码' }, { min: 6, message: '密码长度小于6' }]}
             >
               <Input.Password />
             </Form.Item>
