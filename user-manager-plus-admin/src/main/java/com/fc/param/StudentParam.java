@@ -114,7 +114,7 @@ public class StudentParam {
      * 批次
      */
     //@NotEmpty(message = "批次不能为空")
-    private String batch;
+    private Integer batch;
 
     /**
      * 定金
@@ -290,11 +290,11 @@ public class StudentParam {
         this.wechat = wechat;
     }
 
-    public String getBatch() {
+    public Integer getBatch() {
         return batch;
     }
 
-    public void setBatch(String batch) {
+    public void setBatch(Integer batch) {
         this.batch = batch;
     }
 

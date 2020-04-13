@@ -1,6 +1,6 @@
 import React, { ReactElement } from 'react'
 import zhCN from 'antd/es/locale/zh_CN'
-import { ConfigProvider, Button, Table, Modal, Row, Input, Col, message, Tooltip, Form } from 'antd'
+import { ConfigProvider, Button, Table, Modal, Row, Input, Col, message, Tooltip, Form, Select } from 'antd'
 import { EditOutlined, DeleteOutlined } from '@ant-design/icons'
 import { history, connect } from 'umi'
 import axios from '@/util/Axios'
@@ -19,7 +19,7 @@ class StudentTable extends React.Component<any, any> {
       dataIndex: 'belongName',
       key: 'belongName',
       width: 100
-    },{
+    }, {
       title: '性别',
       dataIndex: 'userSex',
       key: 'userSex',
@@ -174,8 +174,26 @@ class StudentTable extends React.Component<any, any> {
       })
     }
 
+    getBatchList (): void{
+      axios.get('/batch/batchList').then(({ data }) => {
+        if (data.success) {
+          console.dir(data.data)
+          data.data.forEach((batch: any): void => {
+            batch.key = batch.id
+          })
+          this.props.dispatch({
+            type: 'ALL/save',
+            payload: {
+              batchList: data.data
+            }
+          })
+        }
+      })
+    }
+
     componentDidMount (): void {
       this.getUserList()
+      this.getBatchList()
     }
 
     renderDeleteModal (): ReactElement {
@@ -207,6 +225,17 @@ class StudentTable extends React.Component<any, any> {
       )
     }
 
+    renderBatchList (): ReactElement | ReactElement[] | null {
+      if (!this.props?.ALL?.batchList) {
+        return null
+      }
+      return this.props.ALL.batchList.map((val: any) => {
+        return (
+          <Select.Option key={val.id} value={val.id}>{val.name}</Select.Option>
+        )
+      })
+    }
+
     render (): ReactElement {
       return (
         <React.Fragment>
@@ -215,7 +244,8 @@ class StudentTable extends React.Component<any, any> {
             ref={this.searchFormRef}
             onFinish={(values: any): void => {
               const student = {
-                userName: values.userName
+                userName: values.userName,
+                batch: parseInt(values.batch)
               }
               axios.post('/student/searchStudent', student).then(({ data }) => {
                 if (data.success) {}
@@ -237,9 +267,21 @@ class StudentTable extends React.Component<any, any> {
               <Col span={5}>
                 <Form.Item
                   name='userName'
-                  rules={[{ required: true, message: '搜索条件不能为空' }]}
                 >
                   <Input placeholder='学员名' />
+                </Form.Item>
+              </Col>
+              <Col span={5}>
+                <Form.Item
+                  name='batch'
+                >
+                  <Select
+                    style={{
+                      width: '100%'
+                    }}
+                  >
+                    {this.renderBatchList()}
+                  </Select>
                 </Form.Item>
               </Col>
               <Col span={2}>

@@ -95,6 +95,7 @@ class Head extends React.Component<any, any> {
 
     render (): ReactElement {
       let userManage
+      let batch
       if (this.props.ALL.user && this.props.ALL.user.role === 0) {
         userManage = (
           <Menu.SubMenu
@@ -126,6 +127,17 @@ class Head extends React.Component<any, any> {
               <span>添加用户</span>
             </Menu.Item>
           </Menu.SubMenu>
+        )
+        batch = (
+          <Menu.Item
+            key="3.1"
+            onClick={(): void => {
+              history.push('/batchTable')
+            }}
+          >
+            {/* <PieChartOutlined /> */}
+            <span>批次表格</span>
+          </Menu.Item>
         )
       }
       const menu = (
@@ -253,6 +265,7 @@ class Head extends React.Component<any, any> {
                 <span>编辑学员</span>
               </Menu.Item>
             </Menu.SubMenu>
+            {batch}
           </Menu>
         </React.Fragment>
 

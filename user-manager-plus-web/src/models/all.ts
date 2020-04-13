@@ -1,29 +1,30 @@
 const AllModel = {
-    namespace: 'ALL',
+  namespace: 'ALL',
 
-    state: {
+  state: {
+    selKeys: [],
+    user: null,
+    editUser: null,
+    editStudent: null,
+    batchList: []
+  },
+
+  reducers: {
+    save (state: any, action: any) {
+      return {
+        ...state,
+        ...action.payload
+      }
+    },
+    refresh (state: any, action: any) {
+      return {
         selKeys: [],
         user: null,
         editUser: null,
-        editStudent: null,
-    },
-
-    reducers: {
-        save(state:any, action:any){
-            return {
-                ...state,
-                ...action.payload
-            }
-        },
-        refresh(state:any, action: any){
-            return {
-                selKeys: [],
-                user: null,
-                editUser: null,
-                editStudent: null
-            }
-        }
+        editStudent: null
+      }
     }
+  }
 }
 
 export default AllModel

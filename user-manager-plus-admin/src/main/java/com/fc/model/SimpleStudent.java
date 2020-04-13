@@ -10,7 +10,7 @@ public class SimpleStudent implements Serializable {
     private String localEstate;
     private String married;
     private String wechat;
-    private String batch;
+    private Integer batch;
     private Long deposit;
     private Long finalPayment;
     private Long totalCost;
@@ -34,11 +34,11 @@ public class SimpleStudent implements Serializable {
         this.wechat = wechat;
     }
 
-    public String getBatch() {
+    public Integer getBatch() {
         return batch;
     }
 
-    public void setBatch(String batch) {
+    public void setBatch(Integer batch) {
         this.batch = batch;
     }
 

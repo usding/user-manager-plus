@@ -155,19 +155,6 @@ public class StudentController {
         return Result.ofSuccess("success");
     }
 
-    @RequestMapping("/toEditStudent")
-    public String toEdit(Model model, Integer id) {
-        Students students = studentsDAO.selectByPrimaryKey(id);
-        students.setCertFscan(ImgUtils.virtualPath(students.getCertFscan()));
-        students.setCertBscan(ImgUtils.virtualPath(students.getCertBscan()));
-        students.setCertGscan(ImgUtils.virtualPath(students.getCertGscan()));
-        students.setPhotoBlue(ImgUtils.virtualPath(students.getPhotoBlue()));
-        model.addAttribute("studentsInfo", students);
-        List<Batch> batchList = batchDAO.selectByExample(new BatchExample());
-        model.addAttribute("batchList", batchList);
-        return "student/studentEdit";
-    }
-
     @PostMapping(value = "/editStudent", consumes = {"application/json"})
     public Result<?> edit(@RequestBody @Valid StudentParam studentParam, BindingResult result, HttpServletRequest request) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, IOException {
         String errorMsg = "";
@@ -229,11 +216,15 @@ public class StudentController {
         if (studentParam.getUserName() != null) {
             criteria.andUserNameLike(studentParam.getUserName());
         }
+        if (studentParam.getBatch() != null) {
+            criteria.andBatchEqualTo(studentParam.getBatch());
+        }
         Users users = (Users) request.getSession().getAttribute(WebConfiguration.LOGIN_USER);
         if (users.getRole() == 1) {
             criteria.andBelongEqualTo(users.getId());
         }
-        List<Students> res = studentsDAO.selectPartColumnByExample(studentsExample);
+        List<Students> res = studentsDAO.selectByExample(studentsExample);
+
         return Result.ofSuccess(res);
     }
 

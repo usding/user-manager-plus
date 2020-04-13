@@ -46,6 +46,10 @@ export default defineConfig({
         {
           path: '/editStudent',
           component: '@/pages/AddStudent'
+        },
+        {
+          path: '/batchTable',
+          component: '@/pages/BatchTable'
         }
       ]
     },

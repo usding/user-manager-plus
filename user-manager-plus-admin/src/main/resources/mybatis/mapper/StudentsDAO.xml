@@ -18,17 +18,19 @@
     <result column="students_postal_code" jdbcType="VARCHAR" property="postalCode" />
     <result column="students_email" jdbcType="VARCHAR" property="email" />
     <result column="students_wechat" jdbcType="VARCHAR" property="wechat" />
-    <result column="students_batch" jdbcType="VARCHAR" property="batch" />
+    <result column="students_batch" jdbcType="INTEGER" property="batch" />
     <result column="students_deposit" jdbcType="DECIMAL" property="deposit" />
     <result column="students_final_payment" jdbcType="DECIMAL" property="finalPayment" />
     <result column="students_total_cost" jdbcType="DECIMAL" property="totalCost" />
     <result column="students_note" jdbcType="VARCHAR" property="note" />
-    <result column="students_cert_fscan" jdbcType="VARCHAR" property="certFscan" />
-    <result column="students_cert_bscan" jdbcType="VARCHAR" property="certBscan" />
-    <result column="students_photo_blue" jdbcType="VARCHAR" property="photoBlue" />
-    <result column="students_cert_gscan" jdbcType="VARCHAR" property="certGscan" />
-    <result column="students_belong" jdbcType="VARCHAR" property="belong" />
-    <result column="update_date" jdbcType="TIMESTAMP" property="updateDate" />
+    <result column="students_belong" jdbcType="INTEGER" property="belong" />
+    <result column="students_update_date" jdbcType="TIMESTAMP" property="updateDate" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.fc.model.StudentsWithBLOBs">
+    <result column="students_cert_fscan" jdbcType="LONGVARCHAR" property="certFscan" />
+    <result column="students_cert_bscan" jdbcType="LONGVARCHAR" property="certBscan" />
+    <result column="students_photo_blue" jdbcType="LONGVARCHAR" property="photoBlue" />
+    <result column="students_cert_gscan" jdbcType="LONGVARCHAR" property="certGscan" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -97,18 +99,37 @@
     students.local_estate as students_local_estate, students.accompany_person as students_accompany_person, 
     students.postal_code as students_postal_code, students.email as students_email, students.wechat as students_wechat, 
     students.batch as students_batch, students.deposit as students_deposit, students.final_payment as students_final_payment, 
-    students.total_cost as students_total_cost, students.note as students_note, students.cert_fscan as students_cert_fscan, 
-    students.cert_bscan as students_cert_bscan, students.photo_blue as students_photo_blue, 
-    students.cert_gscan as students_cert_gscan, students.belong as students_belong
+    students.total_cost as students_total_cost, students.note as students_note, students.belong as students_belong, 
+    students.update_date as students_update_date
   </sql>
-
-  <sql id="Part_Column_List">
-    students.id as students_id, students.user_name as students_user_name, students.birth_date as students_birth_date,
-    students.user_sex as students_user_sex, students.cert_number as students_cert_number,students.phone_number as students_phone_number,
-    students.batch as students_batch,
-
+  <sql id="Blob_Column_List">
+    students.cert_fscan as students_cert_fscan, students.cert_bscan as students_cert_bscan, 
+    students.photo_blue as students_photo_blue, students.cert_gscan as students_cert_gscan
   </sql>
-
+  <select id="selectByExampleWithBLOBs" parameterType="com.fc.model.StudentsExample" resultMap="ResultMapWithBLOBs">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from students students
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+    <if test="limit != null">
+      <if test="offset != null">
+        limit ${offset}, ${limit}
+      </if>
+      <if test="offset == null">
+        limit ${limit}
+      </if>
+    </if>
+  </select>
   <select id="selectByExample" parameterType="com.fc.model.StudentsExample" resultMap="BaseResultMap">
     select
     <if test="distinct">
@@ -131,33 +152,11 @@
       </if>
     </if>
   </select>
-
-  <select id="selectPartColumnByExample" parameterType="com.fc.model.StudentsExample" resultMap="BaseResultMap">
-    select
-    <if test="distinct">
-      distinct
-    </if>
-    <include refid="Base_Column_List" />
-    from students students
-    <if test="_parameter != null">
-      <include refid="Example_Where_Clause" />
-    </if>
-    <if test="orderByClause != null">
-      order by ${orderByClause}
-    </if>
-    <if test="limit != null">
-      <if test="offset != null">
-        limit ${offset}, ${limit}
-      </if>
-      <if test="offset == null">
-        limit ${limit}
-      </if>
-    </if>
-  </select>
-
-  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="ResultMapWithBLOBs">
     select 
     <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
     from students students
     where students.id = #{id,jdbcType=INTEGER}
   </select>
@@ -171,7 +170,7 @@
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.fc.model.Students">
+  <insert id="insert" parameterType="com.fc.model.StudentsWithBLOBs">
     insert into students (id, user_name, birth_date, 
       user_sex, cert_type, cert_number, 
       celebrities, marital_status, phone_number, 
@@ -179,19 +178,21 @@
       accompany_person, postal_code, email, 
       wechat, batch, deposit, 
       final_payment, total_cost, note, 
-      cert_fscan, cert_bscan, photo_blue, 
-      cert_gscan, belong, update_date)
+      belong, update_date, cert_fscan, 
+      cert_bscan, photo_blue, cert_gscan
+      )
     values (#{id,jdbcType=INTEGER}, #{userName,jdbcType=VARCHAR}, #{birthDate,jdbcType=TIMESTAMP}, 
       #{userSex,jdbcType=VARCHAR}, #{certType,jdbcType=VARCHAR}, #{certNumber,jdbcType=VARCHAR}, 
       #{celebrities,jdbcType=VARCHAR}, #{maritalStatus,jdbcType=VARCHAR}, #{phoneNumber,jdbcType=VARCHAR}, 
       #{certAddress,jdbcType=VARCHAR}, #{domicile,jdbcType=VARCHAR}, #{localEstate,jdbcType=VARCHAR}, 
       #{accompanyPerson,jdbcType=VARCHAR}, #{postalCode,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, 
-      #{wechat,jdbcType=VARCHAR}, #{batch,jdbcType=VARCHAR}, #{deposit,jdbcType=DECIMAL}, 
+      #{wechat,jdbcType=VARCHAR}, #{batch,jdbcType=INTEGER}, #{deposit,jdbcType=DECIMAL}, 
       #{finalPayment,jdbcType=DECIMAL}, #{totalCost,jdbcType=DECIMAL}, #{note,jdbcType=VARCHAR}, 
-      #{certFscan,jdbcType=VARCHAR}, #{certBscan,jdbcType=VARCHAR}, #{photoBlue,jdbcType=VARCHAR}, 
-      #{certGscan,jdbcType=VARCHAR}, #{belong,jdbcType=INTEGER}, #{updateDate,jdbcType=TIMESTAMP})
+      #{belong,jdbcType=INTEGER}, #{updateDate,jdbcType=TIMESTAMP}, #{certFscan,jdbcType=LONGVARCHAR}, 
+      #{certBscan,jdbcType=LONGVARCHAR}, #{photoBlue,jdbcType=LONGVARCHAR}, #{certGscan,jdbcType=LONGVARCHAR}
+      )
   </insert>
-  <insert id="insertSelective" parameterType="com.fc.model.Students">
+  <insert id="insertSelective" parameterType="com.fc.model.StudentsWithBLOBs">
     insert into students
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -257,6 +258,12 @@
       <if test="note != null">
         note,
       </if>
+      <if test="belong != null">
+        belong,
+      </if>
+      <if test="updateDate != null">
+        update_date,
+      </if>
       <if test="certFscan != null">
         cert_fscan,
       </if>
@@ -268,12 +275,6 @@
       </if>
       <if test="certGscan != null">
         cert_gscan,
-      </if>
-      <if test="belong != null">
-        belong,
-      </if>
-      <if test="updateDate != null">
-        update_date,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
@@ -326,7 +327,7 @@
         #{wechat,jdbcType=VARCHAR},
       </if>
       <if test="batch != null">
-        #{batch,jdbcType=VARCHAR},
+        #{batch,jdbcType=INTEGER},
       </if>
       <if test="deposit != null">
         #{deposit,jdbcType=DECIMAL},
@@ -340,23 +341,23 @@
       <if test="note != null">
         #{note,jdbcType=VARCHAR},
       </if>
-      <if test="certFscan != null">
-        #{certFscan,jdbcType=VARCHAR},
-      </if>
-      <if test="certBscan != null">
-        #{certBscan,jdbcType=VARCHAR},
-      </if>
-      <if test="photoBlue != null">
-        #{photoBlue,jdbcType=VARCHAR},
-      </if>
-      <if test="certGscan != null">
-        #{certGscan,jdbcType=VARCHAR},
-      </if>
       <if test="belong != null">
         #{belong,jdbcType=INTEGER},
       </if>
       <if test="updateDate != null">
-        #{updateDate,jdbcType=TIMESTAMP}
+        #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="certFscan != null">
+        #{certFscan,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="certBscan != null">
+        #{certBscan,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="photoBlue != null">
+        #{photoBlue,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="certGscan != null">
+        #{certGscan,jdbcType=LONGVARCHAR},
       </if>
     </trim>
   </insert>
@@ -418,7 +419,7 @@
         students.wechat = #{record.wechat,jdbcType=VARCHAR},
       </if>
       <if test="record.batch != null">
-        students.batch = #{record.batch,jdbcType=VARCHAR},
+        students.batch = #{record.batch,jdbcType=INTEGER},
       </if>
       <if test="record.deposit != null">
         students.deposit = #{record.deposit,jdbcType=DECIMAL},
@@ -432,25 +433,58 @@
       <if test="record.note != null">
         students.note = #{record.note,jdbcType=VARCHAR},
       </if>
-      <if test="record.certFscan != null">
-        students.cert_fscan = #{record.certFscan,jdbcType=VARCHAR},
-      </if>
-      <if test="record.certBscan != null">
-        students.cert_bscan = #{record.certBscan,jdbcType=VARCHAR},
-      </if>
-      <if test="record.photoBlue != null">
-        students.photo_blue = #{record.photoBlue,jdbcType=VARCHAR},
-      </if>
-      <if test="record.certGscan != null">
-        students.cert_gscan = #{record.certGscan,jdbcType=VARCHAR},
-      </if>
       <if test="record.belong != null">
         students.belong = #{record.belong,jdbcType=INTEGER},
       </if>
-      <if test="updateDate != null">
-        update_date = #{updateDate,jdbcType=TIMESTAMP}
+      <if test="record.updateDate != null">
+        students.update_date = #{record.updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.certFscan != null">
+        students.cert_fscan = #{record.certFscan,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="record.certBscan != null">
+        students.cert_bscan = #{record.certBscan,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="record.photoBlue != null">
+        students.photo_blue = #{record.photoBlue,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="record.certGscan != null">
+        students.cert_gscan = #{record.certGscan,jdbcType=LONGVARCHAR},
       </if>
     </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExampleWithBLOBs" parameterType="map">
+    update students students
+    set students.id = #{record.id,jdbcType=INTEGER},
+      students.user_name = #{record.userName,jdbcType=VARCHAR},
+      students.birth_date = #{record.birthDate,jdbcType=TIMESTAMP},
+      students.user_sex = #{record.userSex,jdbcType=VARCHAR},
+      students.cert_type = #{record.certType,jdbcType=VARCHAR},
+      students.cert_number = #{record.certNumber,jdbcType=VARCHAR},
+      students.celebrities = #{record.celebrities,jdbcType=VARCHAR},
+      students.marital_status = #{record.maritalStatus,jdbcType=VARCHAR},
+      students.phone_number = #{record.phoneNumber,jdbcType=VARCHAR},
+      students.cert_address = #{record.certAddress,jdbcType=VARCHAR},
+      students.domicile = #{record.domicile,jdbcType=VARCHAR},
+      students.local_estate = #{record.localEstate,jdbcType=VARCHAR},
+      students.accompany_person = #{record.accompanyPerson,jdbcType=VARCHAR},
+      students.postal_code = #{record.postalCode,jdbcType=VARCHAR},
+      students.email = #{record.email,jdbcType=VARCHAR},
+      students.wechat = #{record.wechat,jdbcType=VARCHAR},
+      students.batch = #{record.batch,jdbcType=INTEGER},
+      students.deposit = #{record.deposit,jdbcType=DECIMAL},
+      students.final_payment = #{record.finalPayment,jdbcType=DECIMAL},
+      students.total_cost = #{record.totalCost,jdbcType=DECIMAL},
+      students.note = #{record.note,jdbcType=VARCHAR},
+      students.belong = #{record.belong,jdbcType=INTEGER},
+      students.update_date = #{record.updateDate,jdbcType=TIMESTAMP},
+      students.cert_fscan = #{record.certFscan,jdbcType=LONGVARCHAR},
+      students.cert_bscan = #{record.certBscan,jdbcType=LONGVARCHAR},
+      students.photo_blue = #{record.photoBlue,jdbcType=LONGVARCHAR},
+      students.cert_gscan = #{record.certGscan,jdbcType=LONGVARCHAR}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -473,22 +507,18 @@
       students.postal_code = #{record.postalCode,jdbcType=VARCHAR},
       students.email = #{record.email,jdbcType=VARCHAR},
       students.wechat = #{record.wechat,jdbcType=VARCHAR},
-      students.batch = #{record.batch,jdbcType=VARCHAR},
+      students.batch = #{record.batch,jdbcType=INTEGER},
       students.deposit = #{record.deposit,jdbcType=DECIMAL},
       students.final_payment = #{record.finalPayment,jdbcType=DECIMAL},
       students.total_cost = #{record.totalCost,jdbcType=DECIMAL},
       students.note = #{record.note,jdbcType=VARCHAR},
-      students.cert_fscan = #{record.certFscan,jdbcType=VARCHAR},
-      students.cert_bscan = #{record.certBscan,jdbcType=VARCHAR},
-      students.photo_blue = #{record.photoBlue,jdbcType=VARCHAR},
-      students.cert_gscan = #{record.certGscan,jdbcType=VARCHAR},
-      students.belong = #{record.belong,jdbcType=INTEGER}
+      students.belong = #{record.belong,jdbcType=INTEGER},
       students.update_date = #{record.updateDate,jdbcType=TIMESTAMP}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.fc.model.Students">
+  <update id="updateByPrimaryKeySelective" parameterType="com.fc.model.StudentsWithBLOBs">
     update students
     <set>
       <if test="userName != null">
@@ -537,7 +567,7 @@
         wechat = #{wechat,jdbcType=VARCHAR},
       </if>
       <if test="batch != null">
-        batch = #{batch,jdbcType=VARCHAR},
+        batch = #{batch,jdbcType=INTEGER},
       </if>
       <if test="deposit != null">
         deposit = #{deposit,jdbcType=DECIMAL},
@@ -551,25 +581,55 @@
       <if test="note != null">
         note = #{note,jdbcType=VARCHAR},
       </if>
-      <if test="certFscan != null">
-        cert_fscan = #{certFscan,jdbcType=VARCHAR},
-      </if>
-      <if test="certBscan != null">
-        cert_bscan = #{certBscan,jdbcType=VARCHAR},
-      </if>
-      <if test="photoBlue != null">
-        photo_blue = #{photoBlue,jdbcType=VARCHAR},
-      </if>
-      <if test="certGscan != null">
-        cert_gscan = #{certGscan,jdbcType=VARCHAR},
-      </if>
       <if test="belong != null">
         belong = #{belong,jdbcType=INTEGER},
       </if>
       <if test="updateDate != null">
-        update_date = #{updateDate,jdbcType=TIMESTAMP}
+        update_date = #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="certFscan != null">
+        cert_fscan = #{certFscan,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="certBscan != null">
+        cert_bscan = #{certBscan,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="photoBlue != null">
+        photo_blue = #{photoBlue,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="certGscan != null">
+        cert_gscan = #{certGscan,jdbcType=LONGVARCHAR},
       </if>
     </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.fc.model.StudentsWithBLOBs">
+    update students
+    set user_name = #{userName,jdbcType=VARCHAR},
+      birth_date = #{birthDate,jdbcType=TIMESTAMP},
+      user_sex = #{userSex,jdbcType=VARCHAR},
+      cert_type = #{certType,jdbcType=VARCHAR},
+      cert_number = #{certNumber,jdbcType=VARCHAR},
+      celebrities = #{celebrities,jdbcType=VARCHAR},
+      marital_status = #{maritalStatus,jdbcType=VARCHAR},
+      phone_number = #{phoneNumber,jdbcType=VARCHAR},
+      cert_address = #{certAddress,jdbcType=VARCHAR},
+      domicile = #{domicile,jdbcType=VARCHAR},
+      local_estate = #{localEstate,jdbcType=VARCHAR},
+      accompany_person = #{accompanyPerson,jdbcType=VARCHAR},
+      postal_code = #{postalCode,jdbcType=VARCHAR},
+      email = #{email,jdbcType=VARCHAR},
+      wechat = #{wechat,jdbcType=VARCHAR},
+      batch = #{batch,jdbcType=INTEGER},
+      deposit = #{deposit,jdbcType=DECIMAL},
+      final_payment = #{finalPayment,jdbcType=DECIMAL},
+      total_cost = #{totalCost,jdbcType=DECIMAL},
+      note = #{note,jdbcType=VARCHAR},
+      belong = #{belong,jdbcType=INTEGER},
+      update_date = #{updateDate,jdbcType=TIMESTAMP},
+      cert_fscan = #{certFscan,jdbcType=LONGVARCHAR},
+      cert_bscan = #{certBscan,jdbcType=LONGVARCHAR},
+      photo_blue = #{photoBlue,jdbcType=LONGVARCHAR},
+      cert_gscan = #{certGscan,jdbcType=LONGVARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.fc.model.Students">
@@ -589,15 +649,11 @@
       postal_code = #{postalCode,jdbcType=VARCHAR},
       email = #{email,jdbcType=VARCHAR},
       wechat = #{wechat,jdbcType=VARCHAR},
-      batch = #{batch,jdbcType=VARCHAR},
+      batch = #{batch,jdbcType=INTEGER},
       deposit = #{deposit,jdbcType=DECIMAL},
       final_payment = #{finalPayment,jdbcType=DECIMAL},
       total_cost = #{totalCost,jdbcType=DECIMAL},
       note = #{note,jdbcType=VARCHAR},
-      cert_fscan = #{certFscan,jdbcType=VARCHAR},
-      cert_bscan = #{certBscan,jdbcType=VARCHAR},
-      photo_blue = #{photoBlue,jdbcType=VARCHAR},
-      cert_gscan = #{certGscan,jdbcType=VARCHAR},
       belong = #{belong,jdbcType=INTEGER},
       update_date = #{updateDate,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}

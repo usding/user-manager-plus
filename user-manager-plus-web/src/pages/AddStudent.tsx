@@ -49,7 +49,7 @@ class AddStudent extends React.Component<any, any> {
         email: values.email,
         wechat: values.wechat,
         note: values.note,
-        batch: values.batch,
+        batch: parseInt(values.batch),
         deposit: values.deposit,
         finalPayment: values.retainage,
         totalCost: values.totalCost,
@@ -128,6 +128,23 @@ class AddStudent extends React.Component<any, any> {
       })
     }
 
+    getBatchList (): void{
+      axios.get('/batch/batchList').then(({ data }) => {
+        if (data.success) {
+          console.dir(data.data)
+          data.data.forEach((batch: any): void => {
+            batch.key = batch.id
+          })
+          this.props.dispatch({
+            type: 'ALL/save',
+            payload: {
+              batchList: data.data
+            }
+          })
+        }
+      })
+    }
+
     componentDidMount (): void {
       if (this.props.route.path === '/editStudent') {
         if (this.props.ALL.editStudent) {
@@ -141,6 +158,7 @@ class AddStudent extends React.Component<any, any> {
           portraitImg: null
         })
       }
+      this.getBatchList()
     }
 
     componentWillUnmount (): void {
@@ -150,6 +168,14 @@ class AddStudent extends React.Component<any, any> {
       //         editStudent: null
       //     }
       // })
+    }
+
+    renderBatchList (): ReactElement | ReactElement[] {
+      return this.props.ALL.batchList.map((val: any) => {
+        return (
+          <Select.Option key={val.id} value={val.id}>{val.name}</Select.Option>
+        )
+      })
     }
 
     render (): ReactElement | null {
@@ -273,7 +299,7 @@ class AddStudent extends React.Component<any, any> {
                 <Form.Item
                   label='手机号'
                   name='phoneNumber'
-                  rules={[{ required: true, message: '请输入手机号' }, { min: 11, message: '长度小于11位' }, {max: 11, message: '长度大于11位'}]}
+                  rules={[{ required: true, message: '请输入手机号' }, { min: 11, message: '长度小于11位' }, { max: 11, message: '长度大于11位' }]}
                 >
                   <Input />
                 </Form.Item>
@@ -377,7 +403,9 @@ class AddStudent extends React.Component<any, any> {
                   name='batch'
                   rules={[{ required: true, message: '请输入批次' }]}
                 >
-                  <Input />
+                  <Select>
+                    {this.renderBatchList()}
+                  </Select>
                 </Form.Item>
               </Col>
               <Col span={6}>
