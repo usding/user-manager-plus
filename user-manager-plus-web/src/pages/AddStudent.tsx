@@ -27,7 +27,7 @@ class AddStudent extends React.Component<any, any> {
     }
 
     buttonLyout = {
-      wrapperCol: { offset: 8, span: 16 }
+      wrapperCol: { offset: 11, span: 1 }
     }
 
     onFinish (values: any): void {
@@ -385,7 +385,7 @@ class AddStudent extends React.Component<any, any> {
             <h3>批次与金额</h3>
             <Divider />
             <Row>
-              <Col span={4}>
+              <Col span={6}>
                 <Form.Item
                   label='批次'
                   name='batch'
@@ -404,25 +404,29 @@ class AddStudent extends React.Component<any, any> {
                   name='deposit'
                   rules={[{ required: true, message: '请输入定金' }]}
                 >
-                  <InputNumber style={{ width: '100px' }} />
+                  <InputNumber style={{ width: '100%' }} />
                 </Form.Item>
               </Col>
               <Col span={6}>
                 <Form.Item
+                  labelCol={{ span: 6 }}
+                  wrapperCol={{ span: 17 }}
                   label='尾款'
                   name='retainage'
                   rules={[{ required: true, message: '请输入尾款' }]}
                 >
-                  <InputNumber />
+                  <InputNumber style={{ width: '100%' }} />
                 </Form.Item>
               </Col>
               <Col span={6}>
                 <Form.Item
+                  labelCol={{ span: 6 }}
+                  wrapperCol={{ span: 17 }}
                   label='总费用'
                   name='totalCost'
                   rules={[{ required: true, message: '请输入总费用' }]}
                 >
-                  <InputNumber />
+                  <InputNumber style={{ width: '100%' }} />
                 </Form.Item>
               </Col>
             </Row>

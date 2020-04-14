@@ -2,14 +2,9 @@ package com.fc.utils;
 
 import com.fc.config.WebConfiguration;
 import com.fc.model.Students;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Map;
 
 /**
  * 保存图片
@@ -19,140 +14,93 @@ import java.util.Map;
  **/
 public class ImgUtils {
 
-    public static String IMAGE_PATH;
-
-    @Value("${image.path}")
-    public void setImagePath(String path) {
-        IMAGE_PATH = path;
-    }
-
-    public static String saveImg(String prePath, Object file, String certNumber, HttpServletRequest request) throws IOException {
-        if (file instanceof String) {
-            return file.toString();
-        }
-        if (file instanceof MultipartFile) {
-            if (((MultipartFile) file).getSize() == 0) {
-                return prePath + File.separator + "certpic" + File.separator + certNumber + File.separator + "sbxxx.png";
-            }
-            MultipartFile multipartFile = (MultipartFile) file;
-            File saveFile = new File(prePath + File.separator + "certpic" + File.separator + certNumber + File.separator + multipartFile.getOriginalFilename());
-            if (!saveFile.exists()) {
-                if (!saveFile.getParentFile().exists()) {
-                    saveFile.getParentFile().mkdirs();
-                }
-                saveFile.createNewFile();
-            }
-            multipartFile.transferTo(saveFile);
-            return saveFile.getAbsolutePath();
-        }
-        return null;
-    }
-
-   /* public static String virtualPath (String realPath) {
-        String[] substring = realPath.split(":");
-        return substring[1];
-    }*/
-
-    public static String virtualPath(String realPath) {
-        String substring = realPath.substring(3);
-        return substring;
-    }
-
-    public static String realPath(String virtualPath) {
-        return "D:\\" + virtualPath;
-
-    }
-
-    public static void deleteExistsImg(File[] images, String prefix) {
-        for (File img : images) {
-            if (img.getName().startsWith(prefix)) {
-                img.delete();
-            }
-        }
-    }
-
     public static void deleteStudentImg(Students student) {
-        File dir = new File(WebConfiguration.IMAGE_PATH);
-        File[] images = new File[0];
-        if (dir.isDirectory()) {
-            images = dir.listFiles();
-        }
-        String userPrefix = student.getUserName() + "_" + student.getCertNumber();
-        for (File file : images) {
-            if (file.getName().startsWith(userPrefix + "_idcard_front")) {
-                file.delete();
-            }
-            if (file.getName().startsWith(userPrefix + "_idcard_back")) {
-                file.delete();
-            }
-            if (file.getName().startsWith(userPrefix + "_portrait")) {
-                file.delete();
-            }
-            if (file.getName().startsWith(userPrefix + "_diploma")) {
-                file.delete();
-            }
+        String dirPath = WebConfiguration.IMAGE_PATH + File.separator + student.getUserName() + "_" + student.getCertNumber();
+        File dir = new File(dirPath);
+        if (dir.exists() && dir.isDirectory()) {
+            deleteDir(dirPath);
         }
     }
 
     public static void getBase64Img(Students student) {
-        File dir = new File(WebConfiguration.IMAGE_PATH);
-        File[] images = new File[0];
-        if (dir.isDirectory()) {
-            images = dir.listFiles();
+        if (student.getCertFscan() != null) {
+            File f = new File(student.getCertFscan() + ".jpeg");
+            if (f.exists()) {
+                student.setCertFscan(Base64Util.getImageStr(f));
+            }
         }
-        String userPrefix = student.getUserName() + "_" + student.getCertNumber();
-//        String certFscanPath = WebConfiguration.IMAGE_PATH + File.separator + userPrefix + "_idcard_front";
-//        String certBscanPath = WebConfiguration.IMAGE_PATH + File.separator + userPrefix + "_idcard_back";
-//        String photoBluePath = WebConfiguration.IMAGE_PATH + File.separator + userPrefix + "_portrait";
-//        String certGscanPath = WebConfiguration.IMAGE_PATH + File.separator + userPrefix + "_diploma";
-        for (File file : images) {
-            if (file.getName().startsWith(userPrefix + "_idcard_front")) {
-                student.setCertFscan(Base64Util.getImageStr(file));
+        if (student.getCertBscan() != null) {
+            File f = new File(student.getCertBscan() + ".jpeg");
+            if (f.exists()) {
+                student.setCertBscan(Base64Util.getImageStr(f));
             }
-            if (file.getName().startsWith(userPrefix + "_idcard_back")) {
-                student.setCertBscan(Base64Util.getImageStr(file));
+        }
+        if (student.getPhotoBlue() != null) {
+            File f = new File(student.getPhotoBlue() + ".jpeg");
+            if (f.exists()) {
+                student.setPhotoBlue(Base64Util.getImageStr(f));
             }
-            if (file.getName().startsWith(userPrefix + "_portrait")) {
-                student.setPhotoBlue(Base64Util.getImageStr(file));
-            }
-            if (file.getName().startsWith(userPrefix + "_diploma")) {
-                student.setCertGscan(Base64Util.getImageStr(file));
+        }
+        if (student.getCertGscan() != null) {
+            File f = new File(student.getCertGscan() + ".jpeg");
+            if (f.exists()) {
+                student.setCertGscan(Base64Util.getImageStr(f));
             }
         }
     }
 
     public static void saveStudentImages(Students student) throws IOException {
-        File dir = new File(WebConfiguration.IMAGE_PATH);
-        File[] images = new File[0];
-        if (dir.isDirectory()) {
-            images = dir.listFiles();
-        }
-        String userPrefix = student.getUserName() + "_" + student.getCertNumber();
+        String userPrefix = student.getUserName() + "_" + student.getCertNumber() + File.separator + student.getUserName() + "_" + student.getCertNumber();
         String idcardFront = student.getCertFscan();
         String idcardBack = student.getCertBscan();
         String diploma = student.getCertGscan();
         String portrait = student.getPhotoBlue();
         if (idcardFront != null) {
-            deleteExistsImg(images, userPrefix + "_idcard_front");
             String path = WebConfiguration.IMAGE_PATH + File.separator + userPrefix + "_idcard_front";
+            student.setCertFscan(path);
             Base64Util.generateImage(idcardFront, path);
         }
         if (idcardBack != null) {
-            deleteExistsImg(images, userPrefix + "_idcard_back");
             String path = WebConfiguration.IMAGE_PATH + File.separator + userPrefix + "_idcard_back";
+            student.setCertBscan(path);
             Base64Util.generateImage(idcardBack, path);
         }
         if (portrait != null) {
-            deleteExistsImg(images, userPrefix + "_portrait");
             String path = WebConfiguration.IMAGE_PATH + File.separator + userPrefix + "_portrait";
+            student.setPhotoBlue(path);
             Base64Util.generateImage(portrait, path);
         }
         if (diploma != null) {
-            deleteExistsImg(images, userPrefix + "_diploma");
             String path = WebConfiguration.IMAGE_PATH + File.separator + userPrefix + "_diploma";
+            student.setCertGscan(path);
             Base64Util.generateImage(diploma, path);
         }
     }
+
+    /**
+     * 迭代删除文件夹
+     *
+     * @param dirPath 文件夹路径
+     */
+    public static void deleteDir(String dirPath) {
+        File file = new File(dirPath);
+        if (file.isFile()) {
+            file.delete();
+        }
+        else {
+            File[] files = file.listFiles();
+            if (files == null) {
+                file.delete();
+            }
+            else {
+                for (int i = 0; i < files.length; i++) {
+                    deleteDir(files[i].getAbsolutePath());
+                }
+                file.delete();
+            }
+        }
+    }
+
 
     public static void main(String[] args) {
         String s = "/fc/xxx/yyy/ddd.jpg";

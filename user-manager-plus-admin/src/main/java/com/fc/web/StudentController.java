@@ -146,11 +146,6 @@ public class StudentController {
         students.setUpdateDate(new Date());
         //将学员照片存储下来
         ImgUtils.saveStudentImages(students);
-        //数据库不再存储照片，并且也不需要存储照片路径
-        students.setCertFscan(null);
-        students.setCertBscan(null);
-        students.setCertGscan(null);
-        students.setPhotoBlue(null);
         studentsDAO.insert(students);
         return Result.ofSuccess("success");
     }
@@ -186,11 +181,6 @@ public class StudentController {
         students.setId(studentParam.getId());
         students.setUpdateDate(new Date());
         ImgUtils.saveStudentImages(students);
-        //数据库不再存储照片，并且也不需要存储照片路径
-        students.setCertFscan(null);
-        students.setCertBscan(null);
-        students.setCertGscan(null);
-        students.setPhotoBlue(null);
         studentsDAO.updateByPrimaryKeySelective(students);
         return Result.ofSuccess("success");
     }
@@ -252,6 +242,8 @@ public class StudentController {
         return "batch/batchList";
 
     }
+
+
 
     public static void main(String[] args) {
         String reg = "((^(13|15|17|18|19)[0-9]{9}$)|(^0[1,2]{1}\\d{1}-?\\d{8}$)|(^0[3-9] {1}\\d{2}-?\\d{7,8}$)|(^0[1,2]{1}\\d{1}-?\\d{8}-(\\d{1,4})$)|(^0[3-9]{1}\\d{2}-? \\d{7,8}-(\\d{1,4})$))";

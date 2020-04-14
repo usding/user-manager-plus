@@ -91,7 +91,12 @@ public class Base64Util {
 
         OutputStream out = null;
         try {
-            out = new FileOutputStream(imgFilePath + "." + extension);
+            File imgFile = new File(imgFilePath + "." + extension);
+            File dir = imgFile.getParentFile();
+            if (!dir.exists()) {
+                dir.mkdirs();
+            }
+            out = new FileOutputStream(imgFile);
             // Base64解码
             byte[] b = Base64.decodeBase64(strings[1]);
             for (int i = 0; i < b.length; ++i) {
