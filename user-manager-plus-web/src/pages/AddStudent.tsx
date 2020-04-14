@@ -3,7 +3,7 @@ import zhCN from 'antd/es/locale/zh_CN'
 import { Form, Input, Select, Button, DatePicker, ConfigProvider, Divider, InputNumber, Upload, message, Row, Col } from 'antd'
 import { DeleteOutlined } from '@ant-design/icons'
 import moment from 'moment'
-import { connect } from 'umi'
+import { history, connect } from 'umi'
 import ImageUtil from '@/util/ImageUtil'
 import axios from '@/util/Axios'
 
@@ -66,6 +66,7 @@ class AddStudent extends React.Component<any, any> {
         axios.post('/student/addStudent', student).then(({ data }) => {
           if (data.success) {
             message.success('添加学员成功')
+            history.push('/students')
           }
         })
       } else if (this.props.route.path === '/editStudent') {
@@ -110,7 +111,6 @@ class AddStudent extends React.Component<any, any> {
               hometown: student.domicile,
               idenAddress: student.certAddress,
               followed: student.accompanyPerson,
-              mailcode: student.postalCode,
               email: student.email,
               wechat: student.wechat,
               note: student.note,
@@ -340,16 +340,6 @@ class AddStudent extends React.Component<any, any> {
                   </Select>
                 </Form.Item>
               </Col>
-              <Col span={4}>
-                <Form.Item
-                  labelCol={{ span: 10 }}
-                  wrapperCol={{ span: 14 }}
-                  label='邮政编码'
-                  name='mailcode'
-                >
-                  <Input />
-                </Form.Item>
-              </Col>
               <Col span={6}>
                 <Form.Item
                   labelCol={{ span: 8 }}
@@ -377,7 +367,6 @@ class AddStudent extends React.Component<any, any> {
                 <Form.Item
                   label='身份证地址'
                   name='idenAddress'
-                  rules={[{ required: true, message: '身份证地址不能为空' }]}
                 >
                   <Input />
                 </Form.Item>
@@ -469,7 +458,7 @@ class AddStudent extends React.Component<any, any> {
                 <Form.Item
                   labelCol={{ span: 4 }}
                   wrapperCol={{ span: 19 }}
-                  label='2寸蓝底照片'
+                  label='2寸白底照片'
                   required
                 >
                   {this.renderImg('portraitImg')}
