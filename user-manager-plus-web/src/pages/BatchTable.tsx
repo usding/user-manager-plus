@@ -166,7 +166,7 @@ class BatchTable extends React.Component<any, any> {
               labelCol={{ span: 4 }}
               label='批次名字'
               name='name'
-              rules={[{ required: true, message: '请输入批次名字' }]}
+              rules={[{ required: true, message: '请输入批次名字' },{max: 12, message: '批次名字长度不能超过12，更多详情请写到批次描述里'}]}
             >
               <Input />
             </Form.Item>

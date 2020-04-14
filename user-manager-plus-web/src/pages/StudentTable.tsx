@@ -20,6 +20,20 @@ class StudentTable extends React.Component<any, any> {
       key: 'belongName',
       width: 100
     }, {
+      title: '批次',
+      dataIndex: 'batch',
+      key: 'batch',
+      width: 200,
+      render: (id: number, record: any) => {
+        if (this.props.ALL.batchList) {
+          for (const batch of this.props.ALL.batchList) {
+            if (batch.id === id) {
+              return batch.name
+            }
+          }
+        }
+      }
+    }, {
       title: '性别',
       dataIndex: 'userSex',
       key: 'userSex',
@@ -47,20 +61,6 @@ class StudentTable extends React.Component<any, any> {
       title: '微信',
       dataIndex: 'wechat',
       key: 'wechat'
-    }, {
-      title: '批次',
-      dataIndex: 'batch',
-      key: 'batch',
-      width: 100,
-      render: (id: number, record: any) => {
-        if (this.props.ALL.batchList) {
-          for (const batch of this.props.ALL.batchList) {
-            if (batch.id === id) {
-              return batch.name
-            }
-          }
-        }
-      }
     },
     {
       title: '定金',
