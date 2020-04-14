@@ -24,26 +24,11 @@ public class WebConfiguration implements WebMvcConfigurer {
 
     public static String IMAGE_PATH;
 
-//    @Autowired
-//    private FileUploadProp fileUploadProp;
+    public static void main(String[] args) {
+        PasswordEncoder pe = new BCryptPasswordEncoder();
+        System.err.println(pe.encode("password"));
+    }
 
-
-//    @Bean(name = "sessionFilter")
-//    public Filter sessionFilter() {
-//        return new SessionFilter();
-//    }
-
-    //    @Bean
-//    public FilterRegistrationBean testFilterRegistration() {
-//
-//        FilterRegistrationBean registration = new FilterRegistrationBean();
-//        registration.setFilter(sessionFilter());
-//        registration.addUrlPatterns("/*");
-//        registration.addInitParameter("paramName", "paramValue");
-//        registration.setName("sessionFilter");
-//        registration.setOrder(1);
-//        return registration;
-//    }
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
