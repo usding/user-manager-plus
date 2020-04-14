@@ -163,7 +163,7 @@ class Head extends React.Component<any, any> {
               top: 0,
               width: '100%',
               height: '3rem',
-              backgroundColor: 'white',
+              backgroundColor: 'rgb(207,216,220)',
               boxShadow: '0 0 5px 2px rgba(158,158,158, 0.3)',
               lineHeight: '3rem'
             }}

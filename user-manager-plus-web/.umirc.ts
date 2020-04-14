@@ -4,6 +4,7 @@ export default defineConfig({
   history: {
     type: 'memory'
   },
+  title: '全尚优',
   routes: [
     {
       path: '/login',

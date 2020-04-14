@@ -1,6 +1,6 @@
 import React, { ReactElement } from 'react'
 import { Form, Input, Button, Select, message } from 'antd'
-import { connect } from 'umi'
+import { history, connect } from 'umi'
 import axios from '@/util/Axios'
 
 class AddUser extends React.Component<any, any> {
@@ -23,6 +23,7 @@ class AddUser extends React.Component<any, any> {
       axios.post('/user/addUser', user).then(({ data }) => {
         if (data.success) {
           message.success('添加用户成功')
+          history.push('/users')
         }
       })
     }

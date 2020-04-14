@@ -131,7 +131,6 @@ class AddStudent extends React.Component<any, any> {
     getBatchList (): void{
       axios.get('/batch/batchList').then(({ data }) => {
         if (data.success) {
-          console.dir(data.data)
           data.data.forEach((batch: any): void => {
             batch.key = batch.id
           })
@@ -513,8 +512,8 @@ class AddStudent extends React.Component<any, any> {
             reader.onload = async (): Promise<void> => {
               let img64 = reader.result
               if (typeof img64 === 'string') {
-                if (img64.length > 500 * 1024) {
-                  img64 = await ImageUtil.compress(img64, { w: 1000, h: 1000, level: 0.9 })
+                if (img64.length > 1024 * 1024) {
+                  img64 = await ImageUtil.compress(img64, { w: 2000, h: 2000, level: 0.8 })
                 }
                 this.setState({
                   [imgName]: img64

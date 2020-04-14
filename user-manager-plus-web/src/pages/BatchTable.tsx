@@ -1,6 +1,6 @@
 import React, { ReactElement } from 'react'
 import zhCN from 'antd/es/locale/zh_CN'
-import { ConfigProvider, Button, Table, Modal, Form, Input, Select, message, Row, Col } from 'antd'
+import { ConfigProvider, Button, Table, Modal, Form, Input, Space, message, Row, Col } from 'antd'
 import { history, connect } from 'umi'
 import { EditOutlined, DeleteOutlined } from '@ant-design/icons'
 import qs from 'qs'
@@ -166,7 +166,7 @@ class BatchTable extends React.Component<any, any> {
               labelCol={{ span: 4 }}
               label='批次名字'
               name='name'
-              rules={[{ required: true, message: '请输入批次名字' },{max: 12, message: '批次名字长度不能超过12，更多详情请写到批次描述里'}]}
+              rules={[{ required: true, message: '请输入批次名字' }, { max: 12, message: '批次名字长度不能超过12，更多详情请写到批次描述里' }]}
             >
               <Input />
             </Form.Item>
@@ -221,8 +221,10 @@ class BatchTable extends React.Component<any, any> {
     render (): ReactElement {
       return (
         <React.Fragment>
-          {this.renderAddModal()}
-          {this.renderDeleteModal()}
+          <ConfigProvider locale={zhCN}>
+            {this.renderAddModal()}
+            {this.renderDeleteModal()}
+          </ConfigProvider>
           <Row>
             <Col span={2}>
               <Button type='primary'
@@ -235,6 +237,7 @@ class BatchTable extends React.Component<any, any> {
               >添加批次</Button>
             </Col>
           </Row>
+          <p></p>
           <Table bordered size='middle' columns={this.columns} dataSource={this.state.batchList}></Table>
         </React.Fragment>
       )
