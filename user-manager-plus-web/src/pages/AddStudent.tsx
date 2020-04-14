@@ -300,7 +300,7 @@ class AddStudent extends React.Component<any, any> {
                 <Form.Item
                   label='手机号'
                   name='phoneNumber'
-                  rules={[{ required: true, message: '请输入手机号' }, { min: 11, message: '长度小于11位' }, { max: 11, message: '长度大于11位' }]}
+                  rules={[{ min: 11, message: '长度小于11位' }, { max: 11, message: '长度大于11位' }]}
                 >
                   <Input />
                 </Form.Item>
