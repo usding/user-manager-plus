@@ -273,7 +273,9 @@ class AddStudent extends React.Component<any, any> {
                   wrapperCol={{ span: 17 }}
                   label='证件号码'
                   name='idenId'
-                  rules={[{ required: true, message: '请填写证件号码' }]}
+                  rules={[{ required: true, message: '请填写证件号码' },
+                    { min: 10, message: '长度不能小于10' },
+                    { max: 20, message: '长度不能大于20' }]}
                 >
                   <Input />
                 </Form.Item>
