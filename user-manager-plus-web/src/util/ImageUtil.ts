@@ -20,7 +20,7 @@ class ImageUtil {
           const context = this.canvas.getContext('2d')
           if (context !== null) {
             context.drawImage(image, 0, 0, option.w, option.h)
-            const data = this.canvas.toDataURL('image/jpeg', option.level)
+            const data = this.canvas.toDataURL('image/jpg', option.level)
             resolve(data)
           }
         }

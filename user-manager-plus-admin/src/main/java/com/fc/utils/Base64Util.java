@@ -79,7 +79,7 @@ public class Base64Util {
         String extension;
         switch (strings[0]) {//check image's extension
             case "data:image/jpeg;base64":
-                extension = "jpeg";
+                extension = "jpg";
                 break;
             case "data:image/png;base64":
                 extension = "png";

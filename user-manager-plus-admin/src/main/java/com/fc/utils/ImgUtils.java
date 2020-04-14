@@ -24,25 +24,26 @@ public class ImgUtils {
 
     public static void getBase64Img(Students student) {
         if (student.getCertFscan() != null) {
-            File f = new File(student.getCertFscan() + ".jpeg");
+
+            File f = new File(student.getCertFscan().endsWith(".jpg") ? student.getCertFscan() : student.getCertFscan() + ".jpg");
             if (f.exists()) {
                 student.setCertFscan(Base64Util.getImageStr(f));
             }
         }
         if (student.getCertBscan() != null) {
-            File f = new File(student.getCertBscan() + ".jpeg");
+            File f = new File(student.getCertBscan().endsWith(".jpg") ? student.getCertBscan() : student.getCertBscan() + ".jpg");
             if (f.exists()) {
                 student.setCertBscan(Base64Util.getImageStr(f));
             }
         }
         if (student.getPhotoBlue() != null) {
-            File f = new File(student.getPhotoBlue() + ".jpeg");
+            File f = new File(student.getPhotoBlue().endsWith(".jpg") ? student.getPhotoBlue() : student.getPhotoBlue() + ".jpg");
             if (f.exists()) {
                 student.setPhotoBlue(Base64Util.getImageStr(f));
             }
         }
         if (student.getCertGscan() != null) {
-            File f = new File(student.getCertGscan() + ".jpeg");
+            File f = new File(student.getCertGscan().endsWith(".jpg") ? student.getCertGscan() : student.getCertGscan() + ".jpg");
             if (f.exists()) {
                 student.setCertGscan(Base64Util.getImageStr(f));
             }
