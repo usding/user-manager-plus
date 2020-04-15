@@ -26,7 +26,7 @@ public class WebConfiguration implements WebMvcConfigurer {
 
     public static void main(String[] args) {
         PasswordEncoder pe = new BCryptPasswordEncoder();
-        System.err.println(pe.encode("password"));
+        System.err.println(pe.encode("wang172363"));
     }
 
     @Bean

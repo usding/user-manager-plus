@@ -49,7 +49,7 @@ public class StudentParam {
      * 证件号码
      */
     @NotEmpty(message = "证件号码不能为空")
-    @Pattern(regexp = "/(^\\d{15}$)|(^\\d{18}$)|(^\\d{17}(\\d|X|x)$)/",message = "证件号码格式不正确")
+//    @Pattern(regexp = "/(^\\d{15}$)|(^\\d{18}$)|(^\\d{17}(\\d|X|x)$)/",message = "证件号码格式不正确")
     private String certNumber;
 
     /**

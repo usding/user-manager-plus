@@ -67,6 +67,12 @@ class AddStudent extends React.Component<any, any> {
           if (data.success) {
             message.success('添加学员成功')
             history.push('/students')
+            this.props.dispatch({
+              type: 'ALL/save',
+              payload: {
+                selKeys: ['2.1']
+              }
+            })
           }
         })
       } else if (this.props.route.path === '/editStudent') {
