@@ -1,7 +1,7 @@
 import React, { ReactElement } from 'react'
 import { Form, Input, Button } from 'antd'
 import { history, connect } from 'umi'
-import HouseImg from '@/images/house_on_grass.jpg'
+import HouseImg from '@/images/login_background.jpg'
 import axios from '@/util/Axios'
 class Login extends React.Component<any, any> {
     layout = {

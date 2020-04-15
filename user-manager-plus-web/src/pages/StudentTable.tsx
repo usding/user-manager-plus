@@ -24,7 +24,7 @@ class StudentTable extends React.Component<any, any> {
       dataIndex: 'batch',
       key: 'batch',
       width: 200,
-      render: (id: number, record: any) => {
+      render: (id: number): string|null => {
         if (this.props.ALL.batchList) {
           for (const batch of this.props.ALL.batchList) {
             if (batch.id === id) {
@@ -32,27 +32,47 @@ class StudentTable extends React.Component<any, any> {
             }
           }
         }
+        return null
       }
     }, {
       title: '性别',
       dataIndex: 'userSex',
       key: 'userSex',
       width: 60,
-      render: (text: string, record: any): string => {
-        return text === 'm' ? '男' : '女'
+      render: (text: string): string|null => {
+        if (text === 'm') {
+          return '男'
+        } else if (text === 'f') {
+          return '女'
+        }
+        return null
       }
     }, {
       title: '本地房产',
       dataIndex: 'localEstate',
       key: 'localEstate',
       width: 80,
-      render: (text: string): string => text === 'y' ? '有' : '无'
+      render: (text: string): string|null => {
+        if (text === 'y') {
+          return '有'
+        } else if (text === 'n') {
+          return '无'
+        }
+        return null
+      }
     }, {
       title: '婚姻',
       dataIndex: 'maritalStatus',
       key: 'maritalStatus',
       width: 50,
-      render: (text: string): string => text === 'y' ? '已婚' : '未婚'
+      render: (text: string): string|null => {
+        if (text === 'y') {
+          return '已婚'
+        } else if (text === 'n') {
+          return '未婚'
+        }
+        return null
+      }
     }, {
       title: '电话',
       dataIndex: 'phoneNumber',
