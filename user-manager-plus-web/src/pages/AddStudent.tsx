@@ -513,7 +513,6 @@ class AddStudent extends React.Component<any, any> {
             reader.onload = async (): Promise<void> => {
               let img64 = reader.result
               if (typeof img64 === 'string') {
-                console.dir(img64.length)
                 if (img64.length > 1024 * 1024) {
                   let level = 1 - 0.3 * (img64.length / (16 * 1024 * 1024))
                   if (level < 0.3) {
