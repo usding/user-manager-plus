@@ -502,10 +502,10 @@ class AddStudent extends React.Component<any, any> {
           listType="picture-card"
           className="avatar-uploader"
           showUploadList={false}
-          beforeUpload={(file: any): boolean => {
-            const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png'
+          beforeUpload={(file: File): boolean => {
+            const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png' || file.type === 'image/webp'
             if (!isJpgOrPng) {
-              message.error('You can only upload JPG/PNG file!')
+              message.error('只支持jpeg/jpg/png/webp格式照片')
               return isJpgOrPng
             }
             const reader = new FileReader()
@@ -513,8 +513,14 @@ class AddStudent extends React.Component<any, any> {
             reader.onload = async (): Promise<void> => {
               let img64 = reader.result
               if (typeof img64 === 'string') {
+                console.dir(img64.length)
                 if (img64.length > 1024 * 1024) {
-                  img64 = await ImageUtil.compress(img64, { w: 2000, h: 2000, level: 0.8 })
+                  let level = 1 - 0.3 * (img64.length / (16 * 1024 * 1024))
+                  if (level < 0.3) {
+                    level = 0.5
+                  }
+
+                  img64 = await ImageUtil.compress(img64, { w: 1400, h: 1400, level: level })
                 }
                 this.setState({
                   [imgName]: img64

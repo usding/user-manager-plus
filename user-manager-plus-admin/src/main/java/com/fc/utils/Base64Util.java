@@ -20,15 +20,15 @@ public class Base64Util {
     public static String getImageStr(File imgFile) {// 将图片文件转化为字节数组字符串，并对其进行Base64编码处理
         String extension = imgFile.getName().substring(imgFile.getName().lastIndexOf(".") + 1);
         String prefix;
-        switch (extension) {//check image's extension
+        switch (extension) {
             case "jpeg":
                 prefix = "data:image/jpeg;base64,";
                 break;
             case "png":
                 prefix = "data:image/png;base64,";
                 break;
-            case "jpg":
-                prefix = "data:image/jpg;base64,";
+            case "webp":
+                prefix = "data:image/webp;base64,";
                 break;
             default://should write cases for more images types
                 prefix = "data:image/jpg;base64,";
@@ -76,18 +76,7 @@ public class Base64Util {
             return false;
         }
         String[] strings = imgData.split(",");
-        String extension;
-        switch (strings[0]) {//check image's extension
-            case "data:image/jpeg;base64":
-                extension = "jpg";
-                break;
-            case "data:image/png;base64":
-                extension = "png";
-                break;
-            default://should write cases for more images types
-                extension = "jpg";
-                break;
-        }
+        String extension = getImageExtension(imgData);
 
         OutputStream out = null;
         try {
@@ -119,5 +108,25 @@ public class Base64Util {
             out.close();
             return true;
         }
+    }
+
+    public static String getImageExtension(String base64Image) {
+        String[] strings = base64Image.split(",");
+        String extension;
+        switch (strings[0]) {
+            case "data:image/jpeg;base64":
+                extension = "jpeg";
+                break;
+            case "data:image/png;base64":
+                extension = "png";
+                break;
+            case "data:image/webp;base64":
+                extension = "webp";
+                break;
+            default://should write cases for more images types
+                extension = "jpg";
+                break;
+        }
+        return extension;
     }
 }
