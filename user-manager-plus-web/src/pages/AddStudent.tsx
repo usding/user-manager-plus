@@ -480,7 +480,7 @@ class AddStudent extends React.Component<any, any> {
                 <Form.Item
                   labelCol={{ span: 4 }}
                   wrapperCol={{ span: 19 }}
-                  label='毕业证书'
+                  label='合同照片'
                 >
                   {this.renderImg('diplomaImg')}
                 </Form.Item>

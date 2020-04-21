@@ -220,6 +220,9 @@ public class StudentController {
         if (studentParam.getBatch() != null) {
             criteria.andBatchEqualTo(studentParam.getBatch());
         }
+        if (studentParam.getBelong() != null) {
+            criteria.andBelongEqualTo(studentParam.getBelong());
+        }
         Users users = (Users) request.getSession().getAttribute(WebConfiguration.LOGIN_USER);
         if (users.getRole() == 1) {
             criteria.andBelongEqualTo(users.getId());
@@ -242,7 +245,6 @@ public class StudentController {
         return "batch/batchList";
 
     }
-
 
 
     public static void main(String[] args) {

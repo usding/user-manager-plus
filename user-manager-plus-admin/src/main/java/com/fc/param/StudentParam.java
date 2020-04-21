@@ -160,6 +160,8 @@ public class StudentParam {
     //@NotNull(message = "毕业证书扫描件不能为空")
     private String certGscan;
 
+    private Integer belong;
+
 
 
     public Integer getId() {
@@ -360,6 +362,14 @@ public class StudentParam {
 
     public void setCertGscan(String certGscan) {
         this.certGscan = certGscan;
+    }
+
+    public Integer getBelong() {
+        return belong;
+    }
+
+    public void setBelong(Integer belong) {
+        this.belong = belong;
     }
 
     @Override

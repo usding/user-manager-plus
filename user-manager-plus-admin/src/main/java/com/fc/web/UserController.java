@@ -2,6 +2,7 @@ package com.fc.web;
 
 import com.fc.config.WebConfiguration;
 import com.fc.mapper.UsersDAO;
+import com.fc.model.User;
 import com.fc.model.Users;
 import com.fc.model.UsersExample;
 import com.fc.param.UserParam;
@@ -41,28 +42,13 @@ public class UserController {
 
     @RequestMapping("/userList")
     @Cacheable(value = "user_list")
-    public Result<List<Users>> list(@RequestParam(value = "cpage", defaultValue = "0") Integer cpage,
-                                    @RequestParam(value = "size", defaultValue = "6") Integer pageSize) {
-        //page当前页号
-        if (cpage == null || cpage == 0) {
-            cpage = 1;
-        }
-        //滑动窗口中格子个数，自行设置
-        int navigatePages = 6;
-
-//        int startrow = (cpage - 1) * pageSize;
-        //从startrow行开始，查询pageSize条记录
+    public Result<List<Users>> list() {
         UsersExample usersExample = new UsersExample();
-//        usersExample.setOrderByClause("id limit " + startrow + "," + pageSize);
         List<Users> usersList = usersDAO.selectByExample(usersExample);
+        for (Users user : usersList) {
+            user.setPassword(null);
+        }
         return Result.ofSuccess(usersList);
-//        int total = (int) usersDAO.countByExample(new UsersExample());
-//        //根据页面属性生成页面对象
-//        Page<Users> pageInfo = new Page<>(total, pageSize, navigatePages, cpage, usersList);
-//        //传递到前台页面
-//        model.addAttribute("page", pageInfo);
-//        model.addAttribute("usersList", usersList);
-//        return "user/userList";
     }
 
     @PostMapping("/addUser")

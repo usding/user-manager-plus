@@ -155,6 +155,7 @@ class StudentTable extends React.Component<any, any> {
     constructor (props: any) {
       super(props)
       this.state = {
+        users: [],
         studentList: [],
         searchList: [],
         deleteModal: false,
@@ -171,14 +172,14 @@ class StudentTable extends React.Component<any, any> {
             this.setState({
               pageNum: current
             }, () => {
-              this.getUserList()
+              this.getStudentList()
             })
           }
         }
       }
     }
 
-    getUserList (): void {
+    getStudentList (): void {
       axios.get('/student/studentList', {
         params: {
           page: this.state.pageNum,
@@ -220,9 +221,27 @@ class StudentTable extends React.Component<any, any> {
       })
     }
 
+    getUserList (): void {
+      axios.get('/user/userList').then((response) => {
+        console.dir(response)
+        if (!response) {
+          return
+        }
+        const data = response.data
+        if (data?.data && data.data.length > 0) {
+          // data.data.forEach((val: any) => {
+          // })
+          this.setState({
+            users: data.data
+          })
+        }
+      })
+    }
+
     componentDidMount (): void {
-      this.getUserList()
+      this.getStudentList()
       this.getBatchList()
+      this.getUserList()
     }
 
     renderDeleteModal (): ReactElement {
@@ -240,7 +259,7 @@ class StudentTable extends React.Component<any, any> {
                 }
               }).then(({ data }) => {
                 if (data.success) {
-                  this.getUserList()
+                  this.getStudentList()
                   message.success('删除成功')
                   this.setState({ deleteModal: false })
                 }
@@ -260,7 +279,42 @@ class StudentTable extends React.Component<any, any> {
       }
       return this.props.ALL.batchList.map((val: any) => {
         return (
-          <Select.Option key={val.id} value={val.id}>{val.name}</Select.Option>
+          <Select.Option key={val.id} value={val.id} >{val.name}</Select.Option>
+        )
+      })
+    }
+
+    renderUserSelect (): ReactElement | null {
+      if (this.props.ALL.user.role === 0) {
+        return (
+          <Col span={5}>
+            <Form.Item
+              name='belong'
+            >
+              <Select
+                style={{
+                  width: '100%'
+                }}
+                showSearch
+                placeholder='请选择一个用户'
+                filterOption={(input, option): boolean => {
+                  return option!.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                }
+                }
+              >
+                {this.renderUserSelectOption()}
+              </Select>
+            </Form.Item>
+          </Col>
+        )
+      }
+      return null
+    }
+
+    renderUserSelectOption (): ReactElement[] | null {
+      return this.state.users.map((user: any) => {
+        return (
+          <Select.Option key={user.id} value={user.id}>{user.userName}</Select.Option>
         )
       })
     }
@@ -274,7 +328,8 @@ class StudentTable extends React.Component<any, any> {
             onFinish={(values: any): void => {
               const student = {
                 userName: values.userName,
-                batch: parseInt(values.batch)
+                batch: parseInt(values.batch),
+                belong: values.belong
               }
               axios.post('/student/searchStudent', student).then(({ data }) => {
                 if (data.success) {}
@@ -293,7 +348,7 @@ class StudentTable extends React.Component<any, any> {
             <Row
               gutter={{ xs: 8, sm: 16, md: 24 }}
             >
-              <Col span={5}>
+              <Col span={3}>
                 <Form.Item
                   name='userName'
                 >
@@ -308,11 +363,18 @@ class StudentTable extends React.Component<any, any> {
                     style={{
                       width: '100%'
                     }}
+                    showSearch
+                    placeholder='请选择一个批次'
+                    filterOption={(input, option): boolean => {
+                      return option!.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                    }
+                    }
                   >
                     {this.renderBatchList()}
                   </Select>
                 </Form.Item>
               </Col>
+              {this.renderUserSelect()}
               <Col span={2}>
                 <Form.Item >
                   <Button type='primary' htmlType='submit'>搜索</Button>
@@ -321,13 +383,14 @@ class StudentTable extends React.Component<any, any> {
               <Col span={2}>
                 <Button type='primary'
                   onClick={(): void => {
-                    // this.getUserList()
                     this.setState({
                       search: false
                     })
                     this.searchFormRef.current.resetFields()
                   }}
-                >清空</Button>
+                >
+                  清空
+                </Button>
               </Col>
             </Row>
 
