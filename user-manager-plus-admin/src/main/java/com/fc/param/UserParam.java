@@ -14,8 +14,7 @@ public class UserParam  {
     private String userName;
 
     private String phoneNumber;
-    @NotEmpty(message="密码不能为空")
-    @Length(min=6,message="密码长度不能小于6位")
+
     private String password;
 
     @NotEmpty

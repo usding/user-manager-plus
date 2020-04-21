@@ -80,6 +80,13 @@ class AddStudent extends React.Component<any, any> {
         axios.post('/student/editStudent', student).then(({ data }) => {
           if (data.success) {
             message.success('编辑成功')
+            history.push('/students')
+            this.props.dispatch({
+              type: 'ALL/save',
+              payload: {
+                selKeys: ['2.1']
+              }
+            })
           }
         })
       }

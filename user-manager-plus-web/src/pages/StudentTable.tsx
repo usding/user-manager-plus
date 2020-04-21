@@ -241,7 +241,15 @@ class StudentTable extends React.Component<any, any> {
     componentDidMount (): void {
       this.getStudentList()
       this.getBatchList()
-      this.getUserList()
+    }
+
+    componentDidUpdate (preprops: any): void{
+      console.dir(preprops.ALL)
+      if (this.props.ALL.user !== preprops.ALL.user) {
+        if (this.props.ALL.user?.role === 0) {
+          this.getUserList()
+        }
+      }
     }
 
     renderDeleteModal (): ReactElement {

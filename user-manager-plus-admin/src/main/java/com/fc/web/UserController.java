@@ -105,7 +105,7 @@ public class UserController {
         String passwordTmp = user.getPassword();
         BeanUtils.copyProperties(userParam, user);
         //如果前端传过来的加密和密码和数据库中的不同，说明管理员要更改该用户密码
-        if (!userParam.getPassword().equals(passwordTmp)) {
+        if (userParam.getPassword() != null && !userParam.getPassword().equals(passwordTmp)) {
             user.setPassword(passwordEncoder.encode(userParam.getPassword()));
         }
         usersDAO.updateByPrimaryKeySelective(user);

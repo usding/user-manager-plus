@@ -24,6 +24,12 @@ class AddUser extends React.Component<any, any> {
         if (data.success) {
           message.success('添加用户成功')
           history.push('/users')
+          this.props.dispatch({
+            type: 'ALL/save',
+            payload: {
+              selKeys: ['1.1']
+            }
+          })
         }
       })
     }
