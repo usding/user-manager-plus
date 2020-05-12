@@ -42,11 +42,21 @@ public class UserController {
 
     @RequestMapping("/userList")
     @Cacheable(value = "user_list")
-    public Result<List<Users>> list() {
+    public Result<List<Users>> list(HttpServletRequest request) {
+        Users loginUser = (Users) request.getSession().getAttribute(WebConfiguration.LOGIN_USER);
         UsersExample usersExample = new UsersExample();
         List<Users> usersList = usersDAO.selectByExample(usersExample);
+        Users adminUser = null;
         for (Users user : usersList) {
             user.setPassword(null);
+            //筛选出admin用户
+            if (user.getUserName().equals("admin") && !loginUser.getUserName().equals("admin")) {
+                adminUser = user;
+            }
+        }
+        if (adminUser != null) {
+            //非admin用户无法看到admin用户
+            usersList.remove(adminUser);
         }
         return Result.ofSuccess(usersList);
     }

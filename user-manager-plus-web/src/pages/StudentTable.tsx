@@ -207,7 +207,6 @@ class StudentTable extends React.Component<any, any> {
     getBatchList (): void{
       axios.get('/batch/batchList').then(({ data }) => {
         if (data.success) {
-          console.dir(data.data)
           data.data.forEach((batch: any): void => {
             batch.key = batch.id
           })
@@ -223,7 +222,6 @@ class StudentTable extends React.Component<any, any> {
 
     getUserList (): void {
       axios.get('/user/userList').then((response) => {
-        console.dir(response)
         if (!response) {
           return
         }
@@ -241,16 +239,18 @@ class StudentTable extends React.Component<any, any> {
     componentDidMount (): void {
       this.getStudentList()
       this.getBatchList()
-    }
-
-    componentDidUpdate (preprops: any): void{
-      console.dir(preprops.ALL)
-      if (this.props.ALL.user !== preprops.ALL.user) {
-        if (this.props.ALL.user?.role === 0) {
-          this.getUserList()
-        }
+      if (this.props.ALL.user?.role === 0) {
+        this.getUserList()
       }
     }
+
+    // componentDidUpdate (preprops: any): void{
+    //   if (this.props.ALL.user !== preprops.ALL.user) {
+    //     if (this.props.ALL.user?.role === 0) {
+    //       this.getUserList()
+    //     }
+    //   }
+    // }
 
     renderDeleteModal (): ReactElement {
       return (
