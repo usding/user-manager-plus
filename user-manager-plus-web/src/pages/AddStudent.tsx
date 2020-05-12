@@ -27,7 +27,7 @@ class AddStudent extends React.Component<any, any> {
     }
 
     buttonLyout = {
-      wrapperCol: { offset: 11, span: 1 }
+      wrapperCol: { offset: 11, span: 4 }
     }
 
     onFinish (values: any): void {
@@ -496,7 +496,23 @@ class AddStudent extends React.Component<any, any> {
             </Row>
 
             <Form.Item {...this.buttonLyout} >
-              <Button type='primary' htmlType='submit'>确定</Button>
+              <Row>
+                <Col span={12}>
+                  <Button type='primary' htmlType='submit'>确定</Button>
+                </Col>
+                <Col span={12}>
+                  <Button onClick={(): void => {
+                    history.push('/students')
+                    this.props.dispatch({
+                      type: 'ALL/save',
+                      payload: {
+                        selKeys: ['2.1']
+                      }
+                    })
+                  }}>返回</Button>
+                </Col>
+              </Row>
+
             </Form.Item>
           </Form>
         </React.Fragment>

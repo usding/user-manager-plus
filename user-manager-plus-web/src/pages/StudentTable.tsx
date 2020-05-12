@@ -95,6 +95,13 @@ class StudentTable extends React.Component<any, any> {
       dataIndex: 'totalCost',
       key: 'totalCost'
     }, {
+      title: '添加时间',
+      dataIndex: 'entryDate',
+      render: (text: string): string => {
+        const time = new Date(text)
+        return `${time.toLocaleDateString()} ${time.toLocaleTimeString()}`
+      }
+    }, {
       title: '操作',
       dataIndex: 'operation',
       key: 'operation',
