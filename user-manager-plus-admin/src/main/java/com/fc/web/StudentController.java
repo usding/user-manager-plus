@@ -63,7 +63,7 @@ public class StudentController {
     @GetMapping("/studentList")
     @Cacheable(value = "student_list")
     public Result<?> list(@RequestParam(value = "page", defaultValue = "0") Integer cpage,
-                          @RequestParam(value = "size", defaultValue = "6") Integer pageSize, HttpServletRequest request) {
+                          @RequestParam(value = "size", defaultValue = "20") Integer pageSize, HttpServletRequest request) {
         //page当前页号
         if (cpage == null || cpage == 0) {
             cpage = 1;
@@ -144,6 +144,7 @@ public class StudentController {
         Users users = (Users) request.getSession().getAttribute(WebConfiguration.LOGIN_USER);
         students.setBelong(users.getId());
         students.setUpdateDate(new Date());
+        students.setEntryDate(new Date());
         //将学员照片存储下来
         ImgUtils.saveStudentImages(students);
         studentsDAO.insert(students);

@@ -1934,6 +1934,66 @@ public class StudentsExample {
             addCriterion("students.update_date not between", value1, value2, "updateDate");
             return (Criteria) this;
         }
+
+        public Criteria andEntryDateIsNull() {
+            addCriterion("students.entry_date is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andEntryDateIsNotNull() {
+            addCriterion("students.entry_date is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andEntryDateEqualTo(Date value) {
+            addCriterion("students.entry_date =", value, "entryDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andEntryDateNotEqualTo(Date value) {
+            addCriterion("students.entry_date <>", value, "entryDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andEntryDateGreaterThan(Date value) {
+            addCriterion("students.entry_date >", value, "entryDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andEntryDateGreaterThanOrEqualTo(Date value) {
+            addCriterion("students.entry_date >=", value, "entryDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andEntryDateLessThan(Date value) {
+            addCriterion("students.entry_date <", value, "entryDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andEntryDateLessThanOrEqualTo(Date value) {
+            addCriterion("students.entry_date <=", value, "entryDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andEntryDateIn(List<Date> values) {
+            addCriterion("students.entry_date in", values, "entryDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andEntryDateNotIn(List<Date> values) {
+            addCriterion("students.entry_date not in", values, "entryDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andEntryDateBetween(Date value1, Date value2) {
+            addCriterion("students.entry_date between", value1, value2, "entryDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andEntryDateNotBetween(Date value1, Date value2) {
+            addCriterion("students.entry_date not between", value1, value2, "entryDate");
+            return (Criteria) this;
+        }
     }
 
     /**

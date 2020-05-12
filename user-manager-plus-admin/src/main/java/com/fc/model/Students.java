@@ -2,10 +2,11 @@ package com.fc.model;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.Objects;
 
 /**
- * @author 
- * 
+ * @author
+ *
  */
 public class Students implements Serializable {
     /**
@@ -138,7 +139,15 @@ public class Students implements Serializable {
      */
     private Integer belong;
 
+    /**
+     * 更新日期
+     */
     private Date updateDate;
+
+    /**
+     * 录入日期
+     */
+    private Date entryDate;
 
     public String getBelongName() {
         return belongName;
@@ -368,116 +377,91 @@ public class Students implements Serializable {
         this.updateDate = updateDate;
     }
 
+    public Date getEntryDate() {
+        return entryDate;
+    }
+
+    public void setEntryDate(Date entryDate) {
+        this.entryDate = entryDate;
+    }
+
     @Override
-    public boolean equals(Object that) {
-        if (this == that) {
+    public boolean equals(Object o) {
+        if (this == o) {
             return true;
         }
-        if (that == null) {
+        if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        if (getClass() != that.getClass()) {
-            return false;
-        }
-        Students other = (Students) that;
-        return (this.getId() == null ? other.getId() == null : this.getId().equals(other.getId()))
-            && (this.getUserName() == null ? other.getUserName() == null : this.getUserName().equals(other.getUserName()))
-            && (this.getBirthDate() == null ? other.getBirthDate() == null : this.getBirthDate().equals(other.getBirthDate()))
-            && (this.getUserSex() == null ? other.getUserSex() == null : this.getUserSex().equals(other.getUserSex()))
-            && (this.getCertType() == null ? other.getCertType() == null : this.getCertType().equals(other.getCertType()))
-            && (this.getCertNumber() == null ? other.getCertNumber() == null : this.getCertNumber().equals(other.getCertNumber()))
-            && (this.getCelebrities() == null ? other.getCelebrities() == null : this.getCelebrities().equals(other.getCelebrities()))
-            && (this.getMaritalStatus() == null ? other.getMaritalStatus() == null : this.getMaritalStatus().equals(other.getMaritalStatus()))
-            && (this.getPhoneNumber() == null ? other.getPhoneNumber() == null : this.getPhoneNumber().equals(other.getPhoneNumber()))
-            && (this.getCertAddress() == null ? other.getCertAddress() == null : this.getCertAddress().equals(other.getCertAddress()))
-            && (this.getDomicile() == null ? other.getDomicile() == null : this.getDomicile().equals(other.getDomicile()))
-            && (this.getLocalEstate() == null ? other.getLocalEstate() == null : this.getLocalEstate().equals(other.getLocalEstate()))
-            && (this.getAccompanyPerson() == null ? other.getAccompanyPerson() == null : this.getAccompanyPerson().equals(other.getAccompanyPerson()))
-            && (this.getPostalCode() == null ? other.getPostalCode() == null : this.getPostalCode().equals(other.getPostalCode()))
-            && (this.getEmail() == null ? other.getEmail() == null : this.getEmail().equals(other.getEmail()))
-            && (this.getWechat() == null ? other.getWechat() == null : this.getWechat().equals(other.getWechat()))
-            && (this.getBatch() == null ? other.getBatch() == null : this.getBatch().equals(other.getBatch()))
-            && (this.getDeposit() == null ? other.getDeposit() == null : this.getDeposit().equals(other.getDeposit()))
-            && (this.getFinalPayment() == null ? other.getFinalPayment() == null : this.getFinalPayment().equals(other.getFinalPayment()))
-            && (this.getTotalCost() == null ? other.getTotalCost() == null : this.getTotalCost().equals(other.getTotalCost()))
-            && (this.getNote() == null ? other.getNote() == null : this.getNote().equals(other.getNote()))
-            && (this.getCertFscan() == null ? other.getCertFscan() == null : this.getCertFscan().equals(other.getCertFscan()))
-            && (this.getCertBscan() == null ? other.getCertBscan() == null : this.getCertBscan().equals(other.getCertBscan()))
-            && (this.getPhotoBlue() == null ? other.getPhotoBlue() == null : this.getPhotoBlue().equals(other.getPhotoBlue()))
-            && (this.getCertGscan() == null ? other.getCertGscan() == null : this.getCertGscan().equals(other.getCertGscan()))
-            && (this.getBelong() == null ? other.getBelong() == null : this.getBelong().equals(other.getBelong()))
-            && (this.getUpdateDate() == null ? other.getUpdateDate() == null : this.getUpdateDate().equals(other.getUpdateDate()));
+        Students students = (Students) o;
+        return id.equals(students.id) &&
+                userName.equals(students.userName) &&
+                birthDate.equals(students.birthDate) &&
+                userSex.equals(students.userSex) &&
+                certType.equals(students.certType) &&
+                certNumber.equals(students.certNumber) &&
+                celebrities.equals(students.celebrities) &&
+                maritalStatus.equals(students.maritalStatus) &&
+                phoneNumber.equals(students.phoneNumber) &&
+                certAddress.equals(students.certAddress) &&
+                domicile.equals(students.domicile) &&
+                localEstate.equals(students.localEstate) &&
+                accompanyPerson.equals(students.accompanyPerson) &&
+                postalCode.equals(students.postalCode) &&
+                email.equals(students.email) &&
+                wechat.equals(students.wechat) &&
+                batch.equals(students.batch) &&
+                deposit.equals(students.deposit) &&
+                finalPayment.equals(students.finalPayment) &&
+                totalCost.equals(students.totalCost) &&
+                note.equals(students.note) &&
+                certFscan.equals(students.certFscan) &&
+                certBscan.equals(students.certBscan) &&
+                photoBlue.equals(students.photoBlue) &&
+                certGscan.equals(students.certGscan) &&
+                belong.equals(students.belong) &&
+                updateDate.equals(students.updateDate) &&
+                entryDate.equals(students.entryDate) &&
+                belongName.equals(students.belongName);
     }
 
     @Override
     public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + ((getId() == null) ? 0 : getId().hashCode());
-        result = prime * result + ((getUserName() == null) ? 0 : getUserName().hashCode());
-        result = prime * result + ((getBirthDate() == null) ? 0 : getBirthDate().hashCode());
-        result = prime * result + ((getUserSex() == null) ? 0 : getUserSex().hashCode());
-        result = prime * result + ((getCertType() == null) ? 0 : getCertType().hashCode());
-        result = prime * result + ((getCertNumber() == null) ? 0 : getCertNumber().hashCode());
-        result = prime * result + ((getCelebrities() == null) ? 0 : getCelebrities().hashCode());
-        result = prime * result + ((getMaritalStatus() == null) ? 0 : getMaritalStatus().hashCode());
-        result = prime * result + ((getPhoneNumber() == null) ? 0 : getPhoneNumber().hashCode());
-        result = prime * result + ((getCertAddress() == null) ? 0 : getCertAddress().hashCode());
-        result = prime * result + ((getDomicile() == null) ? 0 : getDomicile().hashCode());
-        result = prime * result + ((getLocalEstate() == null) ? 0 : getLocalEstate().hashCode());
-        result = prime * result + ((getAccompanyPerson() == null) ? 0 : getAccompanyPerson().hashCode());
-        result = prime * result + ((getPostalCode() == null) ? 0 : getPostalCode().hashCode());
-        result = prime * result + ((getEmail() == null) ? 0 : getEmail().hashCode());
-        result = prime * result + ((getWechat() == null) ? 0 : getWechat().hashCode());
-        result = prime * result + ((getBatch() == null) ? 0 : getBatch().hashCode());
-        result = prime * result + ((getDeposit() == null) ? 0 : getDeposit().hashCode());
-        result = prime * result + ((getFinalPayment() == null) ? 0 : getFinalPayment().hashCode());
-        result = prime * result + ((getTotalCost() == null) ? 0 : getTotalCost().hashCode());
-        result = prime * result + ((getNote() == null) ? 0 : getNote().hashCode());
-        result = prime * result + ((getCertFscan() == null) ? 0 : getCertFscan().hashCode());
-        result = prime * result + ((getCertBscan() == null) ? 0 : getCertBscan().hashCode());
-        result = prime * result + ((getPhotoBlue() == null) ? 0 : getPhotoBlue().hashCode());
-        result = prime * result + ((getCertGscan() == null) ? 0 : getCertGscan().hashCode());
-        result = prime * result + ((getBelong() == null) ? 0 : getBelong().hashCode());
-        result = prime * result + ((getUpdateDate() == null) ? 0 : getUpdateDate().hashCode());
-        return result;
+        return Objects.hash(id, userName, birthDate, userSex, certType, certNumber, celebrities, maritalStatus, phoneNumber, certAddress, domicile, localEstate, accompanyPerson, postalCode, email, wechat, batch, deposit, finalPayment, totalCost, note, certFscan, certBscan, photoBlue, certGscan, belong, updateDate, entryDate, belongName);
     }
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append(getClass().getSimpleName());
-        sb.append(" [");
-        sb.append("Hash = ").append(hashCode());
-        sb.append(", id=").append(id);
-        sb.append(", userName=").append(userName);
-        sb.append(", birthDate=").append(birthDate);
-        sb.append(", userSex=").append(userSex);
-        sb.append(", certType=").append(certType);
-        sb.append(", certNumber=").append(certNumber);
-        sb.append(", celebrities=").append(celebrities);
-        sb.append(", maritalStatus=").append(maritalStatus);
-        sb.append(", phoneNumber=").append(phoneNumber);
-        sb.append(", certAddress=").append(certAddress);
-        sb.append(", domicile=").append(domicile);
-        sb.append(", localEstate=").append(localEstate);
-        sb.append(", accompanyPerson=").append(accompanyPerson);
-        sb.append(", postalCode=").append(postalCode);
-        sb.append(", email=").append(email);
-        sb.append(", wechat=").append(wechat);
-        sb.append(", batch=").append(batch);
-        sb.append(", deposit=").append(deposit);
-        sb.append(", finalPayment=").append(finalPayment);
-        sb.append(", totalCost=").append(totalCost);
-        sb.append(", note=").append(note);
-        sb.append(", certFscan=").append(certFscan);
-        sb.append(", certBscan=").append(certBscan);
-        sb.append(", photoBlue=").append(photoBlue);
-        sb.append(", certGscan=").append(certGscan);
-        sb.append(", belong=").append(belong);
-        sb.append(", updateDate=").append(updateDate);
-        sb.append(", serialVersionUID=").append(serialVersionUID);
-        sb.append("]");
-        return sb.toString();
+        return "Students{" +
+                "id=" + id +
+                ", userName='" + userName + '\'' +
+                ", birthDate=" + birthDate +
+                ", userSex='" + userSex + '\'' +
+                ", certType='" + certType + '\'' +
+                ", certNumber='" + certNumber + '\'' +
+                ", celebrities='" + celebrities + '\'' +
+                ", maritalStatus='" + maritalStatus + '\'' +
+                ", phoneNumber='" + phoneNumber + '\'' +
+                ", certAddress='" + certAddress + '\'' +
+                ", domicile='" + domicile + '\'' +
+                ", localEstate='" + localEstate + '\'' +
+                ", accompanyPerson='" + accompanyPerson + '\'' +
+                ", postalCode='" + postalCode + '\'' +
+                ", email='" + email + '\'' +
+                ", wechat='" + wechat + '\'' +
+                ", batch=" + batch +
+                ", deposit=" + deposit +
+                ", finalPayment=" + finalPayment +
+                ", totalCost=" + totalCost +
+                ", note='" + note + '\'' +
+                ", certFscan='" + certFscan + '\'' +
+                ", certBscan='" + certBscan + '\'' +
+                ", photoBlue='" + photoBlue + '\'' +
+                ", certGscan='" + certGscan + '\'' +
+                ", belong=" + belong +
+                ", updateDate=" + updateDate +
+                ", entryDate=" + entryDate +
+                ", belongName='" + belongName + '\'' +
+                '}';
     }
 }
