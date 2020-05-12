@@ -98,6 +98,9 @@ class StudentTable extends React.Component<any, any> {
       title: '添加时间',
       dataIndex: 'entryDate',
       render: (text: string): string => {
+        if (!text) {
+          return '未知'
+        }
         const time = new Date(text)
         return `${time.toLocaleDateString()} ${time.toLocaleTimeString()}`
       }

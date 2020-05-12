@@ -1,5 +1,5 @@
 import React, { ReactElement } from 'react'
-import { Form, Input, Button, Select, message } from 'antd'
+import { Form, Input, Button, Select, message, Row, Col } from 'antd'
 import { history, connect } from 'umi'
 import axios from '@/util/Axios'
 
@@ -10,7 +10,7 @@ class AddUser extends React.Component<any, any> {
     }
 
     tailLayout = {
-      wrapperCol: { offset: 10, span: 12 }
+      wrapperCol: { offset: 10, span: 6 }
     }
 
     onFinish (values: any): void {
@@ -92,9 +92,23 @@ class AddUser extends React.Component<any, any> {
               </Select>
             </Form.Item>
             <Form.Item {...this.tailLayout}>
-              <Button type="primary" htmlType="submit">
-                            确定
-              </Button>
+              <Row>
+                <Col span={12}>
+                  <Button type="primary" htmlType="submit">确定</Button>
+                </Col>
+                <Col span={12}>
+                  <Button onClick={(): void => {
+                    history.push('/users')
+                    this.props.dispatch({
+                      type: 'ALL/save',
+                      payload: {
+                        selKeys: ['1.1']
+                      }
+                    })
+                  }}>返回</Button>
+                </Col>
+              </Row>
+
             </Form.Item>
           </Form>
         </React.Fragment>

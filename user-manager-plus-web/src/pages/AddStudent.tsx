@@ -27,7 +27,7 @@ class AddStudent extends React.Component<any, any> {
     }
 
     buttonLyout = {
-      wrapperCol: { offset: 11, span: 4 }
+      wrapperCol: { offset: 10, span: 4 }
     }
 
     onFinish (values: any): void {
