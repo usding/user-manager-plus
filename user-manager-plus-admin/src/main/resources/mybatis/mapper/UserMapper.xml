@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.fc.mapper.UserMapper" >
-    <resultMap id="BaseResultMap" type="com.fc.model.User" >
+<mapper namespace="com.com.fc.mapper.UserMapper" >
+    <resultMap id="BaseResultMap" type="com.com.fc.model.User" >
         <id column="id" property="id" jdbcType="BIGINT" />
         <id column="role" property="role" jdbcType="INTEGER" />
         <result column="userName" property="userName" jdbcType="VARCHAR" />
@@ -31,7 +31,7 @@
 	   FROM users
     </select>
 
-    <select id="getList" resultMap="BaseResultMap" parameterType="com.fc.param.UserParam">
+    <select id="getList" resultMap="BaseResultMap" parameterType="com.com.fc.param.UserParam">
         select
         <include refid="Base_Column_List" />
         from users
@@ -41,7 +41,7 @@
         limit #{beginLine} , #{pageSize}
     </select>
 
-    <select id="getCount" resultType="Integer" parameterType="com.fc.param.UserParam">
+    <select id="getCount" resultType="Integer" parameterType="com.com.fc.param.UserParam">
         select
         count(1)
         from users
@@ -56,7 +56,7 @@
 	   WHERE id = #{id}
     </select>
 
-    <insert id="insert" parameterType="com.fc.model.User" >
+    <insert id="insert" parameterType="com.com.fc.model.User" >
        INSERT INTO 
        		users
        		(role,userName,password,phoneNumber,registerDate,state)
@@ -64,7 +64,7 @@
        		(#{role},#{userName}, #{password}, #{phoneNumber},#{registerDate},#{state})
     </insert>
     
-    <update id="update" parameterType="com.fc.model.User" >
+    <update id="update" parameterType="com.com.fc.model.User" >
        UPDATE 
        		users 
        SET 

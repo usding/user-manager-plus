@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.fc.mapper.StudentsDAO">
-  <resultMap id="BaseResultMap" type="com.fc.model.Students">
+<mapper namespace="com.com.fc.mapper.StudentsDAO">
+  <resultMap id="BaseResultMap" type="com.com.fc.model.Students">
     <id column="students_id" jdbcType="INTEGER" property="id" />
     <result column="students_user_name" jdbcType="VARCHAR" property="userName" />
     <result column="students_birth_date" jdbcType="TIMESTAMP" property="birthDate" />
@@ -100,7 +100,7 @@
     students.cert_bscan as students_cert_bscan, students.photo_blue as students_photo_blue, 
     students.cert_gscan as students_cert_gscan, students.belong as students_belong
   </sql>
-  <select id="selectByExample" parameterType="com.fc.model.StudentsExample" resultMap="BaseResultMap">
+  <select id="selectByExample" parameterType="com.com.fc.model.StudentsExample" resultMap="BaseResultMap">
     select
     <if test="distinct">
       distinct
@@ -132,13 +132,13 @@
     delete from students
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <delete id="deleteByExample" parameterType="com.fc.model.StudentsExample">
+  <delete id="deleteByExample" parameterType="com.com.fc.model.StudentsExample">
     delete from students students
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.fc.model.Students">
+  <insert id="insert" parameterType="com.com.fc.model.Students">
     insert into students (id, user_name, birth_date, 
       user_sex, cert_type, cert_number, 
       celebrities, marital_status, phone_number, 
@@ -158,7 +158,7 @@
       #{certFscan,jdbcType=VARCHAR}, #{certBscan,jdbcType=VARCHAR}, #{photoBlue,jdbcType=VARCHAR}, 
       #{certGscan,jdbcType=VARCHAR}, #{belong,jdbcType=VARCHAR})
   </insert>
-  <insert id="insertSelective" parameterType="com.fc.model.Students">
+  <insert id="insertSelective" parameterType="com.com.fc.model.Students">
     insert into students
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -321,7 +321,7 @@
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.fc.model.StudentsExample" resultType="java.lang.Long">
+  <select id="countByExample" parameterType="com.com.fc.model.StudentsExample" resultType="java.lang.Long">
     select count(*) from students students
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
@@ -445,7 +445,7 @@
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.fc.model.Students">
+  <update id="updateByPrimaryKeySelective" parameterType="com.com.fc.model.Students">
     update students
     <set>
       <if test="userName != null">
@@ -526,7 +526,7 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.fc.model.Students">
+  <update id="updateByPrimaryKey" parameterType="com.com.fc.model.Students">
     update students
     set user_name = #{userName,jdbcType=VARCHAR},
       birth_date = #{birthDate,jdbcType=TIMESTAMP},

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.fc.mapper.UsersDAO">
-  <resultMap id="BaseResultMap" type="com.fc.model.Users">
+<mapper namespace="com.com.fc.mapper.UsersDAO">
+  <resultMap id="BaseResultMap" type="com.com.fc.model.Users">
     <id column="users_id" jdbcType="INTEGER" property="id" />
     <result column="users_role" jdbcType="INTEGER" property="role" />
     <result column="users_user_name" jdbcType="VARCHAR" property="userName" />
@@ -73,7 +73,7 @@
     users.`password` as `users_password`, users.phone_number as users_phone_number, users.register_date as users_register_date, 
     users.`state` as `users_state`
   </sql>
-  <select id="selectByExample" parameterType="com.fc.model.UsersExample" resultMap="BaseResultMap">
+  <select id="selectByExample" parameterType="com.com.fc.model.UsersExample" resultMap="BaseResultMap">
     select
     <if test="distinct">
       distinct
@@ -109,13 +109,13 @@
     delete from users
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <delete id="deleteByExample" parameterType="com.fc.model.UsersExample">
+  <delete id="deleteByExample" parameterType="com.com.fc.model.UsersExample">
     delete from users users
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.fc.model.Users" useGeneratedKeys="true">
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.com.fc.model.Users" useGeneratedKeys="true">
     insert into users (`role`, user_name, `password`, 
       phone_number, register_date, `state`
       )
@@ -123,7 +123,7 @@
       #{phoneNumber,jdbcType=VARCHAR}, #{registerDate,jdbcType=TIMESTAMP}, #{state,jdbcType=VARCHAR}
       )
   </insert>
-  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.fc.model.Users" useGeneratedKeys="true">
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.com.fc.model.Users" useGeneratedKeys="true">
     insert into users
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="role != null">
@@ -166,7 +166,7 @@
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.fc.model.UsersExample" resultType="java.lang.Long">
+  <select id="countByExample" parameterType="com.com.fc.model.UsersExample" resultType="java.lang.Long">
     select count(*) from users users
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
@@ -214,7 +214,7 @@
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.fc.model.Users">
+  <update id="updateByPrimaryKeySelective" parameterType="com.com.fc.model.Users">
     update users
     <set>
       <if test="role != null">
@@ -238,7 +238,7 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.fc.model.Users">
+  <update id="updateByPrimaryKey" parameterType="com.com.fc.model.Users">
     update users
     set `role` = #{role,jdbcType=INTEGER},
       user_name = #{userName,jdbcType=VARCHAR},
