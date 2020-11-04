@@ -1675,73 +1675,213 @@ public class StudentsExample {
             return (Criteria) this;
         }
 
-        public Criteria andPhotoBlueIsNull() {
-            addCriterion("students.photo_blue is null");
+        public Criteria andIdPhotoOneIsNull() {
+            addCriterion("students.id_photo_one is null");
             return (Criteria) this;
         }
 
-        public Criteria andPhotoBlueIsNotNull() {
-            addCriterion("students.photo_blue is not null");
+        public Criteria andIdPhotoOneIsNotNull() {
+            addCriterion("students.id_photo_one is not null");
             return (Criteria) this;
         }
 
-        public Criteria andPhotoBlueEqualTo(String value) {
-            addCriterion("students.photo_blue =", value, "photoBlue");
+        public Criteria andIdPhotoOneEqualTo(String value) {
+            addCriterion("students.id_photo_one =", value, "idPhotoOne");
             return (Criteria) this;
         }
 
-        public Criteria andPhotoBlueNotEqualTo(String value) {
-            addCriterion("students.photo_blue <>", value, "photoBlue");
+        public Criteria andIdPhotoOneNotEqualTo(String value) {
+            addCriterion("students.id_photo_one <>", value, "idPhotoOne");
             return (Criteria) this;
         }
 
-        public Criteria andPhotoBlueGreaterThan(String value) {
-            addCriterion("students.photo_blue >", value, "photoBlue");
+        public Criteria andIdPhotoOneGreaterThan(String value) {
+            addCriterion("students.id_photo_one >", value, "idPhotoOne");
             return (Criteria) this;
         }
 
-        public Criteria andPhotoBlueGreaterThanOrEqualTo(String value) {
-            addCriterion("students.photo_blue >=", value, "photoBlue");
+        public Criteria andIdPhotoOneGreaterThanOrEqualTo(String value) {
+            addCriterion("students.id_photo_one >=", value, "idPhotoOne");
             return (Criteria) this;
         }
 
-        public Criteria andPhotoBlueLessThan(String value) {
-            addCriterion("students.photo_blue <", value, "photoBlue");
+        public Criteria andIdPhotoOneLessThan(String value) {
+            addCriterion("students.id_photo_one <", value, "idPhotoOne");
             return (Criteria) this;
         }
 
-        public Criteria andPhotoBlueLessThanOrEqualTo(String value) {
-            addCriterion("students.photo_blue <=", value, "photoBlue");
+        public Criteria andIdPhotoOneLessThanOrEqualTo(String value) {
+            addCriterion("students.id_photo_one <=", value, "idPhotoOne");
             return (Criteria) this;
         }
 
-        public Criteria andPhotoBlueLike(String value) {
-            addCriterion("students.photo_blue like", value, "photoBlue");
+        public Criteria andIdPhotoOneLike(String value) {
+            addCriterion("students.id_photo_one like", value, "idPhotoOne");
             return (Criteria) this;
         }
 
-        public Criteria andPhotoBlueNotLike(String value) {
-            addCriterion("students.photo_blue not like", value, "photoBlue");
+        public Criteria andIdPhotoOneNotLike(String value) {
+            addCriterion("students.id_photo_one not like", value, "idPhotoOne");
             return (Criteria) this;
         }
 
-        public Criteria andPhotoBlueIn(List<String> values) {
-            addCriterion("students.photo_blue in", values, "photoBlue");
+        public Criteria andIdPhotoOneIn(List<String> values) {
+            addCriterion("students.id_photo_one in", values, "idPhotoOne");
             return (Criteria) this;
         }
 
-        public Criteria andPhotoBlueNotIn(List<String> values) {
-            addCriterion("students.photo_blue not in", values, "photoBlue");
+        public Criteria andIdPhotoOneNotIn(List<String> values) {
+            addCriterion("students.id_photo_one not in", values, "idPhotoOne");
             return (Criteria) this;
         }
 
-        public Criteria andPhotoBlueBetween(String value1, String value2) {
-            addCriterion("students.photo_blue between", value1, value2, "photoBlue");
+        public Criteria andIdPhotoOneBetween(String value1, String value2) {
+            addCriterion("students.id_photo_one between", value1, value2, "idPhotoOne");
             return (Criteria) this;
         }
 
-        public Criteria andPhotoBlueNotBetween(String value1, String value2) {
-            addCriterion("students.photo_blue not between", value1, value2, "photoBlue");
+        public Criteria andIdPhotoOneNotBetween(String value1, String value2) {
+            addCriterion("students.id_photo_one not between", value1, value2, "idPhotoOne");
+            return (Criteria) this;
+        }
+
+        public Criteria andIdPhotoTwoIsNull() {
+            addCriterion("students.id_photo_two is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andIdPhotoTwoIsNotNull() {
+            addCriterion("students.id_photo_two is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andIdPhotoTwoEqualTo(String value) {
+            addCriterion("students.id_photo_two =", value, "idPhotoTwo");
+            return (Criteria) this;
+        }
+
+        public Criteria andIdPhotoTwoNotEqualTo(String value) {
+            addCriterion("students.id_photo_two <>", value, "idPhotoTwo");
+            return (Criteria) this;
+        }
+
+        public Criteria andIdPhotoTwoGreaterThan(String value) {
+            addCriterion("students.id_photo_two >", value, "idPhotoTwo");
+            return (Criteria) this;
+        }
+
+        public Criteria andIdPhotoTwoGreaterThanOrEqualTo(String value) {
+            addCriterion("students.id_photo_two >=", value, "idPhotoTwo");
+            return (Criteria) this;
+        }
+
+        public Criteria andIdPhotoTwoLessThan(String value) {
+            addCriterion("students.id_photo_two <", value, "idPhotoTwo");
+            return (Criteria) this;
+        }
+
+        public Criteria andIdPhotoTwoLessThanOrEqualTo(String value) {
+            addCriterion("students.id_photo_two <=", value, "idPhotoTwo");
+            return (Criteria) this;
+        }
+
+        public Criteria andIdPhotoTwoLike(String value) {
+            addCriterion("students.id_photo_two like", value, "idPhotoTwo");
+            return (Criteria) this;
+        }
+
+        public Criteria andIdPhotoTwoNotLike(String value) {
+            addCriterion("students.id_photo_two not like", value, "idPhotoTwo");
+            return (Criteria) this;
+        }
+
+        public Criteria andIdPhotoTwoIn(List<String> values) {
+            addCriterion("students.id_photo_two in", values, "idPhotoTwo");
+            return (Criteria) this;
+        }
+
+        public Criteria andIdPhotoTwoNotIn(List<String> values) {
+            addCriterion("students.id_photo_two not in", values, "idPhotoTwo");
+            return (Criteria) this;
+        }
+
+        public Criteria andIdPhotoTwoBetween(String value1, String value2) {
+            addCriterion("students.id_photo_two between", value1, value2, "idPhotoTwo");
+            return (Criteria) this;
+        }
+
+        public Criteria andIdPhotoTwoNotBetween(String value1, String value2) {
+            addCriterion("students.id_photo_two not between", value1, value2, "idPhotoTwo");
+            return (Criteria) this;
+        }
+
+        public Criteria andIdPhotoThreeIsNull() {
+            addCriterion("students.id_photo_three is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andIdPhotoThreeIsNotNull() {
+            addCriterion("students.id_photo_three is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andIdPhotoThreeEqualTo(String value) {
+            addCriterion("students.id_photo_three =", value, "idPhotoThree");
+            return (Criteria) this;
+        }
+
+        public Criteria andIdPhotoThreeNotEqualTo(String value) {
+            addCriterion("students.id_photo_three <>", value, "idPhotoThree");
+            return (Criteria) this;
+        }
+
+        public Criteria andIdPhotoThreeGreaterThan(String value) {
+            addCriterion("students.id_photo_three >", value, "idPhotoThree");
+            return (Criteria) this;
+        }
+
+        public Criteria andIdPhotoThreeGreaterThanOrEqualTo(String value) {
+            addCriterion("students.id_photo_three >=", value, "idPhotoThree");
+            return (Criteria) this;
+        }
+
+        public Criteria andIdPhotoThreeLessThan(String value) {
+            addCriterion("students.id_photo_three <", value, "idPhotoThree");
+            return (Criteria) this;
+        }
+
+        public Criteria andIdPhotoThreeLessThanOrEqualTo(String value) {
+            addCriterion("students.id_photo_three <=", value, "idPhotoThree");
+            return (Criteria) this;
+        }
+
+        public Criteria andIdPhotoThreeLike(String value) {
+            addCriterion("students.id_photo_three like", value, "idPhotoThree");
+            return (Criteria) this;
+        }
+
+        public Criteria andIdPhotoThreeNotLike(String value) {
+            addCriterion("students.id_photo_three not like", value, "idPhotoThree");
+            return (Criteria) this;
+        }
+
+        public Criteria andIdPhotoThreeIn(List<String> values) {
+            addCriterion("students.id_photo_three in", values, "idPhotoThree");
+            return (Criteria) this;
+        }
+
+        public Criteria andIdPhotoThreeNotIn(List<String> values) {
+            addCriterion("students.id_photo_three not in", values, "idPhotoThree");
+            return (Criteria) this;
+        }
+
+        public Criteria andIdPhotoThreeBetween(String value1, String value2) {
+            addCriterion("students.id_photo_three between", value1, value2, "idPhotoThree");
+            return (Criteria) this;
+        }
+
+        public Criteria andIdPhotoThreeNotBetween(String value1, String value2) {
+            addCriterion("students.id_photo_three not between", value1, value2, "idPhotoThree");
             return (Criteria) this;
         }
 
@@ -1992,6 +2132,76 @@ public class StudentsExample {
 
         public Criteria andEntryDateNotBetween(Date value1, Date value2) {
             addCriterion("students.entry_date not between", value1, value2, "entryDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andBelongNameIsNull() {
+            addCriterion("students.belong_name is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBelongNameIsNotNull() {
+            addCriterion("students.belong_name is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBelongNameEqualTo(String value) {
+            addCriterion("students.belong_name =", value, "belongName");
+            return (Criteria) this;
+        }
+
+        public Criteria andBelongNameNotEqualTo(String value) {
+            addCriterion("students.belong_name <>", value, "belongName");
+            return (Criteria) this;
+        }
+
+        public Criteria andBelongNameGreaterThan(String value) {
+            addCriterion("students.belong_name >", value, "belongName");
+            return (Criteria) this;
+        }
+
+        public Criteria andBelongNameGreaterThanOrEqualTo(String value) {
+            addCriterion("students.belong_name >=", value, "belongName");
+            return (Criteria) this;
+        }
+
+        public Criteria andBelongNameLessThan(String value) {
+            addCriterion("students.belong_name <", value, "belongName");
+            return (Criteria) this;
+        }
+
+        public Criteria andBelongNameLessThanOrEqualTo(String value) {
+            addCriterion("students.belong_name <=", value, "belongName");
+            return (Criteria) this;
+        }
+
+        public Criteria andBelongNameLike(String value) {
+            addCriterion("students.belong_name like", value, "belongName");
+            return (Criteria) this;
+        }
+
+        public Criteria andBelongNameNotLike(String value) {
+            addCriterion("students.belong_name not like", value, "belongName");
+            return (Criteria) this;
+        }
+
+        public Criteria andBelongNameIn(List<String> values) {
+            addCriterion("students.belong_name in", values, "belongName");
+            return (Criteria) this;
+        }
+
+        public Criteria andBelongNameNotIn(List<String> values) {
+            addCriterion("students.belong_name not in", values, "belongName");
+            return (Criteria) this;
+        }
+
+        public Criteria andBelongNameBetween(String value1, String value2) {
+            addCriterion("students.belong_name between", value1, value2, "belongName");
+            return (Criteria) this;
+        }
+
+        public Criteria andBelongNameNotBetween(String value1, String value2) {
+            addCriterion("students.belong_name not between", value1, value2, "belongName");
             return (Criteria) this;
         }
     }

@@ -25,11 +25,14 @@
     <result column="students_note" jdbcType="VARCHAR" property="note" />
     <result column="students_cert_fscan" jdbcType="VARCHAR" property="certFscan" />
     <result column="students_cert_bscan" jdbcType="VARCHAR" property="certBscan" />
-    <result column="students_photo_blue" jdbcType="VARCHAR" property="photoBlue" />
+    <result column="students_id_photo_one" jdbcType="VARCHAR" property="idPhotoOne" />
+    <result column="students_id_photo_two" jdbcType="VARCHAR" property="idPhotoTwo" />
+    <result column="students_id_photo_three" jdbcType="VARCHAR" property="idPhotoThree" />
     <result column="students_cert_gscan" jdbcType="VARCHAR" property="certGscan" />
     <result column="students_belong" jdbcType="INTEGER" property="belong" />
     <result column="students_update_date" jdbcType="TIMESTAMP" property="updateDate" />
     <result column="students_entry_date" jdbcType="TIMESTAMP" property="entryDate" />
+    <result column="students_belong_name" jdbcType="VARCHAR" property="belongName" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -90,18 +93,19 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    students.id as students_id, students.user_name as students_user_name, students.birth_date as students_birth_date,
-    students.user_sex as students_user_sex, students.cert_type as students_cert_type,
-    students.cert_number as students_cert_number, students.celebrities as students_celebrities,
-    students.marital_status as students_marital_status, students.phone_number as students_phone_number,
-    students.cert_address as students_cert_address, students.domicile as students_domicile,
-    students.local_estate as students_local_estate, students.accompany_person as students_accompany_person,
-    students.postal_code as students_postal_code, students.email as students_email, students.wechat as students_wechat,
-    students.batch as students_batch, students.deposit as students_deposit, students.final_payment as students_final_payment,
-    students.total_cost as students_total_cost, students.note as students_note, students.cert_fscan as students_cert_fscan,
-    students.cert_bscan as students_cert_bscan, students.photo_blue as students_photo_blue,
-    students.cert_gscan as students_cert_gscan, students.belong as students_belong, students.update_date as students_update_date,
-    students.entry_date as students_entry_date
+    students.id as students_id, students.user_name as students_user_name, students.birth_date as students_birth_date, 
+    students.user_sex as students_user_sex, students.cert_type as students_cert_type, 
+    students.cert_number as students_cert_number, students.celebrities as students_celebrities, 
+    students.marital_status as students_marital_status, students.phone_number as students_phone_number, 
+    students.cert_address as students_cert_address, students.domicile as students_domicile, 
+    students.local_estate as students_local_estate, students.accompany_person as students_accompany_person, 
+    students.postal_code as students_postal_code, students.email as students_email, students.wechat as students_wechat, 
+    students.batch as students_batch, students.deposit as students_deposit, students.final_payment as students_final_payment, 
+    students.total_cost as students_total_cost, students.note as students_note, students.cert_fscan as students_cert_fscan, 
+    students.cert_bscan as students_cert_bscan, students.id_photo_one as students_id_photo_one, 
+    students.id_photo_two as students_id_photo_two, students.id_photo_three as students_id_photo_three, 
+    students.cert_gscan as students_cert_gscan, students.belong as students_belong, students.update_date as students_update_date, 
+    students.entry_date as students_entry_date, students.belong_name as students_belong_name
   </sql>
   <select id="selectByExample" parameterType="com.fc.model.StudentsExample" resultMap="BaseResultMap">
     select
@@ -126,7 +130,7 @@
     </if>
   </select>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select
+    select 
     <include refid="Base_Column_List" />
     from students students
     where students.id = #{id,jdbcType=INTEGER}
@@ -142,26 +146,28 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.fc.model.Students">
-    insert into students (id, user_name, birth_date,
-      user_sex, cert_type, cert_number,
-      celebrities, marital_status, phone_number,
-      cert_address, domicile, local_estate,
-      accompany_person, postal_code, email,
-      wechat, batch, deposit,
-      final_payment, total_cost, note,
-      cert_fscan, cert_bscan, photo_blue,
-      cert_gscan, belong, update_date,
-      entry_date)
-    values (#{id,jdbcType=INTEGER}, #{userName,jdbcType=VARCHAR}, #{birthDate,jdbcType=TIMESTAMP},
-      #{userSex,jdbcType=VARCHAR}, #{certType,jdbcType=VARCHAR}, #{certNumber,jdbcType=VARCHAR},
-      #{celebrities,jdbcType=VARCHAR}, #{maritalStatus,jdbcType=VARCHAR}, #{phoneNumber,jdbcType=VARCHAR},
-      #{certAddress,jdbcType=VARCHAR}, #{domicile,jdbcType=VARCHAR}, #{localEstate,jdbcType=VARCHAR},
-      #{accompanyPerson,jdbcType=VARCHAR}, #{postalCode,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR},
-      #{wechat,jdbcType=VARCHAR}, #{batch,jdbcType=INTEGER}, #{deposit,jdbcType=DECIMAL},
-      #{finalPayment,jdbcType=DECIMAL}, #{totalCost,jdbcType=DECIMAL}, #{note,jdbcType=VARCHAR},
-      #{certFscan,jdbcType=VARCHAR}, #{certBscan,jdbcType=VARCHAR}, #{photoBlue,jdbcType=VARCHAR},
-      #{certGscan,jdbcType=VARCHAR}, #{belong,jdbcType=INTEGER}, #{updateDate,jdbcType=TIMESTAMP},
-      #{entryDate,jdbcType=TIMESTAMP})
+    insert into students (id, user_name, birth_date, 
+      user_sex, cert_type, cert_number, 
+      celebrities, marital_status, phone_number, 
+      cert_address, domicile, local_estate, 
+      accompany_person, postal_code, email, 
+      wechat, batch, deposit, 
+      final_payment, total_cost, note, 
+      cert_fscan, cert_bscan, id_photo_one, 
+      id_photo_two, id_photo_three, cert_gscan, 
+      belong, update_date, entry_date, 
+      belong_name)
+    values (#{id,jdbcType=INTEGER}, #{userName,jdbcType=VARCHAR}, #{birthDate,jdbcType=TIMESTAMP}, 
+      #{userSex,jdbcType=VARCHAR}, #{certType,jdbcType=VARCHAR}, #{certNumber,jdbcType=VARCHAR}, 
+      #{celebrities,jdbcType=VARCHAR}, #{maritalStatus,jdbcType=VARCHAR}, #{phoneNumber,jdbcType=VARCHAR}, 
+      #{certAddress,jdbcType=VARCHAR}, #{domicile,jdbcType=VARCHAR}, #{localEstate,jdbcType=VARCHAR}, 
+      #{accompanyPerson,jdbcType=VARCHAR}, #{postalCode,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, 
+      #{wechat,jdbcType=VARCHAR}, #{batch,jdbcType=INTEGER}, #{deposit,jdbcType=DECIMAL}, 
+      #{finalPayment,jdbcType=DECIMAL}, #{totalCost,jdbcType=DECIMAL}, #{note,jdbcType=VARCHAR}, 
+      #{certFscan,jdbcType=VARCHAR}, #{certBscan,jdbcType=VARCHAR}, #{idPhotoOne,jdbcType=VARCHAR}, 
+      #{idPhotoTwo,jdbcType=VARCHAR}, #{idPhotoThree,jdbcType=VARCHAR}, #{certGscan,jdbcType=VARCHAR}, 
+      #{belong,jdbcType=INTEGER}, #{updateDate,jdbcType=TIMESTAMP}, #{entryDate,jdbcType=TIMESTAMP}, 
+      #{belongName,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.fc.model.Students">
     insert into students
@@ -235,8 +241,14 @@
       <if test="certBscan != null">
         cert_bscan,
       </if>
-      <if test="photoBlue != null">
-        photo_blue,
+      <if test="idPhotoOne != null">
+        id_photo_one,
+      </if>
+      <if test="idPhotoTwo != null">
+        id_photo_two,
+      </if>
+      <if test="idPhotoThree != null">
+        id_photo_three,
       </if>
       <if test="certGscan != null">
         cert_gscan,
@@ -249,6 +261,9 @@
       </if>
       <if test="entryDate != null">
         entry_date,
+      </if>
+      <if test="belongName != null">
+        belong_name,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
@@ -321,8 +336,14 @@
       <if test="certBscan != null">
         #{certBscan,jdbcType=VARCHAR},
       </if>
-      <if test="photoBlue != null">
-        #{photoBlue,jdbcType=VARCHAR},
+      <if test="idPhotoOne != null">
+        #{idPhotoOne,jdbcType=VARCHAR},
+      </if>
+      <if test="idPhotoTwo != null">
+        #{idPhotoTwo,jdbcType=VARCHAR},
+      </if>
+      <if test="idPhotoThree != null">
+        #{idPhotoThree,jdbcType=VARCHAR},
       </if>
       <if test="certGscan != null">
         #{certGscan,jdbcType=VARCHAR},
@@ -335,6 +356,9 @@
       </if>
       <if test="entryDate != null">
         #{entryDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="belongName != null">
+        #{belongName,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -416,8 +440,14 @@
       <if test="record.certBscan != null">
         students.cert_bscan = #{record.certBscan,jdbcType=VARCHAR},
       </if>
-      <if test="record.photoBlue != null">
-        students.photo_blue = #{record.photoBlue,jdbcType=VARCHAR},
+      <if test="record.idPhotoOne != null">
+        students.id_photo_one = #{record.idPhotoOne,jdbcType=VARCHAR},
+      </if>
+      <if test="record.idPhotoTwo != null">
+        students.id_photo_two = #{record.idPhotoTwo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.idPhotoThree != null">
+        students.id_photo_three = #{record.idPhotoThree,jdbcType=VARCHAR},
       </if>
       <if test="record.certGscan != null">
         students.cert_gscan = #{record.certGscan,jdbcType=VARCHAR},
@@ -431,6 +461,9 @@
       <if test="record.entryDate != null">
         students.entry_date = #{record.entryDate,jdbcType=TIMESTAMP},
       </if>
+      <if test="record.belongName != null">
+        students.belong_name = #{record.belongName,jdbcType=VARCHAR},
+      </if>
     </set>
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
@@ -439,33 +472,36 @@
   <update id="updateByExample" parameterType="map">
     update students students
     set students.id = #{record.id,jdbcType=INTEGER},
-    students.user_name = #{record.userName,jdbcType=VARCHAR},
-    students.birth_date = #{record.birthDate,jdbcType=TIMESTAMP},
-    students.user_sex = #{record.userSex,jdbcType=VARCHAR},
-    students.cert_type = #{record.certType,jdbcType=VARCHAR},
-    students.cert_number = #{record.certNumber,jdbcType=VARCHAR},
-    students.celebrities = #{record.celebrities,jdbcType=VARCHAR},
-    students.marital_status = #{record.maritalStatus,jdbcType=VARCHAR},
-    students.phone_number = #{record.phoneNumber,jdbcType=VARCHAR},
-    students.cert_address = #{record.certAddress,jdbcType=VARCHAR},
-    students.domicile = #{record.domicile,jdbcType=VARCHAR},
-    students.local_estate = #{record.localEstate,jdbcType=VARCHAR},
-    students.accompany_person = #{record.accompanyPerson,jdbcType=VARCHAR},
-    students.postal_code = #{record.postalCode,jdbcType=VARCHAR},
-    students.email = #{record.email,jdbcType=VARCHAR},
-    students.wechat = #{record.wechat,jdbcType=VARCHAR},
-    students.batch = #{record.batch,jdbcType=INTEGER},
-    students.deposit = #{record.deposit,jdbcType=DECIMAL},
-    students.final_payment = #{record.finalPayment,jdbcType=DECIMAL},
-    students.total_cost = #{record.totalCost,jdbcType=DECIMAL},
-    students.note = #{record.note,jdbcType=VARCHAR},
-    students.cert_fscan = #{record.certFscan,jdbcType=VARCHAR},
-    students.cert_bscan = #{record.certBscan,jdbcType=VARCHAR},
-    students.photo_blue = #{record.photoBlue,jdbcType=VARCHAR},
-    students.cert_gscan = #{record.certGscan,jdbcType=VARCHAR},
-    students.belong = #{record.belong,jdbcType=INTEGER},
-    students.update_date = #{record.updateDate,jdbcType=TIMESTAMP},
-    students.entry_date = #{record.entryDate,jdbcType=TIMESTAMP}
+      students.user_name = #{record.userName,jdbcType=VARCHAR},
+      students.birth_date = #{record.birthDate,jdbcType=TIMESTAMP},
+      students.user_sex = #{record.userSex,jdbcType=VARCHAR},
+      students.cert_type = #{record.certType,jdbcType=VARCHAR},
+      students.cert_number = #{record.certNumber,jdbcType=VARCHAR},
+      students.celebrities = #{record.celebrities,jdbcType=VARCHAR},
+      students.marital_status = #{record.maritalStatus,jdbcType=VARCHAR},
+      students.phone_number = #{record.phoneNumber,jdbcType=VARCHAR},
+      students.cert_address = #{record.certAddress,jdbcType=VARCHAR},
+      students.domicile = #{record.domicile,jdbcType=VARCHAR},
+      students.local_estate = #{record.localEstate,jdbcType=VARCHAR},
+      students.accompany_person = #{record.accompanyPerson,jdbcType=VARCHAR},
+      students.postal_code = #{record.postalCode,jdbcType=VARCHAR},
+      students.email = #{record.email,jdbcType=VARCHAR},
+      students.wechat = #{record.wechat,jdbcType=VARCHAR},
+      students.batch = #{record.batch,jdbcType=INTEGER},
+      students.deposit = #{record.deposit,jdbcType=DECIMAL},
+      students.final_payment = #{record.finalPayment,jdbcType=DECIMAL},
+      students.total_cost = #{record.totalCost,jdbcType=DECIMAL},
+      students.note = #{record.note,jdbcType=VARCHAR},
+      students.cert_fscan = #{record.certFscan,jdbcType=VARCHAR},
+      students.cert_bscan = #{record.certBscan,jdbcType=VARCHAR},
+      students.id_photo_one = #{record.idPhotoOne,jdbcType=VARCHAR},
+      students.id_photo_two = #{record.idPhotoTwo,jdbcType=VARCHAR},
+      students.id_photo_three = #{record.idPhotoThree,jdbcType=VARCHAR},
+      students.cert_gscan = #{record.certGscan,jdbcType=VARCHAR},
+      students.belong = #{record.belong,jdbcType=INTEGER},
+      students.update_date = #{record.updateDate,jdbcType=TIMESTAMP},
+      students.entry_date = #{record.entryDate,jdbcType=TIMESTAMP},
+      students.belong_name = #{record.belongName,jdbcType=VARCHAR}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -539,8 +575,14 @@
       <if test="certBscan != null">
         cert_bscan = #{certBscan,jdbcType=VARCHAR},
       </if>
-      <if test="photoBlue != null">
-        photo_blue = #{photoBlue,jdbcType=VARCHAR},
+      <if test="idPhotoOne != null">
+        id_photo_one = #{idPhotoOne,jdbcType=VARCHAR},
+      </if>
+      <if test="idPhotoTwo != null">
+        id_photo_two = #{idPhotoTwo,jdbcType=VARCHAR},
+      </if>
+      <if test="idPhotoThree != null">
+        id_photo_three = #{idPhotoThree,jdbcType=VARCHAR},
       </if>
       <if test="certGscan != null">
         cert_gscan = #{certGscan,jdbcType=VARCHAR},
@@ -553,6 +595,9 @@
       </if>
       <if test="entryDate != null">
         entry_date = #{entryDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="belongName != null">
+        belong_name = #{belongName,jdbcType=VARCHAR},
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
@@ -581,11 +626,14 @@
       note = #{note,jdbcType=VARCHAR},
       cert_fscan = #{certFscan,jdbcType=VARCHAR},
       cert_bscan = #{certBscan,jdbcType=VARCHAR},
-      photo_blue = #{photoBlue,jdbcType=VARCHAR},
+      id_photo_one = #{idPhotoOne,jdbcType=VARCHAR},
+      id_photo_two = #{idPhotoTwo,jdbcType=VARCHAR},
+      id_photo_three = #{idPhotoThree,jdbcType=VARCHAR},
       cert_gscan = #{certGscan,jdbcType=VARCHAR},
       belong = #{belong,jdbcType=INTEGER},
       update_date = #{updateDate,jdbcType=TIMESTAMP},
-      entry_date = #{entryDate,jdbcType=TIMESTAMP}
+      entry_date = #{entryDate,jdbcType=TIMESTAMP},
+      belong_name = #{belongName,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

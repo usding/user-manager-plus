@@ -149,10 +149,20 @@ public class StudentParam {
     private String certBscan;
 
     /**
-     * 2寸蓝底彩照-图片路径
+     * 证件照1-图片路径
      */
-    @NotNull(message = "2寸蓝底彩照不能为空")
-    private String photoBlue;
+    //@NotNull(message = "证件照1不能为空")
+    private String idPhotoOne;
+
+    /**
+     * 证件照2-图片路径
+     */
+    private String idPhotoTwo;
+
+    /**
+     * 证件照3-图片路径
+     */
+    private String idPhotoThree;
 
     /**
      * 毕业证书扫描件-图片路径
@@ -348,12 +358,28 @@ public class StudentParam {
         this.certBscan = certBscan;
     }
 
-    public String getPhotoBlue() {
-        return photoBlue;
+    public String getIdPhotoOne() {
+        return idPhotoOne;
     }
 
-    public void setPhotoBlue(String photoBlue) {
-        this.photoBlue = photoBlue;
+    public void setIdPhotoOne(String idPhotoOne) {
+        this.idPhotoOne = idPhotoOne;
+    }
+
+    public String getIdPhotoTwo() {
+        return idPhotoTwo;
+    }
+
+    public void setIdPhotoTwo(String idPhotoTwo) {
+        this.idPhotoTwo = idPhotoTwo;
+    }
+
+    public String getIdPhotoThree() {
+        return idPhotoThree;
+    }
+
+    public void setIdPhotoThree(String idPhotoThree) {
+        this.idPhotoThree = idPhotoThree;
     }
 
     public String getCertGscan() {
@@ -374,37 +400,35 @@ public class StudentParam {
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append(getClass().getSimpleName());
-        sb.append(" [");
-        sb.append("Hash = ").append(hashCode());
-        sb.append(", id=").append(id);
-        sb.append(", userName=").append(userName);
-        sb.append(", birthDate=").append(birthDate);
-        sb.append(", userSex=").append(userSex);
-        sb.append(", certType=").append(certType);
-        sb.append(", certNumber=").append(certNumber);
-        sb.append(", celebrities=").append(celebrities);
-        sb.append(", maritalStatus=").append(maritalStatus);
-        sb.append(", phoneNumber=").append(phoneNumber);
-        sb.append(", certAddress=").append(certAddress);
-        sb.append(", domicile=").append(domicile);
-        sb.append(", localEstate=").append(localEstate);
-        sb.append(", accompanyPerson=").append(accompanyPerson);
-        sb.append(", postalCode=").append(postalCode);
-        sb.append(", email=").append(email);
-        sb.append(", wechat=").append(wechat);
-        sb.append(", batch=").append(batch);
-        sb.append(", deposit=").append(deposit);
-        sb.append(", finalPayment=").append(finalPayment);
-        sb.append(", totalCost=").append(totalCost);
-        sb.append(", note=").append(note);
-        sb.append(", certFscan=").append(certFscan);
-        sb.append(", certBscan=").append(certBscan);
-        sb.append(", photoBlue=").append(photoBlue);
-        sb.append(", certGscan=").append(certGscan);
-        sb.append(", serialVersionUID=").append(serialVersionUID);
-        sb.append("]");
-        return sb.toString();
+        return "StudentParam{" +
+                "id=" + id +
+                ", userName='" + userName + '\'' +
+                ", birthDate='" + birthDate + '\'' +
+                ", userSex='" + userSex + '\'' +
+                ", certType='" + certType + '\'' +
+                ", certNumber='" + certNumber + '\'' +
+                ", celebrities='" + celebrities + '\'' +
+                ", maritalStatus='" + maritalStatus + '\'' +
+                ", phoneNumber='" + phoneNumber + '\'' +
+                ", certAddress='" + certAddress + '\'' +
+                ", domicile='" + domicile + '\'' +
+                ", localEstate='" + localEstate + '\'' +
+                ", accompanyPerson='" + accompanyPerson + '\'' +
+                ", postalCode='" + postalCode + '\'' +
+                ", email='" + email + '\'' +
+                ", wechat='" + wechat + '\'' +
+                ", batch=" + batch +
+                ", deposit=" + deposit +
+                ", finalPayment=" + finalPayment +
+                ", totalCost=" + totalCost +
+                ", note='" + note + '\'' +
+                ", certFscan='" + certFscan + '\'' +
+                ", certBscan='" + certBscan + '\'' +
+                ", idPhotoOne='" + idPhotoOne + '\'' +
+                ", idPhotoTwo='" + idPhotoTwo + '\'' +
+                ", idPhotoThree='" + idPhotoThree + '\'' +
+                ", certGscan='" + certGscan + '\'' +
+                ", belong=" + belong +
+                '}';
     }
 }

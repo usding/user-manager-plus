@@ -39,7 +39,9 @@ public class BeanCopy {
           target.setNote(source.getNote());
           target.setCertFscan(source.getCertFscan());
           target.setCertBscan(source.getCertBscan());
-          target.setPhotoBlue(source.getPhotoBlue());
+          target.setIdPhotoOne(source.getIdPhotoOne());
+          target.setIdPhotoTwo(source.getIdPhotoTwo());
+          target.setIdPhotoThree(source.getIdPhotoThree());
           target.setCertGscan(source.getCertGscan());
     }
 

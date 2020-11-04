@@ -36,10 +36,22 @@ public class ImgUtils {
                 student.setCertBscan(Base64Util.getImageStr(f));
             }
         }
-        if (student.getPhotoBlue() != null) {
-            File f = new File(student.getPhotoBlue());
+        if (student.getIdPhotoOne() != null) {
+            File f = new File(student.getIdPhotoOne());
             if (f.exists()) {
-                student.setPhotoBlue(Base64Util.getImageStr(f));
+                student.setIdPhotoOne(Base64Util.getImageStr(f));
+            }
+        }
+        if (student.getIdPhotoTwo() != null) {
+            File f = new File(student.getIdPhotoTwo());
+            if (f.exists()) {
+                student.setIdPhotoTwo(Base64Util.getImageStr(f));
+            }
+        }
+        if (student.getIdPhotoThree() != null) {
+            File f = new File(student.getIdPhotoThree());
+            if (f.exists()) {
+                student.setIdPhotoThree(Base64Util.getImageStr(f));
             }
         }
         if (student.getCertGscan() != null) {
@@ -54,8 +66,10 @@ public class ImgUtils {
         String userPrefix = student.getUserName() + "_" + student.getCertNumber() + File.separator + student.getUserName() + "_" + student.getCertNumber();
         String idcardFront = student.getCertFscan();
         String idcardBack = student.getCertBscan();
-        String diploma = student.getCertGscan();
-        String portrait = student.getPhotoBlue();
+        String contract = student.getCertGscan();
+        String portraitOne = student.getIdPhotoOne();
+        String portraitTwo = student.getIdPhotoTwo();
+        String portraitThree = student.getIdPhotoThree();
         if (idcardFront != null) {
             String path = WebConfiguration.IMAGE_PATH + File.separator + userPrefix + "_idcard_front";
             student.setCertFscan(path + "." + Base64Util.getImageExtension(idcardFront));
@@ -66,15 +80,25 @@ public class ImgUtils {
             student.setCertBscan(path + "." + Base64Util.getImageExtension(idcardBack));
             Base64Util.generateImage(idcardBack, path);
         }
-        if (portrait != null) {
-            String path = WebConfiguration.IMAGE_PATH + File.separator + userPrefix + "_portrait";
-            student.setPhotoBlue(path + "." + Base64Util.getImageExtension(portrait));
-            Base64Util.generateImage(portrait, path);
+        if (portraitOne != null) {
+            String path = WebConfiguration.IMAGE_PATH + File.separator + userPrefix + "_portrait_one";
+            student.setIdPhotoOne(path + "." + Base64Util.getImageExtension(portraitOne));
+            Base64Util.generateImage(portraitOne, path);
         }
-        if (diploma != null) {
-            String path = WebConfiguration.IMAGE_PATH + File.separator + userPrefix + "_diploma";
-            student.setCertGscan(path + "." + Base64Util.getImageExtension(diploma));
-            Base64Util.generateImage(diploma, path);
+        if (portraitTwo != null) {
+            String path = WebConfiguration.IMAGE_PATH + File.separator + userPrefix + "_portrait_two";
+            student.setIdPhotoOne(path + "." + Base64Util.getImageExtension(portraitTwo));
+            Base64Util.generateImage(portraitTwo, path);
+        }
+        if (portraitThree != null) {
+            String path = WebConfiguration.IMAGE_PATH + File.separator + userPrefix + "_portrait_three";
+            student.setIdPhotoOne(path + "." + Base64Util.getImageExtension(portraitThree));
+            Base64Util.generateImage(portraitThree, path);
+        }
+        if (contract != null) {
+            String path = WebConfiguration.IMAGE_PATH + File.separator + userPrefix + "_contract";
+            student.setCertGscan(path + "." + Base64Util.getImageExtension(contract));
+            Base64Util.generateImage(contract, path);
         }
     }
 
