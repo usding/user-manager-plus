@@ -67,7 +67,7 @@ public class StudentParam {
     /**
      * 手机号
      */
-    @NotEmpty(message = "手机号不能为空")
+    //@NotEmpty(message = "手机号不能为空")
     @Pattern(regexp = Validator.REGEX_MOBILE,message = "手机号格式不正确")
     private String phoneNumber;
 
@@ -165,7 +165,7 @@ public class StudentParam {
     private String idPhotoThree;
 
     /**
-     * 毕业证书扫描件-图片路径
+     * 合同照片-图片路径
      */
     //@NotNull(message = "毕业证书扫描件不能为空")
     private String certGscan;

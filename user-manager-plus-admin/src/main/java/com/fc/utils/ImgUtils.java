@@ -87,12 +87,12 @@ public class ImgUtils {
         }
         if (portraitTwo != null) {
             String path = WebConfiguration.IMAGE_PATH + File.separator + userPrefix + "_portrait_two";
-            student.setIdPhotoOne(path + "." + Base64Util.getImageExtension(portraitTwo));
+            student.setIdPhotoTwo(path + "." + Base64Util.getImageExtension(portraitTwo));
             Base64Util.generateImage(portraitTwo, path);
         }
         if (portraitThree != null) {
             String path = WebConfiguration.IMAGE_PATH + File.separator + userPrefix + "_portrait_three";
-            student.setIdPhotoOne(path + "." + Base64Util.getImageExtension(portraitThree));
+            student.setIdPhotoThree(path + "." + Base64Util.getImageExtension(portraitThree));
             Base64Util.generateImage(portraitThree, path);
         }
         if (contract != null) {
